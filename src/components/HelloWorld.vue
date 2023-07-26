@@ -13,10 +13,10 @@
         <div class="search">
           <div style="margin-left: 1043px;margin-top: 20px;">
             <el-select v-model="character" placeholder="请选择角色" class="select_character">
-            <el-option label="管理员" value="1" />
-            <el-option label="系统管理" value="2" />
-            <el-option label="高级用户" value="3" />
-            <el-option label="普通用户" value="4" />
+            <el-option label="管理员" value="管理员" />
+            <el-option label="系统管理员" value="系统管理员" />
+            <el-option label="高级用户" value="高级用户" />
+            <el-option label="普通用户" value="普通用户" />
             </el-select>
           </div>
           <div style="margin-left: 18px;margin-top: 20px; width: 277px;height: 34px;">
@@ -35,7 +35,7 @@
             </el-upload>
           </div>
           <div>
-            <el-button type="primary" style="width: 96px;height: 34px;margin-top: 20px;margin-left: 18px;background: #FFFFFF;color: rgba(0,0,0,0.65);border: 1px solid #DDDFE5;" @click="Multiple_Selected" v-if="out_download">批量下载</el-button>
+            <el-button type="primary" style="width: 96px;height: 34px;margin-top: 20px;margin-left: 18px;background: #FFFFFF;color: rgba(0,0,0,0.65);border: 1px solid #DDDFE5;" @click="Multiple_Selected" v-if="out_download">模板下载</el-button>
             <el-button type="primary" style="width: 96px;height: 34px;margin-top: 20px;margin-left: 18px;background: #FFFFFF;color: rgba(0,0,0,0.65);border: 1px solid #DDDFE5;" @click="Download" v-if="is_download">下载</el-button>
           </div>
           <div>
@@ -47,7 +47,7 @@
               <div style="width: 910px;opacity: 1;border: 2px solid #DDDFE5;margin-bottom: 34px; margin-top: 20px;"></div>
               <el-form :model="form">
                 <el-form-item label="用户名" :label-width="formLabelWidth" style="font-size: 14px;margin-left: 9px;" required="true">
-                  <el-input v-model="form.user_name " autocomplete="off" placeholder="请输入用户名" style="width: 469px;
+                  <el-input v-model="form.roleCode " autocomplete="off" placeholder="请输入用户名" style="width: 469px;
                     height: 34px;
                     background: #F2F3F5;
                     border-radius: 4px 4px 4px 4px;
@@ -55,7 +55,7 @@
                     border: 1px solid #DDDFE5;"/>
                 </el-form-item>
                 <el-form-item label="角色" :label-width="formLabelWidth" style="margin-left: 23px;" required="true">
-                  <el-select v-model="form.character" placeholder="请选择角色" style="width: 469px;
+                  <el-select v-model="form.roleName" placeholder="请选择角色" style="width: 469px;
                       height: 34px;
                       background: #F2F3F5;
                       opacity: 1;" >
@@ -66,7 +66,7 @@
                   </el-select>
                 </el-form-item>
                 <el-form-item label="备注" :label-width="formLabelWidth" style="margin-left: 23px;" required="true">
-                  <el-input type="textarea" v-model="form.remark" maxlength="500" resize="none" :rows="5" class="textarea-box" placeholder="请输入备注"></el-input>
+                  <el-input type="textarea" v-model="form.description" maxlength="500" resize="none" :rows="5" class="textarea-box" placeholder="请输入备注"></el-input>
                 </el-form-item>
               </el-form>
               <template #footer>
@@ -88,42 +88,42 @@
             <el-table-column label="用户名" width="294">
               <template #default="scope">
                 <div style="display: flex; align-items: center">
-                  <span>{{ scope.row.user_name }}</span>
+                  <span>{{ scope.row.roleCode }}</span>
                 </div>
               </template>
             </el-table-column>
             <el-table-column label="创建时间" width="294">
               <template #default="scope">
                 <div style="display: flex; align-items: center">
-                  <span>{{ scope.row.create_date }}</span>
+                  <span>{{ scope.row.gmtCreate }}</span>
                 </div>
               </template>
             </el-table-column>
             <el-table-column label="更改时间" width="294" show-overflow-tooltip>
               <template #default="scope">
                 <div style="display: flex; align-items: center">
-                  <span>{{ scope.row.modify_date }}</span>
+                  <span>{{ scope.row.gmtModified }}</span>
                 </div>
               </template>
             </el-table-column>
             <el-table-column label="角色" width="294" show-overflow-tooltip>
               <template #default="scope">
                 <div style="display: flex; align-items: center">
-                  <span>{{ scope.row.character }}</span>
+                  <span>{{ scope.row.roleName }}</span>
                 </div>
               </template>
             </el-table-column>
             <el-table-column label="备注" width="400" show-overflow-tooltip>
               <template #default="scope">
                 <div style="display: flex; align-items: center; ">
-                  <span>{{ scope.row.remark }}</span>
+                  <span>{{ scope.row.description }}</span>
                 </div>
               </template>
             </el-table-column>
             <!-- 操作按钮 -->
             <el-table-column label="操作">
               <template #default="scope">
-                <el-button size="small" @click="handleEdit(scope.$index, scope.row)" style="width: 60px;
+                <el-button size="small" v-if="is_manager = scope.row.roleName == '管理员' ? false : true " @click="handleEdit(scope.$index, scope.row)" style="width: 60px;
                     height: 34px;
                     background: #FFFFFF;
                     border-radius: 4px 4px 4px 4px;
@@ -132,7 +132,7 @@
                   >编辑</el-button
                 >
                 <el-button
-                  size="small"
+                  size="small" v-if="is_manager"
                   type="danger"
                   @click="handleDelete(scope.$index, scope.row)" style="width: 60px;
                   height: 34px;
@@ -152,7 +152,7 @@
             <div style="width: 910px;opacity: 1;border: 2px solid #DDDFE5;margin-bottom: 34px; margin-top: 20px;"></div>
             <el-form :model="currentForm">
               <el-form-item label="用户名" :label-width="formLabelWidth" style="font-size: 14px;margin-left: 9px;" required="true">
-                <el-input v-model="currentForm.user_name " autocomplete="off" placeholder="请输入用户名" style="width: 469px;
+                <el-input v-model="currentForm.roleCode " autocomplete="off" placeholder="请输入用户名" style="width: 469px;
                   height: 34px;
                   background: #F2F3F5;
                   border-radius: 4px 4px 4px 4px;
@@ -160,7 +160,7 @@
                   border: 1px solid #DDDFE5;"/>
               </el-form-item>
               <el-form-item label="角色" :label-width="formLabelWidth" style="margin-left: 23px;" required="true">
-                <el-select v-model="currentForm.character" placeholder="请选择角色" style="width: 469px;
+                <el-select v-model="currentForm.roleName" placeholder="请选择角色" style="width: 469px;
                     height: 34px;
                     background: #F2F3F5;
                     opacity: 1;" >
@@ -171,7 +171,7 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="备注" :label-width="formLabelWidth" style="margin-left: 23px;" required="true">
-                <el-input type="textarea" v-model="currentForm.remark" maxlength="500" resize="none" :rows="5" class="textarea-box" placeholder="请输入备注"></el-input>
+                <el-input type="textarea" v-model="currentForm.description" maxlength="500" resize="none" :rows="5" class="textarea-box" placeholder="请输入备注"></el-input>
               </el-form-item>
             </el-form>
             <template #footer>
@@ -206,83 +206,22 @@ import { h } from 'vue';
     name: "HelloWorld",
     data() {
         return {
-            tableData: [{
-                    user_name: "Tom",
-                    create_date: "2016-05-01",
-                    modify_date: "2016-05-01",
-                    character: "Tom",
-                    remark: "No. 189, Grove St, Los Angeles",
-                }, {
-                    user_name: "Tom",
-                    create_date: "2016-05-01",
-                    modify_date: "2016-05-01",
-                    character: "Tom",
-                    remark: "No. 189, Grove St, Los Angeles",
-                }, {
-                    user_name: "Tom",
-                    create_date: "2016-05-01",
-                    modify_date: "2016-05-01",
-                    character: "Tom",
-                    remark: "No. 189, Grove St, Los Angeles",
-                }, {
-                    user_name: "Tom",
-                    create_date: "2016-05-01",
-                    modify_date: "2016-05-01",
-                    character: "Tom",
-                    remark: "No. 189, Grove St, Los Angeles",
-                }, {
-                    user_name: "Tom",
-                    create_date: "2016-05-01",
-                    modify_date: "2016-05-01",
-                    character: "Tom",
-                    remark: "No. 189, Grove St, Los Angeles",
-                }, {
-                    user_name: "Tom",
-                    create_date: "2016-05-01",
-                    modify_date: "2016-05-01",
-                    character: "Tom",
-                    remark: "No. 189, Grove St, Los Angeles",
-                },{
-                    user_name: "Tom",
-                    create_date: "2016-05-01",
-                    modify_date: "2016-05-01",
-                    character: "Tom",
-                    remark: "No. 189, Grove St, Los Angeles",
-                },{
-                    user_name: "Tom",
-                    create_date: "2016-05-01",
-                    modify_date: "2016-05-01",
-                    character: "Tom",
-                    remark: "No. 189, Grove St, Los Angeles",
-                },{
-                    user_name: "Tom",
-                    create_date: "2016-05-01",
-                    modify_date: "2016-05-01",
-                    character: "Tom",
-                    remark: "No. 189, Grove St, Los Angeles",
-                },{
-                    user_name: "Tom",
-                    create_date: "2016-05-01",
-                    modify_date: "2016-05-01",
-                    character: "Tom",
-                    remark: "No. 189, Grove St, Los Angeles",
-                },
-            ],
+            tableData: [],
             dialogFormVisible: false,
             form: ({
-                user_name: "",
-                create_date: "",
-                modify_date: "",
-                character: "",
-                remark: ""
+                roleCode: "",
+                gmtCreate: "",
+                gmtModified: "",
+                roleName: "",
+                description: ""
             }),
             character: "",
             input: "",
             editFormVisible: false,
             currentForm: ({
-                user_name: "",
-                character: "",
-                remark: ""
+                roleCode: "",
+                roleName: "",
+                description: ""
             }),
             currentIndex: 0,
             currentPage: 1,
@@ -291,6 +230,7 @@ import { h } from 'vue';
             multiple_selected:false, //控制多选框的显示
             is_download:false, //控制下载按钮显示
             out_download:true, //控制批量下载按钮显示
+            is_manager:false, //控制管理员和系统管理员的操作按钮显示
         };
     },
     methods: {
@@ -302,22 +242,22 @@ import { h } from 'vue';
 
         Edit: function () {
             this.editFormVisible = false;
-            if (this.currentForm.user_name != ''){
-              this.tableData[this.currentIndex].user_name = this.currentForm.user_name;
+            if (this.currentForm.roleCode != ''){
+              this.tableData[this.currentIndex].roleCode = this.currentForm.roleCode;
             }
-            if (this.currentForm.character != ''){
-              this.tableData[this.currentIndex].character = this.currentForm.character;
+            if (this.currentForm.roleName != ''){
+              this.tableData[this.currentIndex].roleName = this.currentForm.roleName;
             }
-            if (this.currentForm.remark != ''){
-              this.tableData[this.currentIndex].remark = this.currentForm.remark;
+            if (this.currentForm.description != ''){
+              this.tableData[this.currentIndex].description = this.currentForm.description;
             }
-            this.tableData[this.currentIndex].modify_date = this.CurrentDate();
+            // this.tableData[this.currentIndex].modify_date = this.CurrentDate();
         },
 
         Clear: function () {
-            this.currentForm.user_name = "";
-            this.currentForm.character = "";
-            this.currentForm.remark = "";
+            this.currentForm.roleCode = "";
+            this.currentForm.roleName = "";
+            this.currentForm.description = "";
         },
 
         handleDelete: function (index, row) {
@@ -386,7 +326,7 @@ import { h } from 'vue';
         },
 
         createUser: function () {
-          if (this.form.user_name == "" || this.form.character == ""){
+          if (this.form.roleCode == "" || this.form.roleName == ""){
             ElNotification({
               title: '提示',
               message: h('i', { style: 'color: red;width:100px;height:100px'}, '用户名或角色未进行正确填写！'),
@@ -395,15 +335,15 @@ import { h } from 'vue';
           }
           else{
             this.dialogFormVisible = false;
-            this.form.create_date = this.CurrentDate();
+            this.form.gmtCreate = this.CurrentDate();
             this.tableData.push(this.form);
           }
         },
 
         create_user_clear:function(){
-          this.form.user_name = '';
-          this.form.character = '';
-          this.form.remark = '';
+          this.form.roleCode = '';
+          this.form.roleName = '';
+          this.form.description = '';
         },
 
         //返回当前的时间
@@ -431,25 +371,39 @@ import { h } from 'vue';
         handleCurrentChange: function (val) {
             this.currentPage = val;
         },
+        init: async function(){
+          var token='';
+          var user = {
+          username:"admin",
+          password:"2WSX3edc."
+          };
+          let data = new FormData();
+          data.append('username', user.username);
+          data.append('password', user.password);
+          const instance = axios.create({
+            baseURL: 'http://localhost:5173/api',
+            timeout: 1000,
+            headers: {'X-Custom-Header': 'foobar'}
+          }); 
+          await instance({
+            url: '/login',
+            method: 'post',
+            data: data,
+          }).then((res)=>{
+            token = res.data.data;
+            console.log(token);
+          })
+          instance({
+            url: '/admin/roles',
+            method: 'get',
+            headers: { Authorization: token }
+          }).then((res)=>{
+            this.tableData = res.data.data
+          })
+        }
     },
     mounted() {
-      var token='';
-      var loginUrl = 'http://192.168.20.116/api/login';
-      var user = {
-        username:'admin',
-        password:'2WSX3edc.'
-      };
-      axios.post(loginUrl, user).then(function(res){
-        sessionStorage.setItem('accessToken', res.data.token)
-        token = res.data.token;
-        //显示token值
-        console.log(res.data.token);
-      }).catch(function(err){
-            console.log(err);
-      });;
-      axios.get("", {headers: { Authorization: 'Bearer ' + token }}).then((result) => {
-          console.log(result);
-      });
+      this.init();
     },
 };
 </script>
