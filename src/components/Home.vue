@@ -19,39 +19,39 @@
                     background: #F2F3F5;    
                     border-radius: 4px 4px 4px 4px;
                     opacity: 1;
-                    border: 1px solid #DDDFE5; margin-left: 201px; margin-top: 20px;" v-model="input" placeholder="Please input" />
-                    <el-input v-model="input" style="width: 200px;
+                    border: 1px solid #DDDFE5; margin-left: 201px; margin-top: 20px;" v-model="search.summary" placeholder="请输入摘要" />
+                    <el-input v-model="search.keyword" style="width: 200px;
                     height: 34px;
                     background: #F2F3F5;
                     border-radius: 4px 4px 4px 4px;
                     opacity: 1;
-                    border: 1px solid #DDDFE5; margin-left: 18px;margin-top: 20px;" placeholder="Please input" />
-                    <el-input v-model="input" style="width: 200px;
+                    border: 1px solid #DDDFE5; margin-left: 18px;margin-top: 20px;" placeholder="请输入关键词" />
+                    <el-input v-model="search.author" style="width: 200px;
                     height: 34px;
                     background: #F2F3F5;
                     border-radius: 4px 4px 4px 4px;
                     opacity: 1;
-                    border: 1px solid #DDDFE5; margin-left: 18px;margin-top: 20px;" placeholder="Please input" />
-                    <el-input v-model="input" style="width: 200px;
+                    border: 1px solid #DDDFE5; margin-left: 18px;margin-top: 20px;" placeholder="请输入作者" />
+                    <el-input v-model="search.source" style="width: 200px;
                     height: 34px;
                     background: #F2F3F5;
                     border-radius: 4px 4px 4px 4px;
                     opacity: 1;
-                    border: 1px solid #DDDFE5; margin-left: 18px;margin-top: 20px;" placeholder="Please input" />
-                    <el-input v-model="input" style="width: 200px;
+                    border: 1px solid #DDDFE5; margin-left: 18px;margin-top: 20px;" placeholder="请输入期刊来源" />
+                    <el-input v-model="search.filename" style="width: 200px;
                     height: 34px;
                     background: #F2F3F5;
                     border-radius: 4px 4px 4px 4px;
                     opacity: 1;
-                    border: 1px solid #DDDFE5; margin-left: 18px;margin-top: 20px;" placeholder="Please input" />
-                    <el-input v-model="input" style="width: 200px;
+                    border: 1px solid #DDDFE5; margin-left: 18px;margin-top: 20px;" placeholder="请输入文件名称" />
+                    <el-input v-model="search.title" style="width: 200px;
                     height: 34px;
                     background: #F2F3F5;
                     border-radius: 4px 4px 4px 4px;
                     opacity: 1;
-                    border: 1px solid #DDDFE5; margin-left: 18px;margin-top: 20px;" placeholder="Please input" />
-                    <el-button type="primary" style="margin-left: 18px;margin-top: 20px;">搜索</el-button>
-                    <el-button style="margin-top: 20px;">重置</el-button>
+                    border: 1px solid #DDDFE5; margin-left: 18px;margin-top: 20px;" placeholder="请输入标题" />
+                    <el-button @click="LocalSearch()" type="primary" style="margin-left: 18px;margin-top: 20px;">搜索</el-button>
+                    <el-button style="margin-top: 20px;" @click="allClear()">重置</el-button>
                 </div>
                 <div>
                     <div style="margin-top: 20px;margin-left: 1222px;">
@@ -63,10 +63,10 @@
                             color: rgba(0,0,0,0.85);
                             line-height: 19px; margin-right: 18px;">出版开始时间</span>
                         <el-date-picker
-                            v-model="value1"
+                            v-model="search.start"
                             type="datetime"
-                            placeholder="Pick a Date"
-                            format="YYYY/MM/DD HH:mm:ss"
+                            placeholder="请选择出版开始时间"
+                            format="YYYY/MM/DD"
                             style="width: 200px;
                             height: 34px;
                             background: #F2F3F5;
@@ -82,10 +82,10 @@
                             color: rgba(0,0,0,0.85);
                             line-height: 19px; margin-right: 18px;margin-left: 18px;">出版开始时间</span>
                         <el-date-picker
-                            v-model="value1"
+                            v-model="search.end"
                             type="datetime"
-                            placeholder="Pick a Date"
-                            format="YYYY/MM/DD HH:mm:ss"
+                            placeholder="请选择出版结束时间"
+                            format="YYYY/MM/DD"
                             style="width: 200px;
                             height: 34px;
                             background: #F2F3F5;
@@ -99,63 +99,118 @@
             <div class="main_center">
                 <div>
                     <el-table :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)" style="width: 100%; font-size: 20px;margin-top: 20px;" :header-cell-style="{background:'rgba(43,86,249,0.2)', color:'#000000', height:'64px',padding:'17px'}">
-                        <el-table-column v-if="multiple_selected" type="selection" style="margin-left: 100px;"></el-table-column>
-                        <el-table-column label="标题名" width="294">
+                        <el-table-column label="标题名" width="388">
                         <template #default="scope">
                             <div style="display: flex; align-items: center">
-                            <span>{{ scope.row.roleCode }}</span>
+                            <span>{{ scope.row.title }}</span>
                             </div>
                         </template>
                         </el-table-column>
-                        <el-table-column label="作者" width="294">
+                        <el-table-column label="作者" width="260">
                         <template #default="scope">
                             <div style="display: flex; align-items: center">
-                            <span>{{ scope.row.gmtCreate }}</span>
+                            <span>{{ scope.row.author }}</span>
                             </div>
                         </template>
                         </el-table-column>
-                        <el-table-column label="刊名" width="294" show-overflow-tooltip>
+                        <el-table-column label="刊名" width="200" show-overflow-tooltip>
                         <template #default="scope">
                             <div style="display: flex; align-items: center">
-                            <span>{{ scope.row.gmtModified }}</span>
+                            <span>{{ scope.row.source }}</span>
                             </div>
                         </template>
                         </el-table-column>
-                        <el-table-column label="出版时间" width="294" show-overflow-tooltip>
+                        <el-table-column label="出版时间" width="260" show-overflow-tooltip>
                         <template #default="scope">
-                            <div style="display: flex; align-items: center">
-                            <span>{{ scope.row.roleName }}</span>
+                            <div>
+                            <span>{{ scope.row.start }}</span>
                             </div>
                         </template>
                         </el-table-column>
-                        <el-table-column label="关键词" width="400" show-overflow-tooltip>
+                        <el-table-column label="关键词" width="550" show-overflow-tooltip>
                         <template #default="scope">
                             <div style="display: flex; align-items: center; ">
-                            <span>{{ scope.row.description }}</span>
+                            <span>{{ scope.row.keyword }}</span>
                             </div>
                         </template>
                         </el-table-column>
                         <el-table-column label="操作">
                             <template #default="scope">
-                                <el-button size="small" v-if="is_manager = scope.row.roleName == '管理员' ? false : true " @click="handleEdit(scope.$index, scope.row)" style="width: 60px;
+                                <el-button size="small" @click="is_download(scope.row.id)" style="width: 60px;
                                     height: 34px;
                                     background: #FFFFFF;
                                     border-radius: 4px 4px 4px 4px;
                                     opacity: 1;
                                     border: 1px solid #DDDFE5;"
-                                >编辑</el-button
+                                >下载</el-button
                                 >
-                                <el-button
-                                size="small" v-if="is_manager"
-                                type="danger"
-                                @click="handleDelete(scope.$index, scope.row)" style="width: 60px;
-                                height: 34px;
-                                background: #FFEFEB;
-                                border-radius: 4px 4px 4px 4px;
-                                opacity: 1;
-                                border: 1px solid #FF6333; color: #FF6333;font-size: 14px;margin-left: 11px;"
-                                >删除</el-button
+                                <el-button size="small" @click="preview(scope.row.md5)" style="width: 60px;
+                                    height: 34px;
+                                    background: #FFFFFF;
+                                    border-radius: 4px 4px 4px 4px;
+                                    opacity: 1;
+                                    border: 1px solid #DDDFE5;"
+                                >预览</el-button
                                 >
+                                <el-button size="small" @click="detail()" style="width: 60px;
+                                    height: 34px;
+                                    background: #FFFFFF;
+                                    border-radius: 4px 4px 4px 4px;
+                                    opacity: 1;
+                                    border: 1px solid #DDDFE5;"
+                                >详情</el-button
+                                >
+                                <el-drawer v-model="drawer" title="I am the title" :with-header="false" size="796">
+                                    <div>
+                                        <div style="width: 300px;
+                                            height: 28px;
+                                            font-size: 20px;
+                                            font-family: PingFang SC-Bold, PingFang SC;
+                                            font-weight: bold;
+                                            color: rgb(0, 0, 0);
+                                            line-height: 23px;">
+                                            <span>{{ scope.row.title }}</span>
+                                        </div>
+                                        <div class="close">
+                                            <el-icon @click="close()"><Close /></el-icon>
+                                        </div>
+                                        <hr style="width: 776px;
+                                            height: 0px;
+                                            border-radius: 0px 0px 0px 0px;
+                                            opacity: 1;
+                                            border: 2px solid #DDDFE5;margin-top: 12px;">
+                                        <div style="margin-top: 21px;">
+                                            <p><b>文件名：</b>{{ scope.row.filename }}</p>
+                                        </div>
+                                        <div style="margin-top: 28px;">
+                                            <p><b>标题名：</b>{{ scope.row.title }}</p>
+                                        </div>
+                                        <div style="margin-top: 28px;">
+                                            <p><b>作者：</b>{{ scope.row.author }}</p>
+                                        </div>
+                                        <div style="margin-top: 28px;">
+                                            <p><b>刊名：</b>{{ scope.row.source }}</p>
+                                        </div>
+                                        <div style="margin-top: 28px;">
+                                            <p><b>来源数据库：</b>{{ scope.row.source }}</p>
+                                        </div>
+                                        <div style="margin-top: 28px;">
+                                            <p><b>出版时间：</b>{{ scope.row.start }}</p>
+                                        </div>
+                                        <div style="margin-top: 28px;">
+                                            <p><b>关键词：</b>{{ scope.row.keyword }}</p>
+                                        </div>
+                                        <div style="margin-top: 28px;">
+                                            <p><b>期数：</b>{{ scope.row.keyword }}</p>
+                                        </div>
+                                        <div style="margin-top: 28px;">
+                                            <p><b>卷数：</b>{{ scope.row.keyword }}</p>
+                                        </div>
+                                        <div style="margin-top: 28px;">
+                                            <p><b>摘要：</b>{{ scope.row.summary }}</p>
+                                        </div>
+                                    </div>
+                                </el-drawer>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -173,6 +228,8 @@
 
 
 <script>
+import axios from 'axios';
+
     export default{
         data(){
             return{
@@ -182,6 +239,22 @@
                 currentIndex: 0,
                 currentPage: 1,
                 pageSize: 8, // 每页的数据条数,
+                instance:'',
+                token:'',
+                search:{
+                    keyword:'',
+                    pageSize: 1,
+                    author:'',
+                    summary:'',
+                    start:'',
+                    end:'',
+                    filename:'',
+                    title:'',
+                    order:'',
+                    pageOn:1,
+                    source:''
+                },
+                drawer:false,
             }
         },
         methods:{
@@ -193,20 +266,107 @@
             },
 
             //每页条数改变时触发 选择一页显示多少行
-            handleSizeChange: function (val) {
+            handleSizeChange(val) {
                 this.currentPage = 1;
                 this.pageSize = val;
             },
 
             //当前页改变时触发 跳转其他页
-            handleCurrentChange: function (val) {
+            handleCurrentChange(val) {
                 this.currentPage = val;
             }, 
+
+            async init(){
+                // console.log(this.$route.params.data)
+                // this.token = this.$route.params.data;
+                var user = {
+                username:"admin",
+                password:"2WSX3edc."
+                };
+                let data = new FormData();
+                data.append('username', user.username);
+                data.append('password', user.password);
+                this.instance = axios.create({
+                    baseURL: 'http://localhost:5173/api',
+                    timeout: 1000,
+                    headers: {'X-Custom-Header': 'foobar'}
+                }); 
+                await this.instance({
+                  url: '/login',
+                  method: 'post',
+                  data: data,
+                }).then((res)=>{
+                  this.token = res.data.data;
+                  console.log(this.token);
+                });
+            },
+
+            LocalSearch(){
+                this.instance({
+                    url: '/list',
+                    method: 'post',
+                    data:this.search,
+                    headers: { Authorization: this.token, 'Content-Type': 'application/json' }
+                }).then((res)=>{
+                    console.log(res.data.data)
+                    this.tableData = res.data.data;
+                });
+            },
+
+            detail(){
+                this.drawer = true;
+            },
+
+            close(){
+                this.drawer = false;
+            },
+
+            is_download(id){
+                var url = '/download/' + id.toString();
+                console.log(url)
+                this.instance({
+                    url: url,
+                    method: 'get',
+                    headers: {Authorization: this.token},
+                    responseType:'blob',
+                }).then((res) => {
+                    //模板下载
+                    let b = new Blob([res.data], {type: 'application/vnd.ms-excel'});
+                    let url = URL.createObjectURL(b);
+                    let link = document.createElement('a');
+                    link.download = '数据.pdf';
+                    link.href = url;
+                    link.click();
+                });
+            },
+
+            preview(md5){
+                var url = '/preview/' + md5;
+                this.instance({
+                    url: url,
+                    method: 'get',
+                    headers: {Authorization: this.token},
+                }).then((res) => {
+                    console.log(res.data.data)
+                    window.open(res.data.data)
+                });
+            },
+
+            allClear(){
+                this.search.author = '';
+                this.search.source = '';
+                this.search.start = '';
+                this.search.summary = '';
+                this.search.keyword = '';
+                this.search.filename = '';
+                this.search.title = '';
+                this.search.end = '';
+            }
         },
 
-        // mounted:{
-
-        // }
+        mounted(){
+            this.init();
+        }
     }
 </script>
 
@@ -262,5 +422,18 @@
 
   .main_footer{
     margin-top: 614px;
+  }
+
+  .main_center span{
+    font-size: 16px;
+  }
+
+  .close{
+    margin-left: 740px;
+    margin-top: -20px;
+  }
+
+  .close:hover{
+    cursor: pointer;
   }
 </style>

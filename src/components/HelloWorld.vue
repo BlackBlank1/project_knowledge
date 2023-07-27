@@ -133,7 +133,7 @@
                 <el-button
                   size="small" v-if="is_manager"
                   type="danger"
-                  @click="handleDelete(scope.$index, scope.row)" style="width: 60px;
+                  @click="handleDelete(scope.$index, scope.row.id)" style="width: 60px;
                   height: 34px;
                   background: #FFEFEB;
                   border-radius: 4px 4px 4px 4px;
@@ -260,7 +260,7 @@ import axios from 'axios';
             this.currentForm.description = "";
         },
 
-        handleDelete: function (index, row) {
+        handleDelete: function (index, id) {
             ElMessageBox.confirm("是否确认删除", "提示", {
                 confirmButtonText: "确认",
                 cancelButtonText: "取消",
@@ -271,7 +271,9 @@ import axios from 'axios';
                   //确认删除后对tableData里面进行删除
                     this.tableData.splice((this.currentPage-1)*this.pageSize + index, 1);
                     this.instance({
-                      url:'/admin/delete/{id}'
+                      url:'/admin/delete/' + id.toString(),
+                      method:'delete',
+                      headers: {Authorization: this.token },
                     });
                     console.log(index);
                 }
@@ -309,38 +311,6 @@ import axios from 'axios';
             link.click();
           });
         },
-
-        // Download:function(){
-        //   ElMessageBox.confirm("是否确认下载", "提示", {
-        //         confirmButtonText: "确认",
-        //         cancelButtonText: "取消",
-        //         type: "warning",
-        //       }).then((status) => {
-        //         //下载确认后进行文件下载
-        //         if (status == "confirm") {
-        //           this.out_download = true;
-        //           this.multiple_selected = false;
-        //           this.is_download = false;
-
-        //           //下载文件
-        //         }
-        //         ElMessage({
-        //             type: "success",
-        //             message: "Delete completed",
-        //         });
-        //       }).catch((status) => {
-        //         if (status == "cancel"){
-        //           this.out_download = true;
-        //           this.multiple_selected = false;
-        //           this.is_download = false;
-        //         }
-        //         ElMessage({
-        //             type: "info",
-        //             message: "Delete canceled",
-        //         });
-        //     });
-        // },
-
 
         //点击新建用户进行弹窗
         handleCreateUser:function(){
@@ -455,6 +425,7 @@ import axios from 'axios';
             method: 'get',
             headers: { Authorization: this.token }
           }).then((res)=>{
+            console.log(res.data.data)
             this.tableData = res.data.data
           });
         }
