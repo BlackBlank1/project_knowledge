@@ -4,14 +4,19 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/login',
-      name: 'login',
-      // component: () => import('../components/Login.vue')
+      path: '/11',
+      name: 'Login',
+      component: () => import('../components/Login.vue')
+    },
+    {
+      path: '/LocalSearch:data?',
+      name: 'LocalSearch',
+      component: () => import('../components/HelloWorld.vue')
     },
     {
       path: '/',
-      name: 'home',
-      component: () => import('../components/HelloWorld.vue')
+      name: 'Home',
+      component: () => import('../components/Home.vue')
     }
   ]
 })

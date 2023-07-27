@@ -28,18 +28,17 @@
               />
           </div>
           <div>
-            <el-upload :file-list="fileList" :auto-upload="false" multiple>
+            <el-upload :file-list="fileList" :auto-upload="false" multiple show-file-list="false">
               <template #trigger>
                 <el-button type="primary" style="width: 96px;height: 34px;margin-top: 20px;margin-left: 18px;background: #FFFFFF;color: rgba(0,0,0,0.65);border: 1px solid #DDDFE5;" @click="submitUpload">批量上传</el-button>
               </template>
             </el-upload>
           </div>
           <div>
-            <el-button type="primary" style="width: 96px;height: 34px;margin-top: 20px;margin-left: 18px;background: #FFFFFF;color: rgba(0,0,0,0.65);border: 1px solid #DDDFE5;" @click="Multiple_Selected" v-if="out_download">模板下载</el-button>
-            <el-button type="primary" style="width: 96px;height: 34px;margin-top: 20px;margin-left: 18px;background: #FFFFFF;color: rgba(0,0,0,0.65);border: 1px solid #DDDFE5;" @click="Download" v-if="is_download">下载</el-button>
+            <el-button type="primary" style="width: 96px;height: 34px;margin-top: 20px;margin-left: 18px;background: #FFFFFF;color: rgba(0,0,0,0.65);border: 1px solid #DDDFE5;" @click="Multiple_Selected">模板下载</el-button>
           </div>
           <div>
-            <el-button text @click="dialogFormVisible = true" style="color: #ffffff;width: 96px;height: 34px;background: #2B56F9;border-radius: 4px 4px 4px 4px;opacity: 1;border: 1px solid #2B56F9;margin-top: 20px;margin-left: 18px;">
+            <el-button text @click="handleCreateUser()" style="color: #ffffff;width: 96px;height: 34px;background: #2B56F9;border-radius: 4px 4px 4px 4px;opacity: 1;border: 1px solid #2B56F9;margin-top: 20px;margin-left: 18px;">
               新建用户
             </el-button>
             <el-dialog v-model="dialogFormVisible" style=" margin-top: 150px;">
@@ -200,7 +199,6 @@
 import { Search } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox, ElNotification } from 'element-plus'
 import axios from 'axios';
-import { h } from 'vue';
 
     export default {
     name: "HelloWorld",
@@ -228,16 +226,18 @@ import { h } from 'vue';
             pageSize: 8, // 每页的数据条数,
             fileList:[], //上传的文件列表
             multiple_selected:false, //控制多选框的显示
-            is_download:false, //控制下载按钮显示
-            out_download:true, //控制批量下载按钮显示
             is_manager:false, //控制管理员和系统管理员的操作按钮显示
+            instance:'',
+            token:'',
         };
     },
     methods: {
         handleEdit: function (index, row) {
             this.editFormVisible = true;
             this.currentIndex = index;
-            this.Clear();
+            this.currentForm.roleCode = this.tableData[this.currentIndex].roleCode;
+            this.currentForm.roleName = this.tableData[this.currentIndex].roleName;
+            this.currentForm.description = this.tableData[this.currentIndex].description;
         },
 
         Edit: function () {
@@ -270,7 +270,10 @@ import { h } from 'vue';
                 if (status == "confirm") {
                   //确认删除后对tableData里面进行删除
                     this.tableData.splice((this.currentPage-1)*this.pageSize + index, 1);
-                    console.log(index)
+                    this.instance({
+                      url:'/admin/delete/{id}'
+                    });
+                    console.log(index);
                 }
                 ElMessage({
                     type: "success",
@@ -286,60 +289,112 @@ import { h } from 'vue';
         },
 
         submitUpload: function () {
+
         },
 
+        //模板下载功能
         Multiple_Selected: function () {
-          this.multiple_selected = true;
-          this.is_download = true;
-          this.out_download = false;
+          this.instance({
+            url: '/admin/template/download',
+            method: 'get',
+            headers: {Authorization: this.token},
+            responseType:'blob',
+          }).then((res) => {
+            //模板下载
+            let b = new Blob([res.data], {type: 'application/vnd.ms-excel'});
+            let url = URL.createObjectURL(b);
+            let link = document.createElement('a');
+            link.download = '数据.xlsx';
+            link.href = url;
+            link.click();
+          });
         },
 
-        Download:function(){
-          ElMessageBox.confirm("是否确认下载", "提示", {
-                confirmButtonText: "确认",
-                cancelButtonText: "取消",
-                type: "warning",
-              }).then((status) => {
-                //下载确认后进行文件下载
-                if (status == "confirm") {
-                  this.out_download = true;
-                  this.multiple_selected = false;
-                  this.is_download = false;
+        // Download:function(){
+        //   ElMessageBox.confirm("是否确认下载", "提示", {
+        //         confirmButtonText: "确认",
+        //         cancelButtonText: "取消",
+        //         type: "warning",
+        //       }).then((status) => {
+        //         //下载确认后进行文件下载
+        //         if (status == "confirm") {
+        //           this.out_download = true;
+        //           this.multiple_selected = false;
+        //           this.is_download = false;
 
-                  //下载文件
-                }
-                ElMessage({
-                    type: "success",
-                    message: "Delete completed",
-                });
-              }).catch((status) => {
-                if (status == "cancel"){
-                  this.out_download = true;
-                  this.multiple_selected = false;
-                  this.is_download = false;
-                }
-                ElMessage({
-                    type: "info",
-                    message: "Delete canceled",
-                });
-            });
+        //           //下载文件
+        //         }
+        //         ElMessage({
+        //             type: "success",
+        //             message: "Delete completed",
+        //         });
+        //       }).catch((status) => {
+        //         if (status == "cancel"){
+        //           this.out_download = true;
+        //           this.multiple_selected = false;
+        //           this.is_download = false;
+        //         }
+        //         ElMessage({
+        //             type: "info",
+        //             message: "Delete canceled",
+        //         });
+        //     });
+        // },
+
+
+        //点击新建用户进行弹窗
+        handleCreateUser:function(){
+          this.dialogFormVisible = true;
         },
 
-        createUser: function () {
+        //新建用户
+        createUser: async function () {
           if (this.form.roleCode == "" || this.form.roleName == ""){
-            ElNotification({
-              title: '提示',
-              message: h('i', { style: 'color: red;width:100px;height:100px'}, '用户名或角色未进行正确填写！'),
-              position:'top-left',
+            ElMessage({
+                showClose: true,
+                message: '用户名或角色未进行正确填写！',
+                type: 'error',
             })
           }
           else{
             this.dialogFormVisible = false;
-            this.form.gmtCreate = this.CurrentDate();
-            this.tableData.push(this.form);
+            var form1 = ({
+                userId: 1,
+                userName:"",
+                password:"",
+                roleId:1,
+                roleName: "",
+                note: ""
+            });
+            var form2 = ({
+                roleCode: "",
+                gmtCreate: "",
+                gmtModified: "",
+                roleName: "",
+                description: ""
+            });
+            form1.userName = this.form.roleCode;
+            form1.roleName = this.form.roleName;
+            form1.note = this.form.description;
+
+            form2.roleCode = this.form.roleCode;
+            form2.roleName = this.form.roleName;
+            form2.description = this.form.description;
+            form2.gmtCreate = this.CurrentDate();
+            this.tableData.push(form2);
+            this.create_user_clear();
+            await this.instance({
+              url:'/admin/generateAccount',
+              method:'post',
+              data:form1,
+              headers: {'Content-Type': 'application/json', Authorization: this.token },
+            }).then((res) => {
+              console.log("传送成功！")
+            })
           }
         },
-
+        
+        //清空新建用户操作时的所输入的数据
         create_user_clear:function(){
           this.form.roleCode = '';
           this.form.roleName = '';
@@ -371,35 +426,37 @@ import { h } from 'vue';
         handleCurrentChange: function (val) {
             this.currentPage = val;
         },
+        
         init: async function(){
-          var token='';
-          var user = {
-          username:"admin",
-          password:"2WSX3edc."
-          };
-          let data = new FormData();
-          data.append('username', user.username);
-          data.append('password', user.password);
-          const instance = axios.create({
+          console.log(this.$route.params.data)
+          this.token = this.$route.params.data;
+          // var user = {
+          // username:"admin",
+          // password:"2WSX3edc."
+          // };
+          // let data = new FormData();
+          // data.append('username', user.username);
+          // data.append('password', user.password);
+          this.instance = axios.create({
             baseURL: 'http://localhost:5173/api',
             timeout: 1000,
             headers: {'X-Custom-Header': 'foobar'}
           }); 
-          await instance({
-            url: '/login',
-            method: 'post',
-            data: data,
-          }).then((res)=>{
-            token = res.data.data;
-            console.log(token);
-          })
-          instance({
+          // await this.instance({
+          //   url: '/login',
+          //   method: 'post',
+          //   data: data,
+          // }).then((res)=>{
+          //   this.token = res.data.data;
+          //   console.log(this.token);
+          // });
+          await this.instance({
             url: '/admin/roles',
             method: 'get',
-            headers: { Authorization: token }
+            headers: { Authorization: this.token }
           }).then((res)=>{
             this.tableData = res.data.data
-          })
+          });
         }
     },
     mounted() {
