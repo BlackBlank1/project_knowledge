@@ -1,8 +1,11 @@
 <template>
-  <div style="display: flex;flex-wrap: wrap;">
+  <div class="BackStage" style="display: flex;flex-wrap: wrap;">
     <div class="header">
       <img src="../images/logo.png" alt="">
       <h1>本地文献检索</h1>
+      <div style="margin-left: 1350px;">
+        <el-icon @click="login_exit()" title="退出登录" class = "exit" color="white"><UserFilled /></el-icon>
+      </div>
     </div>
     <div class="main">
       <el-container>
@@ -13,10 +16,7 @@
         <div class="search">
           <div style="margin-left: 1043px;margin-top: 20px;">
             <el-select v-model="character" placeholder="请选择角色" class="select_character">
-            <el-option label="管理员" value="管理员" />
-            <el-option label="系统管理员" value="系统管理员" />
-            <el-option label="高级用户" value="高级用户" />
-            <el-option label="普通用户" value="普通用户" />
+            <el-option v-for="item in roleList" :label="item.roleName" :value="item.roleName" />
             </el-select>
           </div>
           <div style="margin-left: 18px;margin-top: 20px; width: 277px;height: 34px;">
@@ -24,21 +24,23 @@
                 v-model="input"
                 class="w-50 m-2"
                 placeholder="请输入用户名"
-                :prefix-icon="Search"
               />
           </div>
           <div>
-            <el-upload :file-list="fileList" :auto-upload="false" multiple show-file-list="false">
+            <el-button type="primary" style="width: 46px;height: 34px;margin-top: 20px;margin-left: 10px;background: #FFFFFF;color: rgba(0,0,0,0.65);border: 1px solid #DDDFE5;" @click="Search()">搜索</el-button>
+          </div>
+          <div>
+            <el-upload :file-list="fileList" :auto-upload="false" multiple :on-change="submitUpload" show-file-list="false">
               <template #trigger>
-                <el-button type="primary" style="width: 96px;height: 34px;margin-top: 20px;margin-left: 18px;background: #FFFFFF;color: rgba(0,0,0,0.65);border: 1px solid #DDDFE5;" @click="submitUpload">批量上传</el-button>
+                <el-button type="primary" style="width: 96px;height: 34px;margin-top: 20px;margin-left: 10px;background: #FFFFFF;color: rgba(0,0,0,0.65);border: 1px solid #DDDFE5;">批量上传</el-button>
               </template>
             </el-upload>
           </div>
           <div>
-            <el-button type="primary" style="width: 96px;height: 34px;margin-top: 20px;margin-left: 18px;background: #FFFFFF;color: rgba(0,0,0,0.65);border: 1px solid #DDDFE5;" @click="Multiple_Selected">模板下载</el-button>
+            <el-button type="primary" style="width: 96px;height: 34px;margin-top: 20px;margin-left: 10px;background: #FFFFFF;color: rgba(0,0,0,0.65);border: 1px solid #DDDFE5;" @click="Multiple_Selected">模板下载</el-button>
           </div>
           <div>
-            <el-button text @click="handleCreateUser()" style="color: #ffffff;width: 96px;height: 34px;background: #2B56F9;border-radius: 4px 4px 4px 4px;opacity: 1;border: 1px solid #2B56F9;margin-top: 20px;margin-left: 18px;">
+            <el-button text @click="handleCreateUser()" style="color: #ffffff;width: 96px;height: 34px;background: #2B56F9;border-radius: 4px 4px 4px 4px;opacity: 1;border: 1px solid #2B56F9;margin-top: 20px;margin-left: 10px;margin-right: 18px;">
               新建用户
             </el-button>
             <el-dialog v-model="dialogFormVisible" style=" margin-top: 150px;">
@@ -51,13 +53,13 @@
                     background: #F2F3F5;
                     border-radius: 4px 4px 4px 4px;
                     opacity: 1;
-                    border: 1px solid #DDDFE5;"/>
+                    border: 1px solid #DDDFE5;margin-bottom: 20px;"/>
                 </el-form-item>
                 <el-form-item label="角色" :label-width="formLabelWidth" style="margin-left: 23px;" required="true">
                   <el-select v-model="form.roleName" placeholder="请选择角色" style="width: 469px;
                       height: 34px;
                       background: #F2F3F5;
-                      opacity: 1;" >
+                      opacity: 1;margin-bottom: 20px;" >
                     <el-option label="管理员" value="管理员" />
                     <el-option label="系统管理员" value="系统管理员" />
                     <el-option label="高级用户" value="高级用户" />
@@ -73,7 +75,12 @@
                   <el-button type="primary" @click="createUser()" style="width: 200px;height: 34px; background: #2B56F9;">
                     新建用户
                   </el-button>
-                  <el-button @click="create_user_clear()" style="width: 200px;height: 34px;">清空</el-button>
+                  <el-button @click="create_user_clear()" style="width: 200px;
+                      height: 34px;
+                      background: #FFFFFF;
+                      border-radius: 4px 4px 4px 4px;
+                      opacity: 1;
+                      border: 1px solid #DDDFE5;">清空</el-button>
                 </span>
               </template>
             </el-dialog>
@@ -87,7 +94,7 @@
             <el-table-column label="用户名" width="294">
               <template #default="scope">
                 <div style="display: flex; align-items: center">
-                  <span>{{ scope.row.roleCode }}</span>
+                  <span>{{ scope.row.userName }}</span>
                 </div>
               </template>
             </el-table-column>
@@ -108,21 +115,21 @@
             <el-table-column label="角色" width="294" show-overflow-tooltip>
               <template #default="scope">
                 <div style="display: flex; align-items: center">
-                  <span>{{ scope.row.roleName }}</span>
+                  <span>{{ scope.row.roles.join('') }}</span>
                 </div>
               </template>
             </el-table-column>
             <el-table-column label="备注" width="400" show-overflow-tooltip>
               <template #default="scope">
                 <div style="display: flex; align-items: center; ">
-                  <span>{{ scope.row.description }}</span>
+                  <span>{{ scope.row.notes }}</span>
                 </div>
               </template>
             </el-table-column>
             <!-- 操作按钮 -->
             <el-table-column label="操作">
               <template #default="scope">
-                <el-button size="small" v-if="is_manager = scope.row.roleName == '管理员' ? false : true " @click="handleEdit(scope.$index, scope.row)" style="width: 60px;
+                <el-button size="small" v-if="is_manager = scope.row.roles[0] == '系统管理员' ? false : true " @click="handleEdit(scope.$index, scope.row)" style="width: 60px;
                     height: 34px;
                     background: #FFFFFF;
                     border-radius: 4px 4px 4px 4px;
@@ -133,7 +140,7 @@
                 <el-button
                   size="small" v-if="is_manager"
                   type="danger"
-                  @click="handleDelete(scope.$index, scope.row.id)" style="width: 60px;
+                  @click="handleDelete(scope.$index, scope.row.userId)" style="width: 60px;
                   height: 34px;
                   background: #FFEFEB;
                   border-radius: 4px 4px 4px 4px;
@@ -150,23 +157,20 @@
             <div class="dialog_title">编辑用户</div>
             <div style="width: 910px;opacity: 1;border: 2px solid #DDDFE5;margin-bottom: 34px; margin-top: 20px;"></div>
             <el-form :model="currentForm">
-              <el-form-item label="用户名" :label-width="formLabelWidth" style="font-size: 14px;margin-left: 9px;" required="true">
+              <!-- <el-form-item label="用户名" :label-width="formLabelWidth" style="font-size: 14px;margin-left: 9px;" required="true">
                 <el-input v-model="currentForm.roleCode " autocomplete="off" placeholder="请输入用户名" style="width: 469px;
                   height: 34px;
                   background: #F2F3F5;
                   border-radius: 4px 4px 4px 4px;
                   opacity: 1;
                   border: 1px solid #DDDFE5;"/>
-              </el-form-item>
+              </el-form-item> -->
               <el-form-item label="角色" :label-width="formLabelWidth" style="margin-left: 23px;" required="true">
                 <el-select v-model="currentForm.roleName" placeholder="请选择角色" style="width: 469px;
                     height: 34px;
                     background: #F2F3F5;
-                    opacity: 1;" >
-                  <el-option label="管理员" value="管理员" />
-                  <el-option label="系统管理员" value="系统管理员" />
-                  <el-option label="高级用户" value="高级用户" />
-                  <el-option label="普通用户" value="普通用户" />
+                    opacity: 1; margin-bottom: 20px;" >
+                    <el-option v-for="item in roleList" :label="item.roleName" :value="item.roleName" />
                 </el-select>
               </el-form-item>
               <el-form-item label="备注" :label-width="formLabelWidth" style="margin-left: 23px;" required="true">
@@ -178,14 +182,19 @@
                 <el-button type="primary" @click="Edit()" style="width: 200px;height: 34px; background: #2B56F9;">
                   完成
                 </el-button>
-                <el-button @click="Clear()" style="width: 200px;height: 34px;">清空</el-button>
+                <el-button @click="Clear()" style="width: 200px;
+                    height: 34px;
+                    background: #FFFFFF;
+                    border-radius: 4px 4px 4px 4px;
+                    opacity: 1;
+                    border: 1px solid #DDDFE5;">清空</el-button>
               </span>
             </template>
           </el-dialog>
 
       </el-main>
       <el-footer>
-        <el-pagination background layout="total, sizes, prev, pager, next, jumper" :total="100" @size-change="handleSizeChange" 
+        <el-pagination background layout="total, sizes, prev, pager, next, jumper" :total="tableData.length" @size-change="handleSizeChange" 
         @current-change="handleCurrentChange" :current-page="currentPage"  :page-sizes="[8, 16]"
         :page-size="pageSize" ></el-pagination>
       </el-footer>
@@ -217,7 +226,7 @@ import axios from 'axios';
             input: "",
             editFormVisible: false,
             currentForm: ({
-                roleCode: "",
+                // roleCode: "",
                 roleName: "",
                 description: ""
             }),
@@ -229,22 +238,28 @@ import axios from 'axios';
             is_manager:false, //控制管理员和系统管理员的操作按钮显示
             instance:'',
             token:'',
+            roleList:[],
+            currentRow:'',
+            id : {
+              '系统管理员': 1,
+              '管理员': 2,
+              '普通用户': 3,
+              '高级用户': 4,
+            }
         };
     },
     methods: {
         handleEdit: function (index, row) {
             this.editFormVisible = true;
+            this.currentRow = row;
             this.currentIndex = index;
-            this.currentForm.roleCode = this.tableData[this.currentIndex].roleCode;
-            this.currentForm.roleName = this.tableData[this.currentIndex].roleName;
-            this.currentForm.description = this.tableData[this.currentIndex].description;
+            // this.currentForm.roleCode = this.tableData[this.currentIndex].roleCode;
+            this.currentForm.roleName = this.tableData[(this.currentPage - 1) * this.pageSize + index].roles[0];
+            this.currentForm.description = this.tableData[(this.currentPage - 1) * this.pageSize + index].notes;
         },
 
         Edit: function () {
             this.editFormVisible = false;
-            if (this.currentForm.roleCode != ''){
-              this.tableData[this.currentIndex].roleCode = this.currentForm.roleCode;
-            }
             if (this.currentForm.roleName != ''){
               this.tableData[this.currentIndex].roleName = this.currentForm.roleName;
             }
@@ -252,6 +267,19 @@ import axios from 'axios';
               this.tableData[this.currentIndex].description = this.currentForm.description;
             }
             // this.tableData[this.currentIndex].modify_date = this.CurrentDate();
+            this.instance({
+              url:'/admin/userRole/update',
+              method:'post',
+              headers:{'Content-Type': 'application/json', Authorization: this.token},
+              data:{
+                "roleId": this.id[this.currentForm.roleName],
+                "userId": this.currentRow.userId,
+                "notes": this.currentForm.description,
+              }
+            }).then((res) => {
+              console.log("编辑成功")
+              this.init();
+            })
         },
 
         Clear: function () {
@@ -260,25 +288,23 @@ import axios from 'axios';
             this.currentForm.description = "";
         },
 
-        handleDelete: function (index, id) {
+        handleDelete: function (index, id) { 
             ElMessageBox.confirm("是否确认删除", "提示", {
                 confirmButtonText: "确认",
                 cancelButtonText: "取消",
                 type: "warning",
-            })
-                .then((status) => {
+              }).then((status) => {
                 if (status == "confirm") {
                   //确认删除后对tableData里面进行删除
-                    this.tableData.splice((this.currentPage-1)*this.pageSize + index, 1);
-                    // this.instance({
-                    //   url:'/admin/delete/' + id.toString(),
-                    //   method:'delete',
-                    //   headers: {Authorization: this.token },
-                    // }).then((res) => {
-                      
-                    // })
-                  ;
-                    console.log(index);
+                  this.instance({
+                    url:'/admin/delete/' + id.toString(),
+                    method:'delete',
+                    data:id,
+                    headers: {Authorization: this.token },
+                  }).then((res) => {
+                    console.log("删除成功")
+                    this.init();
+                  });
                 }
                 ElMessage({
                     type: "success",
@@ -293,8 +319,19 @@ import axios from 'axios';
             });
         },
 
-        submitUpload: function () {
-
+        submitUpload: function (file) {
+          console.log(file)
+          let fileData = new FormData();
+          fileData.append('file', file.raw);
+          this.instance({
+            url:'/admin/batchGenerate',
+            method:'post',
+            headers: {'Content-Type': 'multipart/form-data', Authorization: this.token },
+            data:fileData
+          }).then((res) => {
+            console.log(res.data);
+            this.init();
+          })
         },
 
         //模板下载功能
@@ -312,6 +349,32 @@ import axios from 'axios';
             link.download = '数据.xlsx';
             link.href = url;
             link.click();
+          });
+        },
+
+        //搜索用户
+        Search(){
+          var search = {
+              "limit": 1000,
+              "offset": 0,
+              "names": this.input?[this.input]:[
+              
+              ],
+              "ids": [
+
+              ],
+              "roles": this.character?[this.character]:[
+                
+              ]
+            };
+          this.instance({
+            url: '/admin/users',
+            method: 'post',
+            data:search,
+            headers: {'Content-Type': 'application/json', Authorization: this.token }
+          }).then((res)=>{
+            console.log(res.data.data)
+            this.tableData = res.data.data
           });
         },
 
@@ -335,26 +398,16 @@ import axios from 'axios';
                 userId: 1,
                 userName:"",
                 password:"",
-                roleId:1,
+                roleId:0,
                 roleName: "",
                 note: ""
             });
-            var form2 = ({
-                roleCode: "",
-                gmtCreate: "",
-                gmtModified: "",
-                roleName: "",
-                description: ""
-            });
             form1.userName = this.form.roleCode;
             form1.roleName = this.form.roleName;
+            form1.roleId = this.id[this.form.roleName];
             form1.note = this.form.description;
-
-            form2.roleCode = this.form.roleCode;
-            form2.roleName = this.form.roleName;
-            form2.description = this.form.description;
-            form2.gmtCreate = this.CurrentDate();
-            this.tableData.push(form2);
+            form1.password = '123456';
+            form1.userId = Math.random()*1000000000000000000 + 1000000000000000000;
             this.create_user_clear();
             await this.instance({
               url:'/admin/generateAccount',
@@ -401,36 +454,47 @@ import axios from 'axios';
         },
         
         init: async function(){
-          console.log(this.$route.params.data)
-          this.token = this.$route.params.data;
-          // var user = {
-          // username:"admin",
-          // password:"2WSX3edc."
-          // };
-          // let data = new FormData();
-          // data.append('username', user.username);
-          // data.append('password', user.password);
+          this.token = localStorage.getItem('token');
           this.instance = axios.create({
             baseURL: 'http://localhost:5173/api',
             timeout: 1000,
             headers: {'X-Custom-Header': 'foobar'}
           }); 
-          // await this.instance({
-          //   url: '/login',
-          //   method: 'post',
-          //   data: data,
-          // }).then((res)=>{
-          //   this.token = res.data.data;
-          //   console.log(this.token);
-          // });
           await this.instance({
-            url: '/admin/roles',
-            method: 'get',
-            headers: { Authorization: this.token }
+            url: '/admin/users',
+            method: 'post',
+            data:{
+                  "limit": 1000,
+                  "offset": 0,
+                  "names": [
+                    
+                  ],
+                  "ids": [
+                    
+                  ],
+                  "roles": [
+                    
+                  ]
+                },
+            headers: {'Content-Type': 'application/json', Authorization: this.token }
           }).then((res)=>{
             console.log(res.data.data)
             this.tableData = res.data.data
           });
+          this.instance({
+            url:'/admin/roles',
+            method:'get',
+            headers:{Authorization: this.token}
+          }).then((res) => {
+            this.roleList = res.data.data
+          })
+        },
+
+
+        login_exit(){
+          this.$router.push({
+              name: 'Login',
+           })
         }
     },
     mounted() {
@@ -531,8 +595,8 @@ import axios from 'axios';
   }
 </style>
 
-<style>
-  .el-message-box{
+<style >
+ .el-message-box{
     width: 513px;
     height: 218px;
     background: #FFFFFF;
@@ -602,6 +666,17 @@ import axios from 'axios';
   .el-checkbox__inner{
     background-color: #FFFFFF;
     margin-left: -5px;
+  }
+
+  .exit{
+    width: 52px;
+    height: 54px;
+    border-radius: 0px 0px 0px 0px;
+    opacity: 1;font-size: 70px; margin-left: 20px; margin-top: 12px;
+  }
+  
+  .exit:hover{
+    cursor: pointer;
   }
 
 </style>

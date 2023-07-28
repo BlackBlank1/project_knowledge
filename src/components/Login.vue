@@ -37,11 +37,30 @@ import { ElMessage } from 'element-plus'
                     method:'post',
                     data:data,
                 }).then((res) => {
-                    this.$router.push({
-                    name: 'LocalSearch',
-                    params: {data: res.data.data}
-                })
+                    localStorage.setItem('token', res.data.data);
+                    console.log(res.data);
+                    
+                    instance({
+                        url:'/admin/roles/' + this.username,
+                        method:'get',
+                        headers: { Authorization: res.data.data }
+                    }).then((res) => {
+                        console.log(res.data.data)
+                        if ((res.data.data).indexOf('admin') != -1 || (res.data.data).indexOf('sys_admin') != -1){
+                            
+                         localStorage.setItem('is_admin', true);
+                        }
+                        else{
+                         localStorage.setItem('is_admin', false);
+                        }
 
+                        this.$router.push({
+                            name: 'Home',
+                         })
+                    })
+                    
+
+                    
                 }).catch((res) => {
                     ElMessage({
                         showClose: true,

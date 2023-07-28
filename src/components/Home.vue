@@ -2,13 +2,16 @@
     <div style="display: flex;flex-wrap: wrap;">
         <div class="header">
             <div>
-                <img src="../images/logo.png" alt="">
+                <div>
+                    <img src="../images/logo.png" alt="">
+                </div>
+                <div>
+                    <h1>本地文献</h1>
+                </div>
             </div>
             <div>
-                <h1>本地文献</h1>
-            </div>
-            <div>
-                <el-icon @click="login_exit()" title="退出登录" class = "exit" color="white"><User /></el-icon>
+                <el-icon v-if="isAdmin" @click="go_managemnet()" title="后台管理" class = "back_stage" color="white"><Tools /></el-icon>
+                <el-icon @click="login_exit()" title="退出登录" class = "exit" color="white"><UserFilled /></el-icon>
             </div>
         </div>
         <div class="main">
@@ -109,7 +112,7 @@
                         <el-table-column label="作者" width="260">
                         <template #default="scope">
                             <div style="display: flex; align-items: center">
-                            <span>{{ scope.row.author.join(', ') }}</span>
+                            <span>{{ scope.row.author?scope.row.author.join(', '):'' }}</span>
                             </div>
                         </template>
                         </el-table-column>
@@ -123,14 +126,14 @@
                         <el-table-column label="出版时间" width="260" show-overflow-tooltip>
                         <template #default="scope">
                             <div>
-                            <span>{{ scope.row.start }}</span>
+                            <span>{{ scope.row.pubTime }}</span>
                             </div>
                         </template>
                         </el-table-column>
                         <el-table-column label="关键词" width="550" show-overflow-tooltip>
                         <template #default="scope">
                             <div style="display: flex; align-items: center; ">
-                            <span>{{ scope.row.keyword.join(', ') }}</span>
+                            <span>{{ scope.row.keyword?scope.row.keyword.join(', '):'' }}</span>
                             </div>
                         </template>
                         </el-table-column>
@@ -198,7 +201,7 @@
                                     font-size: 18px;
                                     color: #000000;
                                     line-height: 19px;">
-                                <p><b>作者：</b>{{ current_row.author.join(', ') }}</p>
+                                <p><b>作者：</b>{{ current_row.author?current_row.author.join(', '): ''}}</p>
                             </div>
                             <div style="margin-top: 28px;width: 735px;
                                     height: 22px;
@@ -226,9 +229,9 @@
                                     font-size: 18px;
                                     color: #000000;
                                     line-height: 19px;">
-                                <p><b>关键词：</b>{{ current_row.keyword.join(', ') }}</p>
+                                <p><b>关键词：</b>{{ current_row.keyword?current_row.keyword.join(', '):'' }}</p>
                             </div>
-                            <div style="margin-top: 28px;width: 735px;
+                            <!-- <div style="margin-top: 28px;width: 735px;
                                     height: 22px;
                                     font-size: 18px;
                                     color: #000000;
@@ -241,7 +244,7 @@
                                     color: #000000;
                                     line-height: 19px;">
                                 <p><b>卷数：</b>{{ current_row.roll }}</p>
-                            </div>
+                            </div> -->
                             <div style="margin-top: 28px;width: 735px;
                                     height: 22px;
                                     font-size: 18px;
@@ -254,7 +257,7 @@
                 </div>
             </div>
             <div class="main_footer">
-                <el-pagination background layout="total, sizes, prev, pager, next, jumper" :total="100" @size-change="handleSizeChange" 
+                <el-pagination background layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" 
                 @current-change="handleCurrentChange" :current-page="currentPage"  :page-sizes="[10, 10]"
                 :page-size="pageSize" ></el-pagination>
             </div>
@@ -293,6 +296,8 @@ import axios from 'axios';
                 },
                 drawer:false,
                 current_row:'',
+                total:0,
+                isAdmin:true,
             }
         },
         methods:{
@@ -301,6 +306,12 @@ import axios from 'axios';
                     name: 'Login',
                 })
 
+            },
+
+            go_managemnet(){
+                this.$router.push({
+                    name: 'BackStage',
+                })
             },
 
             //每页条数改变时触发 选择一页显示多少行
@@ -312,31 +323,19 @@ import axios from 'axios';
             //当前页改变时触发 跳转其他页
             handleCurrentChange(val) {
                 this.currentPage = val;
+                this.LocalSearch();
+
             }, 
 
             async init(){
-                // console.log(this.$route.params.data)
-                // this.token = this.$route.params.data;
-                var user = {
-                username:"admin",
-                password:"2WSX3edc."
-                };
-                let data = new FormData();
-                data.append('username', user.username);
-                data.append('password', user.password);
+                this.token = localStorage.getItem('token');
                 this.instance = axios.create({
                     baseURL: 'http://localhost:5173/api',
                     timeout: 1000,
                     headers: {'X-Custom-Header': 'foobar'}
                 }); 
-                await this.instance({
-                  url: '/login',
-                  method: 'post',
-                  data: data,
-                }).then((res)=>{
-                  this.token = res.data.data;
-                  console.log(this.token);
-                });
+                
+                this.LocalSearch();
             },
 
             LocalSearch(){
@@ -349,7 +348,8 @@ import axios from 'axios';
                     headers: { Authorization: this.token, 'Content-Type': 'application/json' }
                 }).then((res)=>{
                     console.log(res.data.data)
-                    this.tableData = res.data.data;
+                    this.tableData = res.data.data.list;
+                    this.total = res.data.data.total;
                 });
             },
 
@@ -413,6 +413,7 @@ import axios from 'axios';
 
         mounted(){
             this.init();
+            this.isAdmin = localStorage.getItem('is_admin') == 'true'?true:false;
         }
     }
 </script>
@@ -430,6 +431,7 @@ import axios from 'axios';
       height: 86px;   
       background: #2243BA;
       display: flex;
+      justify-content: space-between;
       
   }
   .header h1{
@@ -448,10 +450,21 @@ import axios from 'axios';
     width: 52px;
     height: 54px;
     border-radius: 0px 0px 0px 0px;
-    opacity: 1;font-size: 70px; margin-left: 1500px; margin-top: 12px;
+    opacity: 1;font-size: 70px; margin-top: 12px;
   }
 
   .exit:hover{
+    cursor: pointer;
+  }
+
+  .back_stage{
+    width: 52px;
+    height: 54px;
+    border-radius: 0px 0px 0px 0px;
+    opacity: 1;font-size: 70px; margin-top: 12px;
+  }
+
+  .back_stage:hover{
     cursor: pointer;
   }
 
@@ -469,7 +482,22 @@ import axios from 'axios';
 
   .main_footer{
     margin-top: 100px;
-    
+  }
+
+  .el-pagination{
+    float: right;
+  }
+
+  .el-pager{
+    height: 50px;
+  } 
+
+  .el-pager li.number{
+    width: 50px;
+    height: 50px;
+    box-shadow: 0px 1px 6px 0px rgba(0,0,0,0.2);
+    border-radius: 4px 4px 4px 4px;
+    opacity: 1;
   }
 
   .main_center span{
