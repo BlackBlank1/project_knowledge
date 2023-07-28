@@ -98,7 +98,7 @@
             </div>
             <div class="main_center">
                 <div>
-                    <el-table :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)" style="width: 100%; font-size: 20px;margin-top: 20px;" :header-cell-style="{background:'rgba(43,86,249,0.2)', color:'#000000', height:'64px',padding:'17px'}">
+                    <el-table :data="tableData" style="width: 100%; font-size: 20px;margin-top: 20px;" :header-cell-style="{background:'rgba(43,86,249,0.2)', color:'#000000', height:'64px',padding:'17px'}">
                         <el-table-column label="标题名" width="388">
                         <template #default="scope">
                             <div style="display: flex; align-items: center">
@@ -109,7 +109,7 @@
                         <el-table-column label="作者" width="260">
                         <template #default="scope">
                             <div style="display: flex; align-items: center">
-                            <span>{{ scope.row.author }}</span>
+                            <span>{{ scope.row.author.join(', ') }}</span>
                             </div>
                         </template>
                         </el-table-column>
@@ -130,13 +130,13 @@
                         <el-table-column label="关键词" width="550" show-overflow-tooltip>
                         <template #default="scope">
                             <div style="display: flex; align-items: center; ">
-                            <span>{{ scope.row.keyword }}</span>
+                            <span>{{ scope.row.keyword.join(', ') }}</span>
                             </div>
                         </template>
                         </el-table-column>
                         <el-table-column label="操作">
                             <template #default="scope">
-                                <el-button size="small" @click="is_download(scope.row.id)" style="width: 60px;
+                                <el-button size="small" @click="is_download(scope.row.id, scope.row.title)" style="width: 60px;
                                     height: 34px;
                                     background: #FFFFFF;
                                     border-radius: 4px 4px 4px 4px;
@@ -152,7 +152,7 @@
                                     border: 1px solid #DDDFE5;"
                                 >预览</el-button
                                 >
-                                <el-button size="small" @click="detail()" style="width: 60px;
+                                <el-button size="small" @click="detail(scope.row)" style="width: 60px;
                                     height: 34px;
                                     background: #FFFFFF;
                                     border-radius: 4px 4px 4px 4px;
@@ -160,65 +160,102 @@
                                     border: 1px solid #DDDFE5;"
                                 >详情</el-button
                                 >
-                                <el-drawer v-model="drawer" title="I am the title" :with-header="false" size="796">
-                                    <div>
-                                        <div style="width: 300px;
-                                            height: 28px;
-                                            font-size: 20px;
-                                            font-family: PingFang SC-Bold, PingFang SC;
-                                            font-weight: bold;
-                                            color: rgb(0, 0, 0);
-                                            line-height: 23px;">
-                                            <span>{{ scope.row.title }}</span>
-                                        </div>
-                                        <div class="close">
-                                            <el-icon @click="close()"><Close /></el-icon>
-                                        </div>
-                                        <hr style="width: 776px;
-                                            height: 0px;
-                                            border-radius: 0px 0px 0px 0px;
-                                            opacity: 1;
-                                            border: 2px solid #DDDFE5;margin-top: 12px;">
-                                        <div style="margin-top: 21px;">
-                                            <p><b>文件名：</b>{{ scope.row.filename }}</p>
-                                        </div>
-                                        <div style="margin-top: 28px;">
-                                            <p><b>标题名：</b>{{ scope.row.title }}</p>
-                                        </div>
-                                        <div style="margin-top: 28px;">
-                                            <p><b>作者：</b>{{ scope.row.author }}</p>
-                                        </div>
-                                        <div style="margin-top: 28px;">
-                                            <p><b>刊名：</b>{{ scope.row.source }}</p>
-                                        </div>
-                                        <div style="margin-top: 28px;">
-                                            <p><b>来源数据库：</b>{{ scope.row.source }}</p>
-                                        </div>
-                                        <div style="margin-top: 28px;">
-                                            <p><b>出版时间：</b>{{ scope.row.start }}</p>
-                                        </div>
-                                        <div style="margin-top: 28px;">
-                                            <p><b>关键词：</b>{{ scope.row.keyword }}</p>
-                                        </div>
-                                        <div style="margin-top: 28px;">
-                                            <p><b>期数：</b>{{ scope.row.keyword }}</p>
-                                        </div>
-                                        <div style="margin-top: 28px;">
-                                            <p><b>卷数：</b>{{ scope.row.keyword }}</p>
-                                        </div>
-                                        <div style="margin-top: 28px;">
-                                            <p><b>摘要：</b>{{ scope.row.summary }}</p>
-                                        </div>
-                                    </div>
-                                </el-drawer>
+                                
                             </template>
                         </el-table-column>
                     </el-table>
+                    <el-drawer :data="current_row" v-model="drawer" :with-header="false" size="796">
+                        <div>
+                            <div class="drawer_windows">
+                                <span>{{ current_row.title }}</span>
+                            </div>
+                            <div class="close">
+                                <el-icon @click="close()"><Close /></el-icon>
+                            </div>
+                            <hr style="width: 776px;
+                                height: 0px;
+                                border-radius: 0px 0px 0px 0px;
+                                opacity: 1;
+                                border: 2px solid #DDDFE5;margin-top: 12px;">
+                            <div style="margin-top: 21px;width: 735px;
+                                    height: 22px;
+                                    font-size: 18px;
+                                    color: #000000;
+                                    line-height: 19px;
+                                    ">
+                                <p><b>文件名：</b>{{ current_row.fileName }}</p>
+                            </div>
+                            <div style="margin-top: 28px;width: 735px;
+                                    height: 22px;
+                                    font-size: 18px;
+                                    color: #000000;
+                                    line-height: 19px;
+                                    ">
+                                <p><b>标题名：</b>{{ current_row.title }}</p>
+                            </div>
+                            <div style="margin-top: 28px;width: 735px;
+                                    height: 22px;
+                                    font-size: 18px;
+                                    color: #000000;
+                                    line-height: 19px;">
+                                <p><b>作者：</b>{{ current_row.author.join(', ') }}</p>
+                            </div>
+                            <div style="margin-top: 28px;width: 735px;
+                                    height: 22px;
+                                    font-size: 18px;
+                                    color: #000000;
+                                    line-height: 19px;">
+                                <p><b>刊名：</b>{{ current_row.source }}</p>
+                            </div>
+                            <div style="margin-top: 28px;width: 735px;
+                                    height: 22px;
+                                    font-size: 18px;
+                                    color: #000000;
+                                    line-height: 19px;">
+                                <p><b>来源数据库：</b>{{ current_row.srcDatabase }}</p>
+                            </div>
+                            <div style="margin-top: 28px;width: 735px;
+                                    height: 22px;
+                                    font-size: 18px;
+                                    color: #000000;
+                                    line-height: 19px;">
+                                <p><b>出版时间：</b>{{ current_row.pubTime }}</p>
+                            </div>
+                            <div style="margin-top: 28px;width: 735px;
+                                    height: 22px;
+                                    font-size: 18px;
+                                    color: #000000;
+                                    line-height: 19px;">
+                                <p><b>关键词：</b>{{ current_row.keyword.join(', ') }}</p>
+                            </div>
+                            <div style="margin-top: 28px;width: 735px;
+                                    height: 22px;
+                                    font-size: 18px;
+                                    color: #000000;
+                                    line-height: 19px;">
+                                <p><b>期数：</b>{{ current_row.period }}</p>
+                            </div>
+                            <div style="margin-top: 28px;width: 735px;
+                                    height: 22px;
+                                    font-size: 18px;
+                                    color: #000000;
+                                    line-height: 19px;">
+                                <p><b>卷数：</b>{{ current_row.roll }}</p>
+                            </div>
+                            <div style="margin-top: 28px;width: 735px;
+                                    height: 22px;
+                                    font-size: 18px;
+                                    color: #000000;
+                                    line-height: 19px;">
+                                <p><b>摘要：</b>{{ current_row.summary }}</p>
+                            </div>
+                        </div>
+                    </el-drawer>
                 </div>
             </div>
             <div class="main_footer">
                 <el-pagination background layout="total, sizes, prev, pager, next, jumper" :total="100" @size-change="handleSizeChange" 
-                @current-change="handleCurrentChange" :current-page="currentPage"  :page-sizes="[8, 16]"
+                @current-change="handleCurrentChange" :current-page="currentPage"  :page-sizes="[10, 10]"
                 :page-size="pageSize" ></el-pagination>
             </div>
         </div>
@@ -238,7 +275,7 @@ import axios from 'axios';
                 tableData: [],
                 currentIndex: 0,
                 currentPage: 1,
-                pageSize: 8, // 每页的数据条数,
+                pageSize: 10, // 每页的数据条数,
                 instance:'',
                 token:'',
                 search:{
@@ -255,6 +292,7 @@ import axios from 'axios';
                     source:''
                 },
                 drawer:false,
+                current_row:'',
             }
         },
         methods:{
@@ -302,6 +340,8 @@ import axios from 'axios';
             },
 
             LocalSearch(){
+                this.search.pageSize = this.pageSize;
+                this.search.pageOn = this.currentPage;
                 this.instance({
                     url: '/list',
                     method: 'post',
@@ -313,15 +353,16 @@ import axios from 'axios';
                 });
             },
 
-            detail(){
+            detail(row){
                 this.drawer = true;
+                this.current_row = row;
             },
 
             close(){
                 this.drawer = false;
             },
 
-            is_download(id){
+            is_download(id, title){
                 var url = '/download/' + id.toString();
                 console.log(url)
                 this.instance({
@@ -334,7 +375,7 @@ import axios from 'axios';
                     let b = new Blob([res.data], {type: 'application/vnd.ms-excel'});
                     let url = URL.createObjectURL(b);
                     let link = document.createElement('a');
-                    link.download = '数据.pdf';
+                    link.download = title + '.pdf';
                     link.href = url;
                     link.click();
                 });
@@ -353,14 +394,20 @@ import axios from 'axios';
             },
 
             allClear(){
-                this.search.author = '';
-                this.search.source = '';
-                this.search.start = '';
-                this.search.summary = '';
-                this.search.keyword = '';
-                this.search.filename = '';
-                this.search.title = '';
-                this.search.end = '';
+                this.search = {
+                    keyword:'',
+                    pageSize: 1,
+                    author:'',
+                    summary:'',
+                    start:'',
+                    end:'',
+                    filename:'',
+                    title:'',
+                    order:'',
+                    pageOn:1,
+                    source:''
+                },
+                this.LocalSearch();
             }
         },
 
@@ -421,7 +468,8 @@ import axios from 'axios';
   }
 
   .main_footer{
-    margin-top: 614px;
+    margin-top: 100px;
+    
   }
 
   .main_center span{
@@ -435,5 +483,19 @@ import axios from 'axios';
 
   .close:hover{
     cursor: pointer;
+  }
+
+  .drawer_windows{
+    width: 796px;
+  }
+
+  .drawer_windows span{
+    width: 300px;
+    height: 28px;
+    font-size: 20px;
+    font-family: PingFang SC-Bold, PingFang SC;
+    font-weight: bold;
+    color: rgba(0,0,0,0.85);
+    line-height: 23px;
   }
 </style>

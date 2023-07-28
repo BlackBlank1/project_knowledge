@@ -270,11 +270,14 @@ import axios from 'axios';
                 if (status == "confirm") {
                   //确认删除后对tableData里面进行删除
                     this.tableData.splice((this.currentPage-1)*this.pageSize + index, 1);
-                    this.instance({
-                      url:'/admin/delete/' + id.toString(),
-                      method:'delete',
-                      headers: {Authorization: this.token },
-                    });
+                    // this.instance({
+                    //   url:'/admin/delete/' + id.toString(),
+                    //   method:'delete',
+                    //   headers: {Authorization: this.token },
+                    // }).then((res) => {
+                      
+                    // })
+                  ;
                     console.log(index);
                 }
                 ElMessage({
