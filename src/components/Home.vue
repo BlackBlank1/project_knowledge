@@ -10,6 +10,7 @@
                 </div>
             </div>
             <div>
+                <el-icon @click="modify_password = true" title="修改密码" class = "keyIcon" color="white"><Key /></el-icon>
                 <el-icon v-if="isAdmin" @click="go_managemnet()" title="后台管理" class = "back_stage" color="white"><Tools /></el-icon>
                 <el-icon @click="login_exit()" title="退出登录" class = "exit" color="white"><UserFilled /></el-icon>
             </div>
@@ -99,6 +100,45 @@
                     </div>
                 </div>
             </div>
+
+
+        <el-dialog v-model="modify_password" style=" margin-top: 150px;" modal="false">
+            <div class="dialog_title">修改密码</div>
+            <div style="width: 910px;opacity: 1;border: 2px solid #DDDFE5;margin-bottom: 34px; margin-top: 20px;"></div>
+            <el-form>
+              <el-form-item label="请输入密码" :label-width="formLabelWidth" style="font-size: 14px;margin-left: 36px;" required="true">
+                <el-input v-model="new_password_1" autocomplete="off" type="password" placeholder="请输入" style="width: 469px;
+                  height: 34px;
+                  background: #F2F3F5;
+                  border-radius: 4px 4px 4px 4px;
+                  opacity: 1;
+                  border: 1px solid #DDDFE5;"/>
+              </el-form-item>
+              <el-form-item label="请再次输入密码" :label-width="formLabelWidth" style="font-size: 14px;margin-left: 9px;" required="true">
+                <el-input v-model="new_password_2" autocomplete="off" placeholder="请输入" type="password" style="width: 469px;
+                  height: 34px;
+                  background: #F2F3F5;
+                  border-radius: 4px 4px 4px 4px;
+                  opacity: 1;
+                  border: 1px solid #DDDFE5;"/>
+              </el-form-item>
+            </el-form>
+            <template #footer>
+              <span class="dialog-footer">
+                <el-button type="primary" @click="ModifiedPassword()" style="width: 200px;height: 34px; background: #2B56F9;">
+                  确认修改
+                </el-button>
+                <el-button @click="Clear()" style="width: 200px;
+                    height: 34px;
+                    background: #FFFFFF;
+                    border-radius: 4px 4px 4px 4px;
+                    opacity: 1;
+                    border: 1px solid #DDDFE5;">清空</el-button>
+              </span>
+            </template>
+        </el-dialog>
+
+
             <div class="main_center">
                 <div>
                     <el-table :data="tableData" style="width: 100%; font-size: 20px;margin-top: 20px;" :header-cell-style="{background:'rgba(43,86,249,0.2)', color:'#000000', height:'64px',padding:'17px'}">
@@ -144,7 +184,7 @@
                                     background: #FFFFFF;
                                     border-radius: 4px 4px 4px 4px;
                                     opacity: 1;
-                                    border: 1px solid #DDDFE5;"
+                                    border: 1px solid #DDDFE5;" :disabled="isHigh"
                                 >下载</el-button
                                 >
                                 <el-button size="small" @click="preview(scope.row.md5)" style="width: 60px;
@@ -269,6 +309,8 @@
 
 <script>
 import axios from 'axios';
+import { ElMessage } from 'element-plus'
+
 
     export default{
         data(){
@@ -298,6 +340,10 @@ import axios from 'axios';
                 current_row:'',
                 total:0,
                 isAdmin:true,
+                isHigh:true,
+                modify_password:false,
+                new_password_1:'',
+                new_password_2:'',
             }
         },
         methods:{
@@ -324,7 +370,6 @@ import axios from 'axios';
             handleCurrentChange(val) {
                 this.currentPage = val;
                 this.LocalSearch();
-
             }, 
 
             async init(){
@@ -408,12 +453,57 @@ import axios from 'axios';
                     source:''
                 },
                 this.LocalSearch();
+            },
+
+            Clear() {
+                this.new_password_1 = "";
+                this.new_password_2 = "";
+            },
+
+            ModifiedPassword(){
+                if(this.new_password_1 != this.new_password_2){
+                    ElMessage({
+                        showClose: true,
+                        message: '两次密码输入不一致！',
+                        type: 'error',
+                    });
+                    this.Clear();
+                }
+                else{
+                    var data = {
+                    "username": localStorage.getItem('userName'),
+                    "password": localStorage.getItem('password'),
+                    "id": 0,
+                    "newPassword": this.new_password_1,
+                    "notes":'',
+                    }
+                    this.instance({
+                        url:'/reset/pwd',
+                        method:'post',
+                        headers: { Authorization: this.token, 'Content-Type': 'application/json' },
+                        data:data
+                    }).then((res) => {
+                        console.log('修改成功')
+                        ElMessage({
+                        type: "success",
+                        message: "修改成功",
+                        });
+                        this.modify_password = false;
+                    });
+                    this.Clear();
+                }
+                
             }
         },
 
         mounted(){
             this.init();
             this.isAdmin = localStorage.getItem('is_admin') == 'true'?true:false;
+            console.log(this.isAdmin)
+            this.isHigh = localStorage.getItem('is_user_high') == 'true'?true:false;
+            console.log(this.isHigh)
+            // this.modify_password = localStorage.getItem('is_first_login') == 'true'?true:false;
+            // console.log(this.modify_password)
         }
     }
 </script>
@@ -446,11 +536,24 @@ import axios from 'axios';
     padding-top: 18px;
   }
 
+  .keyIcon{
+    width: 52px;
+    height: 54px;
+    border-radius: 0px 0px 0px 0px;
+    opacity: 1;font-size: 70px; margin-top: 12px;
+    margin-right: -5px;
+  }
+
+  .keyIcon:hover{
+    cursor: pointer;
+  }
+
   .exit{
     width: 52px;
     height: 54px;
     border-radius: 0px 0px 0px 0px;
     opacity: 1;font-size: 70px; margin-top: 12px;
+    margin-right: 20px;
   }
 
   .exit:hover{
@@ -462,6 +565,8 @@ import axios from 'axios';
     height: 54px;
     border-radius: 0px 0px 0px 0px;
     opacity: 1;font-size: 70px; margin-top: 12px;
+    margin-right: 10px;
+    margin-left: 15px;
   }
 
   .back_stage:hover{
@@ -525,5 +630,16 @@ import axios from 'axios';
     font-weight: bold;
     color: rgba(0,0,0,0.85);
     line-height: 23px;
+  }
+
+  .dialog_title{
+    width: 96px;
+    height: 22px;
+    font-size: 24px;
+    font-family: PingFang SC-Bold, PingFang SC;
+    font-weight: bold;
+    color: rgba(0,0,0,0.85);
+    line-height: 22px;
+    margin-top: -30px;
   }
 </style>

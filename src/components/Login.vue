@@ -39,7 +39,8 @@ import { ElMessage } from 'element-plus'
                 }).then((res) => {
                     localStorage.setItem('token', res.data.data);
                     console.log(res.data);
-                    
+                    localStorage.setItem('userName', this.username);
+                    localStorage.setItem('password', this.password);
                     instance({
                         url:'/admin/roles/' + this.username,
                         method:'get',
@@ -47,20 +48,25 @@ import { ElMessage } from 'element-plus'
                     }).then((res) => {
                         console.log(res.data.data)
                         if ((res.data.data).indexOf('admin') != -1 || (res.data.data).indexOf('sys_admin') != -1){
-                            
                          localStorage.setItem('is_admin', true);
+                         localStorage.setItem('is_user_high', false);
                         }
                         else{
-                         localStorage.setItem('is_admin', false);
+                            if ((res.data.data).indexOf('sys_user_high') != -1){
+                                localStorage.setItem('is_user_high', false);
+                                console.log(11111)
+                            }
+                            else{
+                                console.log(22222)
+                                localStorage.setItem('is_user_high', true);
+                            }
+                            localStorage.setItem('is_admin', false);
                         }
 
                         this.$router.push({
                             name: 'Home',
                          })
                     })
-                    
-
-                    
                 }).catch((res) => {
                     ElMessage({
                         showClose: true,

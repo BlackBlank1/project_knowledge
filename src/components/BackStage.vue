@@ -241,10 +241,10 @@ import axios from 'axios';
             roleList:[],
             currentRow:'',
             id : {
-              '系统管理员': 1,
-              '管理员': 2,
-              '普通用户': 3,
-              '高级用户': 4,
+              '系统管理员': 2,
+              '管理员': 1,
+              '普通用户': 4,
+              '高级用户': 3,
             }
         };
     },
@@ -358,13 +358,10 @@ import axios from 'axios';
               "limit": 1000,
               "offset": 0,
               "names": this.input?[this.input]:[
-              
               ],
               "ids": [
-
               ],
               "roles": this.character?[this.character]:[
-                
               ]
             };
           this.instance({
@@ -415,7 +412,7 @@ import axios from 'axios';
               data:form1,
               headers: {'Content-Type': 'application/json', Authorization: this.token },
             }).then((res) => {
-              console.log("传送成功！")
+              this.init();
             })
           }
         },
