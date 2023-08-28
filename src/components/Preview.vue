@@ -1,0 +1,262 @@
+<template>
+  <div style="display: flex; flex-wrap: wrap">
+    <div class="header">
+      <div style="width: 100%; display: flex">
+        <div>
+          <img src="../images/logo.png" alt="">
+        </div>
+        <div>
+          <h1>本地文献检索</h1>
+        </div>
+        <div style="display: flex;margin-left: 1380px">
+          <div class="img1">
+            <img src="https://lanhu.oss-cn-beijing.aliyuncs.com/FigmaDDSSlicePNG53f1be56e3d17850952ac8c7abc9a70b.png" alt="">
+          </div>
+          <div class="img2">
+            <img src="https://lanhu.oss-cn-beijing.aliyuncs.com/FigmaDDSSlicePNGd856cfe424fa8f47bf7b1c0b388ba05f.png" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="main">
+      <div class="left_frame">
+        <SearchAndDirectory></SearchAndDirectory>
+      </div>
+      <div class="center_frame">
+        <PDF pdf-url="../pdf/Nginx.pdf"></PDF>
+      </div>
+      <div class="right_frame">
+        <div style="color: #2243BA;text-align: center; width: 65px;height: 34px; margin-left: 20px" :class="{ active: 'directory' === 'directory' }">
+          <div>AI辅读</div>
+        </div>
+        <div class="chat_frame">
+          <!-- 显示聊天消息的容器 -->
+          <div class="message-container">
+            <div v-for="message in messages" :key="message.date" style="margin-top: 20px; display: flex;flex-direction: column">
+              <div class="mine-text">
+                <div class="message-box">{{ message.text }}</div>
+              </div>
+              <div class="message-text">
+                <div class="answer-box">怎么了 {{message.answer}}</div>
+              </div>
+            </div>
+          </div>
+          <!-- 输入消息的表单 -->
+          <form @submit.prevent="sendMessage" style="width: 386px;height: 34px; display: flex; margin-left: 12px;margin-right: 11px;bottom: 0; position: fixed; margin-bottom: 17px">
+            <el-input v-model="inputText" placeholder="输入问题" :suffix-icon="Promotion" style="width: 806px;
+                height: 47px;
+                background: #F2F3F5;
+                box-shadow: 1px 1px 9px 2px rgba(34,67,186,0.2);
+                border-radius: 4px 4px 4px 4px;
+                opacity: 1;
+                border: 1px solid rgba(0,0,0,0.05);margin-left: 10px"></el-input>
+          </form>
+        </div>
+        <div style="margin-left: 12px;color: #2243BA;margin-top: 10px;margin-bottom: -10px">
+          <h3>问题推荐</h3>
+        </div>
+        <div class="right_footer" v-for="item in text">
+          <div @click="open_history(item)" style="margin-top: 15px;border-radius: 4px 4px 4px 4px;margin-left: 12px;background: #F2F3F5;border: 1px solid #DDDFE5;cursor: pointer">
+            {{item}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+
+import {Promotion} from "@element-plus/icons-vue";
+import {defineComponent} from "vue";
+// import pdf from "@/views/pdf.vue";
+import PDF from "@/components/PDF.vue";
+import SearchAndDirectory from "@/components/SearchAndDirectory.vue";
+
+export default defineComponent({
+  computed: {
+    Promotion() {
+      return Promotion
+    }
+  },
+  components:{
+    PDF, SearchAndDirectory
+  },
+  data(){
+    return {
+      inputText:"",
+      messages: [],
+      text: ['提出的方案旨在如何提高“蜂甲一体”作战系统的释放效率？',
+      '在制定拟议方案时，无人机系统设备、组织和操作的特点是什么？',
+      '“蜂甲一体”作战无人机装备维修保障方案提出的概念是什么？']
+    }
+  },
+  methods:{
+    getDate () {
+      var date = new Date();   //创建日期对象
+      var year = date.getFullYear();
+      var month = date.getMonth() + 1;
+      if (month < 10) month = "0" + month;
+      var dates = date.getDate();
+      return `${year}/${month}/${dates}`;
+    },
+    sendMessage() {
+      if (this.inputText.trim()) {
+        this.messages.push({
+          "date": this.getDate(),
+          "text": this.inputText,
+          "answer": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        })
+        // 从LocalStorage中获取已有数据
+        let existingData = localStorage.getItem('messageData');
+        let myData = existingData ? JSON.parse(existingData) : []; // 如果存在数据，则解析为数组；否则，初始化为空数组
+        // 追加新的json数据
+        let newData =
+            {
+              "date": this.getDate(),
+              "text": this.inputText,
+              "answer": "aaaa"
+            };
+        myData.push(newData);
+
+        // 将更新后的数据存回LocalStorage
+        localStorage.setItem('messageData', JSON.stringify(myData));
+        this.messageData = JSON.parse(localStorage.getItem('messageData'));
+        // this.messages = []
+        this.inputText = '';
+      }
+    },
+    open_history(text){
+      this.messages.push({
+        "date": this.getDate(),
+        "text": text,
+        "answer": "aaa",
+      });
+      // this.messages = []
+    },
+  }
+})
+
+</script>
+
+<style>
+.active {
+  border-bottom: 2px solid blue;
+}
+
+.header{
+  width: 100%;
+  height: 86px;
+  background: #2243BA;
+  display: flex;
+}
+.header h1{
+  width: 230px;
+  height: 50px;
+  font-size: 36px;
+  font-family: PingFang SC-Heavy, PingFang SC;
+  font-weight: 800;
+  color: #FFFFFF;
+  line-height: 42px;
+  margin-left: 39px;
+  padding-top: 18px;
+}
+.img1 {
+  margin-top: 20px;
+}
+.img1 :hover{
+  cursor: pointer;
+}
+.img2 {
+  margin-top: 20px;
+  margin-left: 30px;
+}
+.img2 :hover{
+  cursor: pointer;
+}
+
+.main {
+  margin-top: 10px;
+  width: 1898px;
+  height: 1000px;
+  margin-left: 12px;
+  margin-right: 10px;
+  display: flex;
+}
+
+.left_frame {
+  width: 245px;
+  height: 974px;
+  background: #FFFFFF;
+  border-radius: 0 0 0 0;
+  opacity: 1;
+  display: flex;
+  flex-direction: row;
+}
+
+.center_frame {
+  width: 1226px;
+  height: 974px;
+  background: #FFFFFF;
+  border-radius: 0 0 0 0;
+  opacity: 1;
+  margin-left: 10px;
+}
+
+.right_frame {
+  margin-left: 10px;
+  width: 407px;
+  height: 974px;
+  background: #FFFFFF;
+  border-radius: 0 0 0 0;
+  opacity: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat_frame {
+  max-width: 500px; /* 设置聊天框的最大宽度 */
+  width: 407px;
+  height: 700px;
+  background: #FFFFFF;
+  box-shadow: 2px 5px 11px -2px rgba(34,67,186,0.2);
+  opacity: 1;
+}
+
+.message-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.mine-text {
+  text-align: right; /* 右对齐发送的消息 */
+  margin-bottom: 10px;
+}
+
+.message-text {
+  text-align: left; /* 左对齐回答的消息 */
+  margin-bottom: 10px;
+}
+
+.message-box {
+  -webkit-background-clip: text; /* 设置背景色仅显示到文本内容的长度 */
+  border-radius: 4px;
+  padding: 5px;
+  background: rgba(29,37,226,0.2);
+  max-width: 60%; /* 设置消息框的最大宽度 */
+  word-wrap: break-word; /* 如果字数过长，自动换行 */
+  display: inline-block; /* 只显示到字数的长度 */
+  margin-right: 20px;
+}
+
+.answer-box {
+  -webkit-background-clip: text; /* 设置背景色仅显示到文本内容的长度 */
+  border-radius: 4px;
+  padding: 5px;
+  max-width: 60%;
+  background: #E5EAFF;
+  word-wrap: break-word;
+  display: inline-block; /* 只显示到字数的长度 */
+  margin-left: 20px;
+}
+</style>

@@ -518,11 +518,10 @@ import { ElMessage } from 'element-plus'
 
   .header{
       width: 100%;
-      height: 86px;   
+      height: 86px;
       background: #2243BA;
       display: flex;
       justify-content: space-between;
-      
   }
   .header h1{
     width: 144px;

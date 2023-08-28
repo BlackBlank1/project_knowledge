@@ -4,19 +4,29 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
+      path: '/login',
       name: 'Login',
-      component: () => import('../components/Login.vue')
+      component: () => import('../views/Login.vue')
     },
     {
       path: '/BackStage',
       name: 'BackStage',
-      component: () => import('../components/BackStage.vue')
+      component: () => import('../views/BackStage.vue')
     },
     {
       path: '/Home',
       name: 'Home',
-      component: () => import('../components/Home.vue')
+      component: () => import('../views/Home.vue')
+    },
+    {
+      path: '/test',
+      name: 'Test',
+      component: () => import('../views/AIQ&A.vue')
+    },
+    {
+      path: '/',
+      name: 'Preview',
+      component: () => import('../components/Preview.vue')
     }
   ]
 })
