@@ -19,12 +19,12 @@ const router = createRouter({
       component: () => import('../views/Home.vue')
     },
     {
-      path: '/test',
-      name: 'Test',
+      path: '/',
+      name: 'AIQ&A',
       component: () => import('../views/AIQ&A.vue')
     },
     {
-      path: '/',
+      path: '/Preview',
       name: 'Preview',
       component: () => import('../components/Preview.vue')
     }

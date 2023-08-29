@@ -29,7 +29,7 @@
         <div style="color: #2243BA;text-align: center; width: 65px;height: 34px; margin-left: 20px" :class="{ active: 'directory' === 'directory' }">
           <div>AI辅读</div>
         </div>
-        <div class="chat_frame">
+        <div class="chat_frame" ref="centerFrame">
           <!-- 显示聊天消息的容器 -->
           <div class="message-container">
             <div v-for="message in messages" :key="message.date" style="margin-top: 20px; display: flex;flex-direction: column">
@@ -37,7 +37,11 @@
                 <div class="message-box">{{ message.text }}</div>
               </div>
               <div class="message-text">
-                <div class="answer-box">怎么了 {{message.answer}}</div>
+                <div class="answer-box">
+                  <vuetyped :strings="[message.answer]" :showCursor="false">
+                    <div class="typing" />
+                  </vuetyped>
+                </div>
               </div>
             </div>
           </div>
@@ -88,7 +92,8 @@ export default defineComponent({
       messages: [],
       text: ['提出的方案旨在如何提高“蜂甲一体”作战系统的释放效率？',
       '在制定拟议方案时，无人机系统设备、组织和操作的特点是什么？',
-      '“蜂甲一体”作战无人机装备维修保障方案提出的概念是什么？']
+      '“蜂甲一体”作战无人机装备维修保障方案提出的概念是什么？'],
+      messageData: JSON.parse(localStorage.getItem('messageData')),
     }
   },
   methods:{
@@ -105,7 +110,7 @@ export default defineComponent({
         this.messages.push({
           "date": this.getDate(),
           "text": this.inputText,
-          "answer": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "answer": "针对当前装甲部队装备维修保障方案中对大规模、成体系无人机保障的针对性措施不够明确,不利于地面突击作战中无人机蜂群更好地发挥其作用,进而制约了“ 蜂甲一体” 作战体系释放效能的问题,提出“ 蜂甲一体”作战无人机装备维修保障方案构想,依据无人机系统装备特点......",
         })
         // 从LocalStorage中获取已有数据
         let existingData = localStorage.getItem('messageData');
@@ -134,12 +139,35 @@ export default defineComponent({
       });
       // this.messages = []
     },
-  }
+    scrollToBottom() {
+      if (this.$refs.centerFrame) {
+        this.$refs.centerFrame.scrollTop = this.$refs.centerFrame.scrollHeight;
+      }
+    }
+  },
+  mounted() {
+    this.scrollToBottom();
+  },
+  watch: {
+    messageData() {
+      this.$nextTick(() => {
+        this.scrollToBottom();
+        console.log(111)
+      });
+    }
+  },
 })
 
 </script>
 
 <style>
+i.el-icon.el-input__icon {
+  color: #2243BA;
+  font-size: 18px;
+}
+</style>
+
+<style scoped>
 .active {
   border-bottom: 2px solid blue;
 }
@@ -176,7 +204,7 @@ export default defineComponent({
 }
 
 .main {
-  margin-top: 10px;
+  margin-top: 3px;
   width: 1898px;
   height: 1000px;
   margin-left: 12px;
@@ -215,12 +243,12 @@ export default defineComponent({
 }
 
 .chat_frame {
-  max-width: 500px; /* 设置聊天框的最大宽度 */
+  max-width: 407px; /* 设置聊天框的最大宽度 */
   width: 407px;
   height: 700px;
   background: #FFFFFF;
   box-shadow: 2px 5px 11px -2px rgba(34,67,186,0.2);
-  opacity: 1;
+  overflow: auto;
 }
 
 .message-container {

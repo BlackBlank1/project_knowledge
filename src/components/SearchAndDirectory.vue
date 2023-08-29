@@ -42,7 +42,7 @@
         </div>
       </div>
       <div v-if="showDirectoryContent" >
-        <el-aside width="245px">
+        <el-aside width="260px">
           <el-scrollbar>
             <el-menu v-for="(item, index) in data.items" :key="index">
               <el-sub-menu :index="index" class="directory_list">
@@ -149,7 +149,7 @@ export default {
   line-height: 22px;
 }
 .directory_list div.el-sub-menu__title i{
-  margin-right: 200px;
+  margin-right: 210px;
 }
 .close_icon {
   margin-right: 11px;

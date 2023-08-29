@@ -1,5 +1,5 @@
 <template>
-  <div style="display: flex; flex-wrap: wrap">
+  <div style="display: flex; flex-wrap: wrap;height: 1080px">
     <div class="header">
       <div style="width: 100%; display: flex">
         <div>
@@ -24,33 +24,36 @@
           <div style="margin-left: 9px; margin-top: 15px; margin-right: 9px">
             <el-input v-model="input" placeholder="请搜索历史问答" :prefix-icon="Search"></el-input>
           </div>
-          <div v-for="item in messageData">
+          <div v-for="item in groupedMessageData" class="list">
             <div style="margin-top: 15px; margin-left: 9px; font-size: 16px;color: rgba(0,0,0,0.45);">
               {{ item.date }}
             </div>
-            <div class="chat_list" >
-              <div style="padding-top: 3px">
+            <div class="chat_list" :class="{ selected: selectedItem === i }"  v-for="i in item.items">
+              <div style="padding-top: 3px; margin-left: 14px;margin-top: 4px">
                 <img src="https://lanhu.oss-cn-beijing.aliyuncs.com/FigmaDDSSlicePNG05d892378be0c06eebefa60e4e401b25.png" alt="">
               </div>
-              <div style="margin-left: 11px;padding-top: 3px" @click="open_history(item.text)">
-                {{filter_string(item.text)}}
+              <div style="margin-left: 11px;padding-top: 3px" @click="selectList(i, i.text)">
+                {{filter_string(i.text)}}
               </div>
-              <div style="margin-right: 5px;padding-top: 3px;display: flex; justify-content: flex-end">
-                <el-icon @click="remove(item)"><Delete /></el-icon>
+              <div style="margin-right: 5px;padding-top: 3px;display: flex; justify-content: flex-end;margin-top: 4px">
+                <el-icon @click="remove(i)"><Delete /></el-icon>
               </div>
             </div>
           </div>
         </div>
-        <div class="center_frame">
+        <div class="center_frame" ref="centerFrame">
           <!-- 显示聊天消息的容器 -->
           <div class="message-container">
-            <div v-for="message in messages" :key="message.id" style="margin-top: 20px; display: flex;flex-direction: column">
+            <div v-for="message in messages" :key="message.date" style="margin-top: 20px; display: flex;flex-direction: column">
               <div class="mine-text">
-                <div style="background: rgba(29,37,226,0.2);
-                  border-radius: 4px 4px 4px 4px;padding: 5px">{{ message.text }}</div>
+                <div class="message-box">{{ message.text }}</div>
               </div>
               <div class="message-text">
-                <div style="background: #E5EAFF; border-radius: 4px 4px 4px 4px;padding: 5px">怎么了 {{message.answer}}</div>
+                <div class="answer-box">
+                  <vuetyped :strings="[message.answer]" :showCursor="false">
+                    <div class="typing" />
+                  </vuetyped>
+                </div>
               </div>
             </div>
           </div>
@@ -113,6 +116,33 @@ export default {
       },
       Search() {
         return Search
+      },
+      groupedMessageData() {
+        // 将messageData按照日期进行分组
+        const groupedData = {};
+
+        this.messageData.forEach(item => {
+          const date = item.date;
+          if (!groupedData[date]) {
+            groupedData[date] = [];
+          }
+          groupedData[date].push(item);
+        });
+
+        // 将分组后的数据按照日期排序
+        const sortedKeys = Object.keys(groupedData).sort().reverse();
+
+        // 构建最终的分组数据
+        const groupedMessageData = [];
+        sortedKeys.forEach(key => {
+          const group = {
+            date: key,
+            items: groupedData[key]
+          };
+          groupedMessageData.push(group);
+        });
+        console.log(groupedMessageData)
+        return groupedMessageData;
       }
     },
     components: {Delete, ChatLineRound, Search},
@@ -148,7 +178,8 @@ export default {
         messages: [],
         messageData: JSON.parse(localStorage.getItem('messageData')),
         isRefresh: false,
-        current_date:""
+        current_date:"",
+        selectedItem: null
       }
     },
 
@@ -159,6 +190,7 @@ export default {
       }else{
         console.log("首次被加载")
       }
+      this.scrollToBottom();
     },
 
   methods: {
@@ -175,7 +207,7 @@ export default {
           this.messages.push({
             "date": this.getDate(),
             "text": this.inputText,
-            "answer": "aaaa",
+            "answer": "针对当前装甲部队装备维修保障方案中对大规模、成体系无人机保障的针对性措施不够明确,不利于地面突击作战中无人机蜂群更好地发挥其作用,进而制约了“ 蜂甲一体” 作战体系释放效能的问题,提出“ 蜂甲一体”作战无人机装备维修保障方案构想,依据无人机系统装备特点......",
           })
           // 从LocalStorage中获取已有数据
           let existingData = localStorage.getItem('messageData');
@@ -196,17 +228,11 @@ export default {
           this.inputText = '';
         }
       },
-      open_history(text){
-        this.messages.push({
-          "date": this.getDate(),
-          "text": text,
-          "answer": "aaa",
-        });
-        // this.messages = []
-      },
       filter_string(text){
-        if (text.length > 12){
-          return text.substring(0, 12) + "...";
+        if (text){
+          if (text.length > 9){
+            return text.substring(0, 9) + "...";
+          }
         }
         return text;
       },
@@ -228,33 +254,80 @@ export default {
         }
         localStorage.setItem('messageData', JSON.stringify(data));
         this.messageData = JSON.parse(localStorage.getItem('messageData'));
+      },
+      selectList(item, text) {
+        this.selectedItem = item;
+        this.messages.push({
+          "date": this.getDate(),
+          "text": text,
+          "answer": "aaa",
+        });
+      },
+      scrollToBottom() {
+        if (this.$refs.centerFrame) {
+          this.$refs.centerFrame.scrollTop = this.$refs.centerFrame.scrollHeight;
+        }
       }
-    }
+    },
+    watch: {
+      messageData() {
+        this.$nextTick(() => {
+          this.scrollToBottom();
+          console.log(111)
+        });
+      }
+    },
   }
 </script>
 
 
 
 <style>
-.message-container {
-  margin-bottom: 20px;
+.center_frame {
+  max-width: 1085px; /* 设置聊天框的最大宽度 */
+  width: 1085px;
+  height: 976px;
+  background: #FFFFFF;
+  opacity: 1;
+  margin-left: 10px;
+  overflow: auto;
 }
 
-.message-text {
-  opacity: 1;
-  font-size: 16px;
-  justify-content: left;
-  padding-left: 20px;
+.message-container {
   display: flex;
+  flex-direction: column;
 }
 
 .mine-text {
-  opacity: 1;
-  font-size: 16px;
-  display: flex;
-  justify-content: right;
-  margin-bottom: 20px;
-  padding-right: 20px;
+  text-align: right; /* 右对齐发送的消息 */
+  margin-bottom: 10px;
+}
+
+.message-text {
+  text-align: left; /* 左对齐回答的消息 */
+  margin-bottom: 10px;
+}
+
+.message-box {
+  -webkit-background-clip: text; /* 设置背景色仅显示到文本内容的长度 */
+  border-radius: 4px;
+  padding: 5px;
+  background: rgba(29,37,226,0.2);
+  max-width: 40%; /* 设置消息框的最大宽度 */
+  word-wrap: break-word; /* 如果字数过长，自动换行 */
+  display: inline-block; /* 只显示到字数的长度 */
+  margin-right: 20px;
+}
+
+.answer-box {
+  -webkit-background-clip: text; /* 设置背景色仅显示到文本内容的长度 */
+  border-radius: 4px;
+  padding: 5px;
+  max-width: 40%;
+  background: #E5EAFF;
+  word-wrap: break-word;
+  display: inline-block; /* 只显示到字数的长度 */
+  margin-left: 20px;
 }
 
   .header{
@@ -290,16 +363,6 @@ export default {
     background: #FFFFFF;
     border-radius: 0 0 0 0;
     opacity: 1;
-  }
-
-  .center_frame {
-    width: 1085px;
-    height: 976px;
-    background: #FFFFFF;
-    border-radius: 0 0 0 0;
-    opacity: 1;
-    margin-left: 10px;
-    overflow: auto;
   }
 
   .right_frame {
@@ -346,8 +409,10 @@ export default {
     justify-content: space-between;
   }
 
-  .chat_list :hover{
+  .list :hover{
     cursor: pointer;
+  }
+  .chat_list.selected {
     background: #CBD5FF;
   }
 </style>
