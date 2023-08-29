@@ -1,6 +1,6 @@
 <template>
   <div class="main" style="display: flex;flex-direction: column; box-shadow: 2px 5px 11px -2px rgba(34,67,186,0.2);border: #F2F3F5 2px solid; margin-left: -8px">
-    <div style="display: flex; flex-direction: row;">
+    <div style="display: flex; flex-direction: row;" v-if="showDirectoryAndSearch">
       <div @click="showFullText" class="text_search" :class="{ active: selectedContentType === 'fullText' }">
         <div style="margin-top: 6px">
           全文查找
@@ -47,10 +47,10 @@
             <el-menu v-for="(item, index) in data.items" :key="index">
               <el-sub-menu :index="index" class="directory_list">
                 <template #title>
-                  <div class="directory_title">{{item.title}}</div>
+                  <div class="directory_title" @click="go_to_page(item.dest[0].num)">{{item.title}}</div>
                 </template>
                 <el-menu-item-group v-if="item.items.length > 0" v-for="(i, subIndex) in item.items">
-                  <el-menu-item :index="subIndex" style="overflow: auto">{{ i.title }}</el-menu-item>
+                  <el-menu-item :index="subIndex" style="overflow: auto" @click="go_to_page(item.dest[0].num)">{{ i.title }}</el-menu-item>
                 </el-menu-item-group>
               </el-sub-menu>
             </el-menu>
@@ -84,7 +84,8 @@ export default {
           "appear_page":"第5页",
           "content":"基于规范化制度化程序化的维修保障,能够充分释放大规模、成体系无人机作战效能。"
         }]
-      }
+      },
+      showDirectoryAndSearch: true
     }
   },
   methods: {
@@ -101,6 +102,10 @@ export default {
     close_all(){
       this.showFullTextContent = false;
       this.showDirectoryContent = false;
+      // this.showDirectoryAndSearch = false;
+    },
+    go_to_page(pageNum){
+      mitt.emit("go_pageNum", pageNum)
     }
   },
   mounted() {

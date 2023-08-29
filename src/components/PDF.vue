@@ -125,6 +125,11 @@ onMounted(() => {
     console.log(state.outlineItems[0])
     // console.log(state.outlineItems[0].items[0].dest[0].num) // 目录的页码
   });
+  mitt.on("go_pageNum", (val) => {
+    if (typeof val === "number") {
+      state.pageNum = val;
+    }
+  })
 });
 </script>
 

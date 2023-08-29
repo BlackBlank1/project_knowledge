@@ -28,15 +28,17 @@
             <div style="margin-top: 15px; margin-left: 9px; font-size: 16px;color: rgba(0,0,0,0.45);">
               {{ item.date }}
             </div>
-            <div class="chat_list" :class="{ selected: selectedItem === i }"  v-for="i in item.items">
-              <div style="padding-top: 3px; margin-left: 14px;margin-top: 4px">
-                <img src="https://lanhu.oss-cn-beijing.aliyuncs.com/FigmaDDSSlicePNG05d892378be0c06eebefa60e4e401b25.png" alt="">
-              </div>
-              <div style="margin-left: 11px;padding-top: 3px" @click="selectList(i, i.text)">
-                {{filter_string(i.text)}}
-              </div>
-              <div style="margin-right: 5px;padding-top: 3px;display: flex; justify-content: flex-end;margin-top: 4px">
-                <el-icon @click="remove(i)"><Delete /></el-icon>
+            <div class="history">
+              <div class="chat_list" :class="{ selected: selectedItem === i }"  v-for="i in item.items">
+                <div style="padding-top: 3px; margin-left: 14px;margin-top: 4px">
+                  <img src="https://lanhu.oss-cn-beijing.aliyuncs.com/FigmaDDSSlicePNG05d892378be0c06eebefa60e4e401b25.png" alt="">
+                </div>
+                <div style="margin-left: 11px;padding-top: 3px" @click="selectList(i, i.text)">
+                  {{filter_string(i.text)}}
+                </div>
+                <div style="margin-right: 5px;padding-top: 3px;display: flex; justify-content: flex-end;margin-top: 4px">
+                  <el-icon @click="remove(i)"><Delete /></el-icon>
+                </div>
               </div>
             </div>
           </div>
@@ -51,7 +53,7 @@
               <div class="message-text">
                 <div class="answer-box">
                   <vuetyped :strings="[message.answer]" :showCursor="false">
-                    <div class="typing" />
+                    <div class="typing"></div>
                   </vuetyped>
                 </div>
               </div>
@@ -107,7 +109,7 @@
 
 
 <script>
-import {ChatLineRound, Delete, Promotion, Search} from "@element-plus/icons-vue";
+import {ChatLineRound, Delete, Promotion, Search, VideoPause} from "@element-plus/icons-vue";
 
 export default {
     computed: {
@@ -128,7 +130,6 @@ export default {
           }
           groupedData[date].push(item);
         });
-
         // 将分组后的数据按照日期排序
         const sortedKeys = Object.keys(groupedData).sort().reverse();
 
@@ -137,7 +138,7 @@ export default {
         sortedKeys.forEach(key => {
           const group = {
             date: key,
-            items: groupedData[key]
+            items: groupedData[key].reverse()
           };
           groupedMessageData.push(group);
         });
@@ -145,7 +146,7 @@ export default {
         return groupedMessageData;
       }
     },
-    components: {Delete, ChatLineRound, Search},
+    components: {VideoPause, Delete, ChatLineRound, Search},
     data(){
       return {
         input:"",
@@ -179,7 +180,7 @@ export default {
         messageData: JSON.parse(localStorage.getItem('messageData')),
         isRefresh: false,
         current_date:"",
-        selectedItem: null
+        selectedItem: null,
       }
     },
 
@@ -267,7 +268,7 @@ export default {
         if (this.$refs.centerFrame) {
           this.$refs.centerFrame.scrollTop = this.$refs.centerFrame.scrollHeight;
         }
-      }
+      },
     },
     watch: {
       messageData() {
@@ -306,6 +307,8 @@ export default {
 .message-text {
   text-align: left; /* 左对齐回答的消息 */
   margin-bottom: 10px;
+  display: flex;
+  flex-direction: row;
 }
 
 .message-box {
@@ -409,8 +412,9 @@ export default {
     justify-content: space-between;
   }
 
-  .list :hover{
+  .history :hover{
     cursor: pointer;
+    background: #CBD5FF;
   }
   .chat_list.selected {
     background: #CBD5FF;
