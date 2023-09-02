@@ -19,14 +19,19 @@ const router = createRouter({
       component: () => import('../views/Home.vue')
     },
     {
-      path: '/',
+      path: '/AIQ&A',
       name: 'AIQ&A',
       component: () => import('../views/AIQ&A.vue')
     },
     {
       path: '/Preview',
       name: 'Preview',
-      component: () => import('../components/Preview.vue')
+      component: () => import('../views/Preview.vue')
+    },
+    {
+      path: '/',
+      name: 'MainPage',
+      component: () => import('../views/MainPage.vue')
     }
   ]
 })

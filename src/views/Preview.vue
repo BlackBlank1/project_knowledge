@@ -1,22 +1,7 @@
 <template>
   <div style="display: flex; flex-wrap: wrap">
-    <div class="header">
-      <div style="width: 100%; display: flex">
-        <div>
-          <img src="../images/logo.png" alt="">
-        </div>
-        <div>
-          <h1>本地文献检索</h1>
-        </div>
-        <div style="display: flex;margin-left: 1380px">
-          <div class="img1">
-            <img src="https://lanhu.oss-cn-beijing.aliyuncs.com/FigmaDDSSlicePNG53f1be56e3d17850952ac8c7abc9a70b.png" alt="">
-          </div>
-          <div class="img2">
-            <img src="https://lanhu.oss-cn-beijing.aliyuncs.com/FigmaDDSSlicePNGd856cfe424fa8f47bf7b1c0b388ba05f.png" alt="">
-          </div>
-        </div>
-      </div>
+    <div style="width: 1920px;height: 86px">
+      <Header></Header>
     </div>
     <div class="main">
       <div class="left_frame">
@@ -76,6 +61,7 @@ import {defineComponent} from "vue";
 // import pdf from "@/views/pdf.vue";
 import PDF from "@/components/PDF.vue";
 import SearchAndDirectory from "@/components/SearchAndDirectory.vue";
+import Header from "@/components/Header.vue"
 
 export default defineComponent({
   computed: {
@@ -84,7 +70,7 @@ export default defineComponent({
     }
   },
   components:{
-    PDF, SearchAndDirectory
+    PDF, SearchAndDirectory, Header
   },
   data(){
     return {
@@ -170,37 +156,6 @@ i.el-icon.el-input__icon {
 <style scoped>
 .active {
   border-bottom: 2px solid blue;
-}
-
-.header{
-  width: 100%;
-  height: 86px;
-  background: #2243BA;
-  display: flex;
-}
-.header h1{
-  width: 230px;
-  height: 50px;
-  font-size: 36px;
-  font-family: PingFang SC-Heavy, PingFang SC;
-  font-weight: 800;
-  color: #FFFFFF;
-  line-height: 42px;
-  margin-left: 39px;
-  padding-top: 18px;
-}
-.img1 {
-  margin-top: 20px;
-}
-.img1 :hover{
-  cursor: pointer;
-}
-.img2 {
-  margin-top: 20px;
-  margin-left: 30px;
-}
-.img2 :hover{
-  cursor: pointer;
 }
 
 .main {
