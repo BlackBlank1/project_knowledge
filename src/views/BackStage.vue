@@ -1,8 +1,8 @@
 <template>
   <div class="BackStage" style="display: flex;flex-wrap: wrap;">
     <div class="header">
-      <img src="../images/logo.png" alt="">
-      <h1>本地文献检索</h1>
+      <img src="../images/logo1.png" alt="" style="scale: 0.7;margin-left: 35px">
+      <h1 style="margin-left: 40px">本地文献检索</h1>
       <div style="margin-left: 1350px;">
         <el-icon @click="login_exit()" title="退出登录" class = "exit" color="white"><UserFilled /></el-icon>
       </div>
@@ -10,7 +10,7 @@
     <div class="main">
       <el-container>
         <div class="main_header">
-          <el-header>管理员后台</el-header>
+          <el-header style="margin-left: 20px">管理员后台</el-header>
           <hr>
         </div>
         <div class="search">
@@ -60,7 +60,7 @@
                       height: 34px;
                       background: #F2F3F5;
                       opacity: 1;margin-bottom: 20px;" >
-                    <el-option label="管理员" value="管理员" />
+                    <el-option label="管理员" value="管理员"></el-option>
                     <el-option label="系统管理员" value="系统管理员" />
                     <el-option label="高级用户" value="高级用户" />
                     <el-option label="普通用户" value="普通用户" />
@@ -260,10 +260,10 @@ import axios from 'axios';
 
         Edit: function () {
             this.editFormVisible = false;
-            if (this.currentForm.roleName != ''){
+            if (this.currentForm.roleName !== ''){
               this.tableData[this.currentIndex].roleName = this.currentForm.roleName;
             }
-            if (this.currentForm.description != ''){
+            if (this.currentForm.description !== ''){
               this.tableData[this.currentIndex].description = this.currentForm.description;
             }
             // this.tableData[this.currentIndex].modify_date = this.CurrentDate();

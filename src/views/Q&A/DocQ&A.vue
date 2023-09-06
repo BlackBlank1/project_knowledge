@@ -1,22 +1,7 @@
 <template>
   <div style="display: flex; flex-wrap: wrap;height: 1080px">
-    <div class="header">
-      <div style="width: 100%; display: flex">
-        <div>
-          <img src="../images/logo.png" alt="">
-        </div>
-        <div>
-          <h1>本地文献检索</h1>
-        </div>
-        <div style="display: flex;margin-left: 1380px">
-          <div class="img1">
-            <img src="https://lanhu.oss-cn-beijing.aliyuncs.com/FigmaDDSSlicePNG53f1be56e3d17850952ac8c7abc9a70b.png" alt="">
-          </div>
-          <div class="img2">
-            <img src="https://lanhu.oss-cn-beijing.aliyuncs.com/FigmaDDSSlicePNGd856cfe424fa8f47bf7b1c0b388ba05f.png" alt="">
-          </div>
-        </div>
-      </div>
+    <div style="width: 1920px;height: 86px">
+      <Header></Header>
     </div>
     <div style="background: rgb(240,242,245);">
       <div class="main">
@@ -110,6 +95,7 @@
 
 <script>
 import {ChatLineRound, Delete, Promotion, Search, VideoPause} from "@element-plus/icons-vue";
+import Header from "@/components/Q&A/Header.vue";
 
 export default {
     computed: {
@@ -146,7 +132,7 @@ export default {
         return groupedMessageData;
       }
     },
-    components: {VideoPause, Delete, ChatLineRound, Search},
+    components: {Header, VideoPause, Delete, ChatLineRound, Search},
     data(){
       return {
         input:"",
@@ -332,24 +318,6 @@ export default {
   display: inline-block; /* 只显示到字数的长度 */
   margin-left: 20px;
 }
-
-  .header{
-    width: 100%;
-    height: 86px;
-    background: #2243BA;
-    display: flex;
-  }
-  .header h1{
-    width: 230px;
-    height: 50px;
-    font-size: 36px;
-    font-family: PingFang SC-Heavy, PingFang SC;
-    font-weight: 800;
-    color: #FFFFFF;
-    line-height: 42px;
-    margin-left: 39px;
-    padding-top: 18px;
-  }
 
   .main {
     margin-top: 10px;

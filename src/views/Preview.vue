@@ -59,9 +59,9 @@
 import {Promotion} from "@element-plus/icons-vue";
 import {defineComponent} from "vue";
 // import pdf from "@/views/pdf.vue";
-import PDF from "@/components/PDF.vue";
+import PDF from "@/components/PDFShow/PDF.vue";
 import SearchAndDirectory from "@/components/SearchAndDirectory.vue";
-import Header from "@/components/Header.vue"
+import Header from "@/components/Q&A/Header.vue"
 
 export default defineComponent({
   computed: {

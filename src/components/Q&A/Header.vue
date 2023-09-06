@@ -1,11 +1,11 @@
 <template>
   <div class="header">
     <div style="width: 100%; display: flex">
-      <div>
-        <img src="../images/logo.png" alt="">
+      <div style="width: 68px;height: 66px;margin-top: -55px;margin-left: -20px">
+        <img src="../../images/logo1.png" alt="" style="scale: 0.35;">
       </div>
-      <div>
-        <h1>本地文献检索</h1>
+      <div style="margin-left: 60px">
+        <h1>本地文献</h1>
       </div>
       <div style="display: flex;margin-left: 1380px">
         <div class="img1" @click="goToBackStage()">
