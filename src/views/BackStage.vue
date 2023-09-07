@@ -1,7 +1,7 @@
 <template>
   <div class="BackStage" style="display: flex;flex-wrap: wrap;">
     <div class="header">
-      <img src="../images/logo1.png" alt="" style="scale: 0.7;margin-left: 35px">
+      <img src="../images/logo.png" alt="" style="scale: 0.7;margin-left: 35px">
       <h1 style="margin-left: 40px">本地文献检索</h1>
       <div style="margin-left: 1350px;">
         <el-icon @click="login_exit()" title="退出登录" class = "exit" color="white"><UserFilled /></el-icon>

@@ -2,7 +2,7 @@
   <div class="header">
     <div style="width: 100%; display: flex">
       <div style="width: 68px;height: 66px;margin-top: -55px;margin-left: -20px">
-        <img src="../../images/logo1.png" alt="" style="scale: 0.35;">
+        <img src="../../images/logo.png" alt="" style="scale: 0.35;">
       </div>
       <div style="margin-left: 60px">
         <h1>本地文献</h1>

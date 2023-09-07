@@ -1,17 +1,17 @@
 <template>
   <div style="width: 1920px;height: 1080px;display: flex;flex-direction: column">
     <div>
-      <Header></Header>
+      <Doc_Header></Doc_Header>
     </div>
       <router-view></router-view>
   </div>
 </template>
 
 <script>
-import Header from "@/components/MainPage/Header_Single_Icon.vue"
+import Doc_Header from "@/components/Headers/Doc_Header.vue"
 export default {
   components:{
-    Header
+    Doc_Header
   }
 }
 </script>

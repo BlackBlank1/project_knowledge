@@ -1,7 +1,7 @@
 <template>
   <div style="display: flex; flex-wrap: wrap;height: 1080px">
     <div style="width: 1920px;height: 86px">
-      <Header></Header>
+      <File_Header></File_Header>
     </div>
     <div style="background: rgb(240,242,245);">
       <div class="main">
@@ -15,9 +15,8 @@
             </div>
             <div class="history">
               <div class="chat_list" :class="{ selected: selectedItem === i }"  v-for="i in item.items">
-                <div style="padding-top: 3px; margin-left: 14px;margin-top: 4px">
-                  <img src="https://lanhu.oss-cn-beijing.aliyuncs.com/FigmaDDSSlicePNG05d892378be0c06eebefa60e4e401b25.png"
-                       style="" alt="">
+                <div style="scale: 0.3;margin-bottom: 30px;padding-top: 3px; margin-top: 4px">
+                  <img src="../../images/talk.png" alt="">
                 </div>
                 <div style="margin-left: 11px;padding-top: 3px" @click="selectList(i, i.text)">
                   {{filter_string(i.text)}}
@@ -52,16 +51,15 @@
                 background: #F2F3F5;
                 box-shadow: 1px 1px 9px 2px rgba(90,34,181,0.2);
                 border-radius: 4px 4px 4px 4px;
-                opacity: 1;
                 border: 1px solid rgba(0,0,0,0.05);"></el-input>
           </form>
         </div>
         <div class="right_frame">
           <div style="margin-left: 11px; height: 62px; display: flex">
-            <div style="margin-left: 17px;margin-top: 17px;">
-              <img src="https://lanhu.oss-cn-beijing.aliyuncs.com/FigmaDDSSlicePNGcb2e3298ca6e258ff415a18c8aa003a8.png" alt="">
+            <div style="scale: 0.3;margin-left: -30px;margin-bottom: 20px">
+              <img src="../../images/file_ref.png" alt="">
             </div>
-            <div style="margin-left: 16px;margin-top: 15px;">
+            <div style="margin-left: -30px;margin-top: 15px;">
               <h2>参考文件</h2>
             </div>
           </div>
@@ -82,7 +80,7 @@
               <div style="height: 104px; margin-top: 12px; margin-left: 10px">
                 {{item.content}}
               </div>
-              <div style="float: right;margin-top: 12px">
+              <div style="float: right;margin-top: 12px;color: #5A23B5">
                 {{item.cite_count}}
               </div>
             </div>
@@ -96,7 +94,7 @@
 
 <script>
 import {ChatLineRound, Delete, Promotion, Search, VideoPause} from "@element-plus/icons-vue";
-import Header from "@/components/MainPage/Header_Single_Icon.vue";
+import File_Header from "@/components/Headers/File_Header.vue";
 
 export default {
   computed: {
@@ -133,7 +131,7 @@ export default {
       return groupedMessageData;
     }
   },
-  components: {Header, VideoPause, Delete, ChatLineRound, Search},
+  components: {File_Header, VideoPause, Delete, ChatLineRound, Search},
   data(){
     return {
       input:"",
@@ -366,7 +364,7 @@ export default {
 }
 
 .center_frame i.el-icon.el-input__icon {
-  color: #2243BA;
+  color: #5A22B5;
   font-size: 24px;
 }
 

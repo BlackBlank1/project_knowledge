@@ -1,14 +1,14 @@
 <template>
   <div style="display: flex; flex-wrap: wrap">
     <div style="width: 1920px;height: 86px">
-      <Header></Header>
+      <Doc_Header></Doc_Header>
     </div>
     <div class="main">
       <div class="left_frame">
         <SearchAndDirectory></SearchAndDirectory>
       </div>
       <div class="center_frame">
-        <PDF pdf-url="../pdf/Nginx.pdf"></PDF>
+        <DocPDF pdf-url="../pdf/Nginx.pdf"></DocPDF>
       </div>
       <div class="right_frame">
         <div style="color: #2243BA;text-align: center; width: 65px;height: 34px; margin-left: 20px" :class="{ active: 'directory' === 'directory' }">
@@ -59,9 +59,9 @@
 import {Promotion} from "@element-plus/icons-vue";
 import {defineComponent} from "vue";
 // import pdf from "@/views/pdf.vue";
-import PDF from "@/components/PDFShow/PDF.vue";
+import DocPDF from "@/components/PDFShow/DocPDF.vue";
 import SearchAndDirectory from "@/components/SearchAndDirectory.vue";
-import Header from "@/components/Q&A/Header.vue"
+import Doc_Header from "@/components/Headers/Doc_Header.vue"
 
 export default defineComponent({
   computed: {
@@ -70,7 +70,7 @@ export default defineComponent({
     }
   },
   components:{
-    PDF, SearchAndDirectory, Header
+    DocPDF, SearchAndDirectory, Doc_Header
   },
   data(){
     return {

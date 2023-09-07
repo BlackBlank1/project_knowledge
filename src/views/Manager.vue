@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import Manager_Header from "@/components/Manager/Manager_Header.vue";
+import Manager_Header from "@/components/Headers/Manager_Header.vue";
 
 export default {
   components:{

@@ -5,14 +5,11 @@
         <img src="../../images/logo.png" alt="" style="scale: 0.35;">
       </div>
       <div style="margin-left: 60px">
-        <h1>本地文献</h1>
+        <h1>无人系统知识平台</h1>
       </div>
-      <div style="display: flex;margin-left: 1380px">
-        <div class="img1" @click="goToBackStage()">
-          <img src="https://lanhu.oss-cn-beijing.aliyuncs.com/FigmaDDSSlicePNG53f1be56e3d17850952ac8c7abc9a70b.png" alt="">
-        </div>
+      <div style="display: flex;margin-left: 1360px">
         <div class="img2" @click="goToLogin()">
-          <img src="https://lanhu.oss-cn-beijing.aliyuncs.com/FigmaDDSSlicePNGd856cfe424fa8f47bf7b1c0b388ba05f.png" alt="">
+          <img src="../../images/user.png" style="scale: 0.3;margin-top: -75px;margin-left: -40px" alt="">
         </div>
       </div>
     </div>
@@ -20,31 +17,26 @@
 </template>
 
 <script>
-  export default {
-    methods:{
-      goToBackStage(){
-        this.$router.push({
-          name: "BackStage"
-        })
-      },
-      goToLogin(){
-        this.$router.push({
-          name:"Login"
-        })
-      }
+export default {
+  methods:{
+    goToLogin(){
+      this.$router.push({
+        name:"Login"
+      })
     }
   }
+}
 </script>
 
 <style scoped>
 .header{
   width: 100%;
   height: 86px;
-  background: #2243BA;
+  background: linear-gradient(225deg, #2243BA 0%, #4A6BE5 39%, #8E54EC 100%);
   display: flex;
 }
 .header h1{
-  width: 230px;
+  width: 288px;
   height: 50px;
   font-size: 36px;
   font-family: PingFang SC-Heavy, PingFang SC;
@@ -54,15 +46,8 @@
   margin-left: 39px;
   padding-top: 18px;
 }
-.img1 {
-  margin-top: 20px;
-}
-.img1 :hover{
-  cursor: pointer;
-}
 .img2 {
   margin-top: 20px;
-  margin-left: 30px;
 }
 .img2 :hover{
   cursor: pointer;

@@ -129,7 +129,7 @@
 
     <div class="main_center">
       <div>
-        <el-table :data="tableData" style="width: 100%; font-size: 20px;margin-top: 20px;" :header-cell-style="{background:'rgba(43,86,249,0.2)', color:'#000000', height:'64px',padding:'17px'}">
+        <el-table :data="tableData" stripe style="width: 100%; font-size: 20px;margin-top: 20px;" :header-cell-style="{background:'rgba(43,86,249,0.2)', color:'#000000', height:'64px',padding:'17px'}">
           <el-table-column label="标题名" width="388">
             <template #default="scope">
               <div style="display: flex; align-items: center">

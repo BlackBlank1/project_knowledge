@@ -52,25 +52,63 @@ const router = createRouter({
       component: () => import('../views/Q&A/FileQ&A.vue')
     },
     {
-      path: '/Preview',
-      name: 'Preview',
-      component: () => import('../views/Preview.vue')
+      path: '/DocPreview',
+      name: 'DocPreview',
+      component: () => import('../views/Preview/DocPreview.vue')
     },
     {
-      path: '/MainPage',
-      name: 'MainPage',
-      component: () => import('../views/MainPage.vue'),
+      path: '/FilePreview',
+      name: 'FilePreview',
+      component: () => import('../views/Preview/FilePreview.vue')
+    },
+    {
+      path: '/index',
+      name: 'index',
+      component: () => import('../components/MainPage/MainPage_Preview/Doc_MainPage_Preview.vue')
+    },
+    {
+      path: '/Doc_MainPage',
+      name: 'Doc_MainPage',
+      component: () => import('../views/MainPage/Doc_MainPage.vue'),
       redirect:'/MainPage_Default',
       children:[
         {
           path: '/Main_Search',
           name: 'Main_Search',
-          component: () => import('../components/MainPage/Main_Search.vue')
+          component: () => import('../components/MainPage/MainPage_Search/Doc_MainPage_Search.vue')
         },
         {
           path: '/MainPage_Default',
           name: 'MainPage_Default',
-          component: () => import('../components/MainPage/MainPage_Default.vue')
+          component: () => import('../components/MainPage/Default/Doc_MainPage_Default.vue')
+        },
+        {
+          path: '/Doc_MainPage_Preview',
+          name: 'Doc_MainPage_Preview',
+          component: () => import('../components/MainPage/MainPage_Preview/Doc_MainPage_Preview.vue')
+        },
+      ]
+    },
+    {
+      path: '/File_MainPage',
+      name: 'File_MainPage',
+      component: () => import('../views/MainPage/File_MainPage.vue'),
+      redirect:'/FileMainPage_Default',
+      children:[
+        {
+          path: '/File_MainPage_Search',
+          name: 'File_MainPage_Search',
+          component: () => import('../components/MainPage/MainPage_Search/File_MainPage_Search.vue')
+        },
+        {
+          path: '/FileMainPage_Default',
+          name: 'FileMainPage_Default',
+          component: () => import('../components/MainPage/Default/FileMainPage_Default.vue')
+        },
+        {
+          path: '/File_MainPage_Preview',
+          name: 'File_MainPage_Preview',
+          component: () => import('../components/MainPage/MainPage_Preview/File_MainPage_Preview.vue')
         },
       ]
     }

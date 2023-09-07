@@ -81,7 +81,7 @@
 
       <!-- 表格主体 -->
       <el-main>
-        <el-table :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)" style="width: 100%; font-size: 20px;" :header-cell-style="{background:'rgba(43,86,249,0.2)', color:'#000000', height:'64px',padding:'17px'}">
+        <el-table :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)" stripe style="width: 100%; font-size: 20px;" :header-cell-style="{background:'rgba(43,86,249,0.2)', color:'#000000', height:'64px',padding:'17px'}">
           <el-table-column v-if="multiple_selected" type="selection" style="margin-left: 100px;"></el-table-column>
           <el-table-column label="用户名" width="294">
             <template #default="scope">
