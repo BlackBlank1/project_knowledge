@@ -42,7 +42,7 @@
 import {reactive, onMounted, computed, provide} from "vue";
 import VuePdfEmbed from "vue-pdf-embed";
 import { createLoadingTask } from "vue3-pdfjs"; // 获得总页数
-import pdfurl from '../../pdf/Nginx.pdf';
+import pdfurl from '../../pdf/FSAC赛车横向控制系统设计与研究_李金畅.pdf';
 import {ArrowLeft, ArrowRight, Minus, Plus} from "@element-plus/icons-vue";
 import * as pdfjsLib from "pdfjs-dist";
 import mitt from "@/utils/mitt";
@@ -134,7 +134,7 @@ onMounted(() => {
 </script>
 
 <style>
-.go_page .el-input__wrapper .el-input__inner {
+.pdf-preview .go_page .el-input__wrapper .el-input__inner {
   text-align: center;
 }
 </style>

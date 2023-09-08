@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="UserManager">
     <el-container>
       <div class="main_header">
         <el-header style="margin-left: 20px">用户管理</el-header>
@@ -528,11 +528,10 @@ export default {
   margin-left: 135px;
   padding-top: 18px;
 }
-.main{
+.UserManager{
   width: 1900px;
   height: 974px;
   background: #FFFFFF;
-  border-radius: 0px 0px 0px 0px;
   opacity: 1;
   margin-left: 10px;
   margin-top: 5px;
@@ -596,8 +595,8 @@ span{
 }
 </style>
 
-<style scoped>
-.el-message-box{
+<style>
+.UserManager .el-message-box{
   width: 513px;
   height: 218px;
   background: #FFFFFF;
@@ -605,7 +604,7 @@ span{
   opacity: 1;
 }
 
-.el-message-box__btns .el-button{
+.UserManager .el-message-box__btns .el-button{
   width: 60px;
   height: 34px;
   background: #FFFFFF;
@@ -614,7 +613,7 @@ span{
   border: 1px solid #DDDFE5;
   margin-top: 27px;
 }
-.el-message-box__btns .el-button--primary{
+.UserManager .el-message-box__btns .el-button--primary{
   width: 60px;
   height: 34px;
   background: #2B56F9;
@@ -624,7 +623,7 @@ span{
   margin-top: 27px;
 }
 
-.el-message-box__container{
+.UserManager .el-message-box__container{
   height: 22px;
   font-size: 24px;
   font-family: PingFang SC-Medium, PingFang SC;
@@ -634,15 +633,15 @@ span{
   margin-top: 40px;
 }
 
-.el-pagination{
+.UserManager .el-pagination{
   float: right;
 }
 
-.el-pager{
+.UserManager .el-pager{
   height: 50px;
 }
 
-.el-pager li.number{
+.UserManager .el-pager li.number{
   width: 50px;
   height: 50px;
   box-shadow: 0px 1px 6px 0px rgba(0,0,0,0.2);
@@ -650,7 +649,7 @@ span{
   opacity: 1;
 }
 
-.el-message-box__title{
+.UserManager .el-message-box__title{
   width: 48px;
   height: 22px;
   font-size: 24px;
@@ -660,23 +659,23 @@ span{
   line-height: 22px;
 }
 
-.el-checkbox{
+.UserManager .el-checkbox{
   zoom: 200%;
 }
 
-.el-checkbox__inner{
+.UserManager .el-checkbox__inner{
   background-color: #FFFFFF;
   margin-left: -5px;
 }
 
-.exit{
+.UserManager .exit{
   width: 52px;
   height: 54px;
   border-radius: 0px 0px 0px 0px;
   opacity: 1;font-size: 70px; margin-left: 20px; margin-top: 12px;
 }
 
-.exit:hover{
+.UserManager .exit:hover{
   cursor: pointer;
 }
 

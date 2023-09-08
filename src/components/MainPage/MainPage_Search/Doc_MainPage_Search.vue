@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="Doc_MainPage_Search">
     <div class="main_header">
       <div style="margin-top: 8px;margin-left: 209px;display: flex;flex-direction: row">
         <div @click="switchToFileSearch()" class="file_search" :class="{ active: selectedContentType === 'doc_search' }">
@@ -132,7 +132,7 @@ export default {
 </script>
 
 <style scoped>
-  .main{
+  .Doc_MainPage_Search{
     width: 1920px;
     height: 994px;
   }

@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="FileManager">
     <div class="h">文件管理</div>
     <div style="width: 1860px;height: 128px;">
 
@@ -136,7 +136,7 @@ export default {
   margin: 0;
   padding: 0;
 }
-.main{
+.FileManager{
   width: 1900px;
   height: 1024px;
   background: #FFFFFF;

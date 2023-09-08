@@ -1,5 +1,5 @@
 <template>
-  <div style="display: flex; flex-wrap: wrap;height: 1080px">
+  <div style="" class="FileQA">
     <div style="width: 1920px;height: 86px">
       <File_Header></File_Header>
     </div>
@@ -273,7 +273,11 @@ export default {
 
 
 
-<style>
+<style scoped>
+.FileQA {
+  display: flex; flex-wrap: wrap;height: 1080px
+}
+
 .center_frame {
   max-width: 1085px; /* 设置聊天框的最大宽度 */
   width: 1085px;
@@ -349,11 +353,6 @@ export default {
   opacity: 1;
 }
 
-.el-divider.el-divider--horizontal {
-  margin-bottom: 12px;
-  margin-top: 0;
-}
-
 .img1 {
   margin-top: 20px;
 }
@@ -366,11 +365,6 @@ export default {
 }
 .img2 :hover{
   cursor: pointer;
-}
-
-.center_frame i.el-icon.el-input__icon {
-  color: #5A22B5;
-  font-size: 24px;
 }
 
 .chat_list {
@@ -390,5 +384,16 @@ export default {
 }
 .chat_list.selected {
   background: rgba(206,189,233,0.85);
+}
+</style>
+
+<style>
+.FileQA .el-divider.el-divider--horizontal {
+  margin-bottom: 12px;
+  margin-top: 0;
+}
+.FileQA .center_frame i.el-icon.el-input__icon {
+  color: #5A22B5;
+  font-size: 24px;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="center">
+  <div class="Doc_MainPage_Default">
     <div style="margin-top: 79px;margin-left: 345px;display: flex;flex-direction: row">
       <div @click="switchToFileSearch()" class="file_search" :class="{ active: selectedContentType === 'doc_search' }">
         <div style="margin: 6px;font-size: 16px;">
@@ -232,13 +232,13 @@ export default {
 
 <style>
 /* 通过类选择器来定位Switch组件 */
-.custom-switch .el-switch__core {
+.Doc_MainPage_Default .custom-switch .el-switch__core {
   width: 112px;
   height: 32px;
   border-radius: 4px 4px 4px 4px;
 }
 
-.custom-switch .el-switch__core .el-switch__action {
+.Doc_MainPage_Default .custom-switch .el-switch__core .el-switch__action {
   width: 20px;
   height: 28px;
   background: #FFFFFF;
@@ -247,7 +247,7 @@ export default {
 </style>
 
 <style scoped>
-.center {
+.Doc_MainPage_Default {
   width: 1898px;
   height: 299px;
   margin-top: 16px;

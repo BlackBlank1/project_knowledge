@@ -1,5 +1,5 @@
 <template>
-  <div style="display: flex; flex-wrap: wrap;height: 1080px">
+  <div style="" class="DocQA">
     <div style="width: 1920px;height: 86px">
       <Doc_Header></Doc_Header>
     </div>
@@ -96,6 +96,7 @@
 <script>
 import {ChatLineRound, Delete, Promotion, Search, VideoPause} from "@element-plus/icons-vue";
 import Doc_Header from "@/components/Headers/Doc_Header.vue";
+import {reqList} from "@/api";
 
 export default {
     computed: {
@@ -167,8 +168,9 @@ export default {
         isRefresh: false,
         current_date:"",
         selectedItem: null,
+        answer: "",
       }
-    },
+    },  
 
     mounted() {
       if (window.performance.navigation.type === 1) {
@@ -191,10 +193,19 @@ export default {
       },
       sendMessage() {
         if (this.inputText.trim()) {
+          let data = {
+            "question": this.inputText,
+            "pdf_name":"Frenet坐标系及凸近似...障原理的无人车局部路径规划_袁春.pdf"
+          }
+          reqList(data).then((res) => {
+            this.answer = res.answer;
+            console.log(res)
+          })
+
           this.messages.push({
             "date": this.getDate(),
             "text": this.inputText,
-            "answer": "针对当前装甲部队装备维修保障方案中对大规模、成体系无人机保障的针对性措施不够明确,不利于地面突击作战中无人机蜂群更好地发挥其作用,进而制约了“ 蜂甲一体” 作战体系释放效能的问题,提出“ 蜂甲一体”作战无人机装备维修保障方案构想,依据无人机系统装备特点......",
+            "answer": this.answer,
           })
           // 从LocalStorage中获取已有数据
           let existingData = localStorage.getItem('messageData');
@@ -274,7 +285,11 @@ export default {
 
 
 
-<style>
+<style scoped>
+.DocQA {
+  display: flex; flex-wrap: wrap;height: 1080px
+}
+
 .center_frame {
   max-width: 1085px; /* 设置聊天框的最大宽度 */
   width: 1085px;
@@ -350,11 +365,6 @@ export default {
     opacity: 1;
   }
 
-  .el-divider.el-divider--horizontal {
-    margin-bottom: 12px;
-    margin-top: 0;
-  }
-
   .img1 {
     margin-top: 20px;
   }
@@ -367,11 +377,6 @@ export default {
   }
   .img2 :hover{
     cursor: pointer;
-  }
-
-  .center_frame i.el-icon.el-input__icon {
-    color: #2243BA;
-    font-size: 24px;
   }
 
   .chat_list {
@@ -392,4 +397,16 @@ export default {
   .chat_list.selected {
     background: #CBD5FF;
   }
+</style>
+
+<style>
+.DocQA .center_frame i.el-icon.el-input__icon {
+  color: #2243BA;
+  font-size: 24px;
+}
+
+.DocQA .el-divider.el-divider--horizontal {
+  margin-bottom: 12px;
+  margin-top: 0;
+}
 </style>

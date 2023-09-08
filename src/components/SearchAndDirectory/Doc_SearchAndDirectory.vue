@@ -18,12 +18,13 @@
     <div style="margin-top: 27px">
       <div v-if="showFullTextContent" style="display: flex; flex-direction: column">
         <div>
-          <el-input v-model="input" style="width: 225px;
+          <el-input @keyup.enter.native="search" v-model="input" style="width: 225px;
             height: 34px;
             background: #F2F3F5;
             border-radius: 4px 4px 4px 4px;
             opacity: 1;
-            border: 1px solid #DDDFE5;margin-right: 10px; margin-left: 10px"></el-input>
+            border: 1px solid #DDDFE5;margin-right: 10px; margin-left: 10px"
+           placeholder="请输入要查找的内容"></el-input>
         </div>
         <div :data="searchData" style="display: flex;flex-direction: column">
           <div style="margin-left: 17px;margin-top: 20px">
@@ -65,6 +66,7 @@
 import {Close, Message, Setting} from "@element-plus/icons-vue";
 import {inject} from "vue";
 import mitt from "@/utils/mitt.js"
+import {reqPage} from "@/api";
 
 export default {
   components: {Close, Setting, Message},
@@ -106,6 +108,11 @@ export default {
     },
     go_to_page(pageNum){
       mitt.emit("go_pageNum", pageNum)
+    },
+    search(){
+      reqPage("Frenet坐标系及凸近似...障原理的无人车局部路径规划_袁春.pdf",this.input).then((res) => {
+        console.log(res)
+      })
     }
   },
   mounted() {

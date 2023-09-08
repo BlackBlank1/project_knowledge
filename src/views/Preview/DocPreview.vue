@@ -1,5 +1,5 @@
 <template>
-  <div style="display: flex; flex-wrap: wrap">
+  <div class="DocPreview">
     <div style="width: 1920px;height: 86px">
       <Doc_Header></Doc_Header>
     </div>
@@ -147,13 +147,18 @@ export default defineComponent({
 </script>
 
 <style>
-i.el-icon.el-input__icon {
+.DocPreview i.el-icon.el-input__icon {
   color: #2243BA;
   font-size: 18px;
 }
 </style>
 
 <style scoped>
+.DocPreview {
+  display: flex;
+  flex-wrap: wrap
+}
+
 .active {
   border-bottom: 2px solid blue;
 }

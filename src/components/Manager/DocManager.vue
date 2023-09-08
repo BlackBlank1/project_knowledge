@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="DocManager">
     <div class="main_header">
       <el-header style="margin-left: 20px">用户管理</el-header>
       <hr>
@@ -573,7 +573,7 @@ hr{
   cursor: pointer;
 }
 
-.main{
+.DocManager{
   width: 1900px;
   height: 974px;
   background: #FFFFFF;
@@ -587,22 +587,6 @@ hr{
 
 .main_footer{
   margin-top: 100px;
-}
-
-.el-pagination{
-  float: right;
-}
-
-.el-pager{
-  height: 50px;
-}
-
-.el-pager li.number{
-  width: 50px;
-  height: 50px;
-  box-shadow: 0px 1px 6px 0px rgba(0,0,0,0.2);
-  border-radius: 4px 4px 4px 4px;
-  opacity: 1;
 }
 
 .main_center span{
@@ -641,5 +625,23 @@ hr{
   color: rgba(0,0,0,0.85);
   line-height: 22px;
   margin-top: -30px;
+}
+</style>
+
+<style>
+.DocManager .el-pagination{
+  float: right;
+}
+
+.DocManager .el-pager{
+  height: 50px;
+}
+
+.DocManager .el-pager li.number{
+  width: 50px;
+  height: 50px;
+  box-shadow: 0px 1px 6px 0px rgba(0,0,0,0.2);
+  border-radius: 4px 4px 4px 4px;
+  opacity: 1;
 }
 </style>
