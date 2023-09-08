@@ -5,7 +5,7 @@
     </div>
     <div class="main">
       <div class="left_frame">
-        <SearchAndDirectory></SearchAndDirectory>
+        <Doc_SearchAndDirectory></Doc_SearchAndDirectory>
       </div>
       <div class="center_frame">
         <DocPDF pdf-url="../pdf/Nginx.pdf"></DocPDF>
@@ -60,7 +60,7 @@ import {Promotion} from "@element-plus/icons-vue";
 import {defineComponent} from "vue";
 // import pdf from "@/views/pdf.vue";
 import DocPDF from "@/components/PDFShow/DocPDF.vue";
-import SearchAndDirectory from "@/components/SearchAndDirectory.vue";
+import Doc_SearchAndDirectory from "@/components/SearchAndDirectory/Doc_SearchAndDirectory.vue";
 import Doc_Header from "@/components/Headers/Doc_Header.vue"
 
 export default defineComponent({
@@ -70,7 +70,7 @@ export default defineComponent({
     }
   },
   components:{
-    DocPDF, SearchAndDirectory, Doc_Header
+    DocPDF, Doc_SearchAndDirectory, Doc_Header
   },
   data(){
     return {

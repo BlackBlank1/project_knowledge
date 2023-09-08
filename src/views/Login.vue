@@ -91,14 +91,13 @@ import { ElMessage } from 'element-plus'
     .login_frame{
         width: 1920px;
         height: 1080px;
-        background-image: url("login.png");
+        background-image: url("../images/login.png");
         background-size: 100%;
     }
     .login{
         width: 664px;
         height: 483px;
         background: #FFFFFF;
-        border-radius: 0px 0px 0px 0px;
         margin-left: 1116px;
         top:305px;
         position: relative;

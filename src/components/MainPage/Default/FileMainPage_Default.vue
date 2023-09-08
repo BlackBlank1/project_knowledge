@@ -54,7 +54,7 @@
           <el-divider border-style="double" />
           <div style="height: 200px; width: 1111px;">
             <div style="display: flex;flex-direction: row">
-              <div>
+              <div @click="goToSearch()" style="cursor: pointer">
                 <h3>{{item.title}}</h3>
               </div>
               <div style="margin-left: 18px;width: 54px;
@@ -77,7 +77,7 @@
             <div style="height: 104px; margin-top: 12px; margin-left: 10px">
               {{item.content}}
             </div>
-            <div style="float: right;margin-top: 12px;color: #2243BA;">
+            <div style="float: right;margin-top: 12px;color: #5A22B5;">
               {{item.cite_count}}
             </div>
           </div>
@@ -192,9 +192,7 @@ export default {
       ]
     };
     myChart.setOption(option);
-
   },
-
   methods:{
     switchToAIQA(){
       this.selectedContentType = "file_Q&A";
@@ -218,6 +216,11 @@ export default {
     switch_model(){
       this.$router.push({
         name:"Doc_MainPage"
+      })
+    },
+    goToSearch(){
+      this.$router.push({
+        name:"File_MainPage_Search"
       })
     }
   }

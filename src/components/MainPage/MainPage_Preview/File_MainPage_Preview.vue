@@ -5,8 +5,15 @@
         <el-col :span="16">
           <el-card class="card-box">
             <div class="center-container">
-              <div class="paper-title">
-                {{ paperTitle }}
+              <div style="display: flex;flex-direction: row">
+                <div class="paper-title">
+                  {{ paperTitle }}
+                </div>
+                <div style="text-align: center; width: 54px; height: 20px; border: #5A22B5 1px solid;
+                 border-radius: 3px 3px 3px 3px;background: rgba(90,34,181,0.1);
+                  margin-top: 10px;margin-left: 20px;color: #5A22B5">
+                  文件
+                </div>
               </div>
               <div class="author">
                 {{ author }}
@@ -50,7 +57,7 @@
               <span class="text_15">文献图谱</span>
             </div>
             <div class="flex-row">
-              <hr class="hr-solid-blue" style="width: 170px; background-color: blue;">
+              <hr class="hr-solid-blue" style="width: 170px; background-color: #894AEE;">
               <hr class="hr-solid" style="background: #ccccd1;">
             </div>
             <div style="display: flex; justify-content: center">
@@ -65,12 +72,12 @@
               <span class="text_15">参考文献</span>
             </div>
             <div class="flex-row" style="margin-bottom: 20px">
-              <hr class="hr-solid-blue" style="width: 170px; background-color: blue;">
+              <hr class="hr-solid-blue" style="width: 170px; background-color: #894AEE;">
               <hr class="hr-solid" style="background: #ccccd1;">
             </div>
             <div v-for="item in referenceList">
               <div class="section_8 flex-col">
-              <span class="text_17">
+              <span class="text_17" @click="goToSearch()">
                 {{ item.paperTitle }}
               </span>
                 <div class="text-wrapper_7 flex-row justify-between">
@@ -193,6 +200,11 @@ export default {
     goToPreview(){
       this.$router.push({
         name:"FilePreview"
+      })
+    },
+    goToSearch(){
+      this.$router.push({
+        name:"File_MainPage_Search"
       })
     }
   }
@@ -495,6 +507,7 @@ body * {
   font-size: 20px;
   font-weight: 700;
   line-height: 22px;
+  cursor: pointer;
 }
 
 .text-wrapper_7 {
@@ -536,7 +549,7 @@ body * {
 
 .text_21 {
   overflow-wrap: break-word;
-  color: rgba(0, 0, 0, 0.8);
+  color: #5A22B5;
   font-size: 16px;
   font-family: PingFang SC-Medium;
   font-weight: 500;

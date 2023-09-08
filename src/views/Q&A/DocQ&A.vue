@@ -67,7 +67,7 @@
           <div style="margin-left: 11px" v-for="item in literature_data">
             <el-divider border-style="double" />
             <div style="height: 213px; width: 491px;">
-              <div>
+              <div style="cursor: pointer" @click="goToSearch()">
                 <h3>{{item.title}}</h3>
               </div>
               <div style="margin-top: 12px; display: flex; flex-wrap: wrap; margin-left: 10px">
@@ -81,7 +81,7 @@
               <div style="height: 104px; margin-top: 12px; margin-left: 10px">
                 {{item.content}}
               </div>
-              <div style="float: right;margin-top: 12px">
+              <div style="float: right;margin-top: 12px;color: #2243BA">
                 {{item.cite_count}}
               </div>
             </div>
@@ -254,6 +254,11 @@ export default {
         if (this.$refs.centerFrame) {
           this.$refs.centerFrame.scrollTop = this.$refs.centerFrame.scrollHeight;
         }
+      },
+      goToSearch(){
+        this.$router.push({
+          name:"Main_Search"
+        })
       },
     },
     watch: {

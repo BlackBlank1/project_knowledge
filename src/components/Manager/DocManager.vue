@@ -42,8 +42,8 @@
                     border-radius: 4px 4px 4px 4px;
                     opacity: 1;
                     border: 1px solid #DDDFE5; margin-left: 18px;margin-top: 20px;" placeholder="请输入标题" />
-        <el-button @click="LocalSearch()" type="primary" style="margin-left: 18px;margin-top: 20px;">搜索</el-button>
-        <el-button style="margin-top: 20px;" @click="allClear()">重置</el-button>
+        <el-button @click="LocalSearch()" type="primary" style="background: #2B56F9; margin-left: 18px;margin-top: 20px;width: 50px">搜索</el-button>
+        <el-button style="margin-top: 20px;width: 50px;border: #F2F3F5 2px solid" @click="allClear()">重置</el-button>
       </div>
       <div>
         <div style="margin-top: 20px;margin-left: 1222px;">
@@ -486,7 +486,7 @@ export default{
 </script>
 
 
-<style>
+<style scoped>
 *{
   margin:0;
   padding:0;

@@ -596,7 +596,7 @@ span{
 }
 </style>
 
-<style >
+<style scoped>
 .el-message-box{
   width: 513px;
   height: 218px;

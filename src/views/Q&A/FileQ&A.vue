@@ -66,7 +66,7 @@
           <div style="margin-left: 11px" v-for="item in literature_data">
             <el-divider border-style="double" />
             <div style="height: 213px; width: 491px;">
-              <div>
+              <div style="cursor: pointer" @click="goToSearch()">
                 <h3>{{item.title}}</h3>
               </div>
               <div style="margin-top: 12px; display: flex; flex-wrap: wrap; margin-left: 10px">
@@ -254,6 +254,11 @@ export default {
         this.$refs.centerFrame.scrollTop = this.$refs.centerFrame.scrollHeight;
       }
     },
+    goToSearch(){
+      this.$router.push({
+        name:"File_MainPage_Search"
+      })
+    }
   },
   watch: {
     messageData() {

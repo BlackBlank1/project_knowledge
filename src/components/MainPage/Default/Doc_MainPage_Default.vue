@@ -54,7 +54,7 @@
           <el-divider border-style="double" />
           <div style="height: 200px; width: 1111px;">
             <div style="display: flex;flex-direction: row">
-              <div>
+              <div @click="goToSearch()" style="cursor: pointer;">
                 <h3>{{item.title}}</h3>
               </div>
               <div style="margin-left: 18px;width: 54px;
@@ -219,6 +219,11 @@ export default {
     switch_model(){
       this.$router.push({
         name:"File_MainPage"
+      })
+    },
+    goToSearch(){
+      this.$router.push({
+        name:"Main_Search"
       })
     }
   }

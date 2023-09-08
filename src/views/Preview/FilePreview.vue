@@ -5,13 +5,13 @@
     </div>
     <div class="main">
       <div class="left_frame">
-        <SearchAndDirectory></SearchAndDirectory>
+        <File_SearchAndDirectory></File_SearchAndDirectory>
       </div>
       <div class="center_frame">
         <FilePDF pdf-url="../pdf/Nginx.pdf"></FilePDF>
       </div>
       <div class="right_frame">
-        <div style="color: #2243BA;text-align: center; width: 65px;height: 34px; margin-left: 20px" :class="{ active: 'directory' === 'directory' }">
+        <div style="color: #5A22B5;text-align: center; width: 65px;height: 34px; margin-left: 20px" :class="{ active: 'directory' === 'directory' }">
           <div>AI辅读</div>
         </div>
         <div class="chat_frame" ref="centerFrame">
@@ -41,7 +41,7 @@
                 border: 1px solid rgba(0,0,0,0.05);margin-left: 10px"></el-input>
           </form>
         </div>
-        <div style="margin-left: 12px;color: #2243BA;margin-top: 10px;margin-bottom: -10px">
+        <div style="margin-left: 12px;color: #5A22B5;margin-top: 10px;margin-bottom: -10px">
           <h3>问题推荐</h3>
         </div>
         <div class="right_footer" v-for="item in text">
@@ -60,7 +60,7 @@ import {Promotion} from "@element-plus/icons-vue";
 import {defineComponent} from "vue";
 // import pdf from "@/views/pdf.vue";
 import FilePDF from "@/components/PDFShow/FilePDF.vue";
-import SearchAndDirectory from "@/components/SearchAndDirectory.vue";
+import File_SearchAndDirectory from "@/components/SearchAndDirectory/File_SearchAndDirectory.vue";
 import File_Header from "@/components/Headers/File_Header.vue"
 
 export default defineComponent({
@@ -70,7 +70,7 @@ export default defineComponent({
     }
   },
   components:{
-    FilePDF, SearchAndDirectory, File_Header
+    FilePDF, File_SearchAndDirectory, File_Header
   },
   data(){
     return {
@@ -148,14 +148,14 @@ export default defineComponent({
 
 <style>
 i.el-icon.el-input__icon {
-  color: #2243BA;
+  color: #5A22B5;
   font-size: 18px;
 }
 </style>
 
 <style scoped>
 .active {
-  border-bottom: 2px solid blue;
+  border-bottom: 2px solid #5A22B5;
 }
 
 .main {
@@ -202,7 +202,7 @@ i.el-icon.el-input__icon {
   width: 407px;
   height: 700px;
   background: #FFFFFF;
-  box-shadow: 2px 5px 11px -2px rgba(34,67,186,0.2);
+  box-shadow: 2px 5px 11px -2px #E6DEF4;
   overflow: auto;
 }
 
@@ -237,7 +237,7 @@ i.el-icon.el-input__icon {
   border-radius: 4px;
   padding: 5px;
   max-width: 60%;
-  background: #E5EAFF;
+  background: #E6DEF4;
   word-wrap: break-word;
   display: inline-block; /* 只显示到字数的长度 */
   margin-left: 20px;
