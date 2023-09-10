@@ -12,7 +12,7 @@
       </div>
       <div class="right_frame">
         <div class="right_frame_title" style="" :class="{ active: 'directory' === 'directory' }">
-          <div>AI辅读</div>
+          <div class="fd">AI辅读</div>
         </div>
         <div class="chat_frame" ref="centerFrame">
           <!-- 显示聊天消息的容器 -->
@@ -23,7 +23,7 @@
               </div>
               <div class="message-text">
                 <div class="answer-box">
-                  <vuetyped :strings="[message.answer]" :showCursor="false" :key="message.answer">
+                  <vuetyped :type-speed="2" :strings="[message.answer]" :showCursor="false" :key="message.answer">
                     <div class="typing" />
                   </vuetyped>
                 </div>
@@ -39,7 +39,7 @@
           <h3>问题推荐</h3>
         </div>
         <div class="right_footer" v-for="item in text">
-          <div @click="open_history(item)" class="footer_content" style="">
+          <div @click="open_history(item)" class="footer_content">
             {{item}}
           </div>
         </div>
@@ -117,12 +117,28 @@ export default defineComponent({
       }
     },
     open_history(text){
-      this.messages.push({
+      const date = Date.now();
+      let data = {
+        "question": text,
+        "pdf_name": this.pdf_title
+      }
+      const message = {
         "date": this.getDate(),
         "text": text,
-        "answer": "aaa",
+        "answer": "正在获取回答...",
+        "id": date,
+      };
+      this.messages.push(message);
+      reqSinglePaper(data).then((res) => {
+        // 获取到回答后，更新 message 对象的回答
+        this.messages.forEach((item) => {
+          if (item.id === date){
+            item.answer = res.answer;
+            console.log(item)
+          }
+        })
+        console.log(res);
       });
-      // this.messages = []
     },
     scrollToBottom() {
       if (this.$refs.centerFrame) {
@@ -153,7 +169,7 @@ export default defineComponent({
   width: 1920px;height: 86px
 }
 .right_frame_title{
-  color: #2243BA;text-align: center; width: 65px;height: 34px; margin-left: 20px
+  color: #2243BA;text-align: center; width: 65px;height: 34px; margin-left: 20px;
 }
 .message1{
   margin-top: 20px; display: flex;flex-direction: column
@@ -175,19 +191,24 @@ export default defineComponent({
 }
 .right_footer{
   width: 386px;
-  height: 32px;
+  height: 34px;
   background: #F2F3F5;
   border-radius: 4px 4px 4px 4px;
   opacity: 1;
   border: 1px solid #DDDFE5;
   margin-top: 25px;
   margin-left: 10px;
+  font-size: 14px;
 }
 
 .footer_content{
   cursor: pointer;
-  margin-top: 10px;
   margin-left: 5px;
+  display: flex;
+  flex-wrap: wrap;
+}
+.fd{
+  margin-top: 10px;
 }
 </style>
 
@@ -276,7 +297,7 @@ export default defineComponent({
   border-radius: 4px;
   padding: 5px;
   background: rgba(29,37,226,0.2);
-  max-width: 60%; /* 设置消息框的最大宽度 */
+  max-width: 50%; /* 设置消息框的最大宽度 */
   word-wrap: break-word; /* 如果字数过长，自动换行 */
   display: inline-block; /* 只显示到字数的长度 */
   margin-right: 20px;

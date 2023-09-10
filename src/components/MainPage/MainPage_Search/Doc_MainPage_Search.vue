@@ -47,7 +47,7 @@
               {{item.content}}
             </div>
             <div class="button_list" style="">
-              <el-button type="primary" style="background: #2B56F9;" @click="preview()">预览</el-button>
+              <el-button type="primary" style="background: #2B56F9;" @click="preview(item.title, item.name)">预览</el-button>
               <el-button @click="download()">下载</el-button>
             </div>
             <div class="content_cite" style="">
@@ -68,19 +68,22 @@ export default {
       input:"",
       literature_data: [{
         "title": "“蜂甲一体”作战中无人机装备维修保障方案构想",
+        "name":"a.pdf",
         "author": "陈卫/胡昆鹏",
         "date": "2023.01",
         "content": "针对当前装甲部队装备维修保障方案中对大规模、成体系无人机保障的针对性措施不够明确,不利于地面突击作战中无人机蜂群更好地发挥其作用,进而制约了“ 蜂甲一体” 作战体系释放效能的问题,提出“ 蜂甲一体”作战无人机装备维修保障方案构想,依据无人机系统装备特点......",
         "cite_count": "210被引用"
       }, {
-        "title": "“蜂甲一体”作战中无人机装备维修保障方案构想",
+        "title": "FSAC赛车横向控制系统设计与研究",
+        "name":"b.pdf",
         "author": "陈卫/胡昆鹏",
         "date": "2023.01",
         "content": "针对当前装甲部队装备维修保障方案中对大规模、成体系无人机保障的针对性措施不够明确,不利于地面突击作战中无人机蜂群更好地发挥其作用,进而制约了“ 蜂甲一体” 作战体系释放效能的问题,提出“ 蜂甲一体”作战无人机装备维修保障方案构想,依据无人机系统装备特点......",
         "cite_count": "210被引用"
       }, {
-        "title": "“蜂甲一体”作战中无人机装备维修保障方案构想",
-        "author": "陈卫/胡昆鹏",
+        "title": "“幻影”无人机设计",
+        "name":"c.pdf",
+        "author": "丁家虎",
         "date": "2023.01",
         "content": "针对当前装甲部队装备维修保障方案中对大规模、成体系无人机保障的针对性措施不够明确,不利于地面突击作战中无人机蜂群更好地发挥其作用,进而制约了“ 蜂甲一体” 作战体系释放效能的问题,提出“ 蜂甲一体”作战无人机装备维修保障方案构想,依据无人机系统装备特点......",
         "cite_count": "210被引用"
@@ -113,9 +116,11 @@ export default {
     download(){
 
     },
-    preview(){
+    preview(title, name){
+      localStorage.setItem("title", title)
+      localStorage.setItem("pdf_url", name)
       this.$router.push({
-        name:"Doc_MainPage_Preview"
+        name:"Doc_MainPage_Preview",
       })
     }
   }

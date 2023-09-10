@@ -43,7 +43,7 @@
               </div>
               <div class="button-box">
                 <div style="margin-right: 10px">
-                  <el-button type="primary" color="#894AEE" @click="goToPreview(paperTitle)">预览</el-button>
+                  <el-button type="primary" color="#894AEE" @click="goToPreview(paperTitle, name)">预览</el-button>
                 </div>
                 <div>
                   <el-button>下载</el-button>
@@ -111,7 +111,8 @@ export default {
   data() {
     return {
       items: [1, 2, 3],
-      paperTitle: '“蜂甲一体”作战中无人机装备维修保障方案构想_陈卫.pdf',
+      paperTitle: '“蜂甲一体”作战中无人机装备维修保障方案构想',
+      name:"“蜂甲一体”作战中无人机装备维修保障方案构想_陈卫.pdf",
       author: '陈卫/胡昆鹏',
       organization: '陆军炮兵防空兵学院',
       address: '安徽 合肥',
@@ -121,14 +122,16 @@ export default {
       publicationTime: '2023.01.16',
       referenceList: [
         {
-          paperTitle: '“蜂甲一体”作战中无人机装备维修保障方案构想',
+          paperTitle: 'FSAC赛车横向控制系统设计与研究',
+          name:"FSAC赛车横向控制系统设计与研究_李金畅.pdf",
           author: '陈卫/胡昆鹏',
           publicationTime: '2023.01.16',
           abstractContent: '针对当前装甲部队装备维修保障方案中对大规模、成体系无人机保障的针对性措施不够明确,不利于地面突击作战中无人机蜂更好地发挥其作用,进而制约了“&nbsp;蜂甲一体”&nbsp;作战体系释放效能的问题,提出“&nbsp;蜂甲一体”作战无人机装备维修保障方案构想,依据无人机系统装备特点、组织特点和作战特点,对方案制定各要素进行分析,可为地面突击作战中无人机装备保障方案的制定提供借鉴。',
           beCited: 30,
         },
         {
-          paperTitle: '“蜂甲一体”作战中无人机装备维修保障方案构想',
+          paperTitle: 'Frenet坐标系及凸近似...障原理的无人车局部路径规划',
+          name: 'Frenet坐标系及凸近似...障原理的无人车局部路径规划_袁春.pdf',
           author: '陈卫/胡昆鹏',
           publicationTime: '2023.01.16',
           abstractContent: '针对当前装甲部队装备维修保障方案中对大规模、成体系无人机保障的针对性措施不够明确,不利于地面突击作战中无人机蜂更好地发挥其作用,进而制约了“&nbsp;蜂甲一体”&nbsp;作战体系释放效能的问题,提出“&nbsp;蜂甲一体”作战无人机装备维修保障方案构想,依据无人机系统装备特点、组织特点和作战特点,对方案制定各要素进行分析,可为地面突击作战中无人机装备保障方案的制定提供借鉴。',
@@ -138,6 +141,7 @@ export default {
     }
   },
   mounted() {
+    this.paperTitle = localStorage.getItem("title")
     let myChart = echarts.init(document.getElementById('main'));
     console.log(graph)
     myChart.hideLoading();
@@ -199,10 +203,8 @@ export default {
     myChart.setOption(option);
   },
   methods:{
-    goToPreview(pdfTitle){
+    goToPreview(pdfTitle, name){
       reqGetPDF(pdfTitle).then((res) => {
-        localStorage.setItem("title", pdfTitle)
-        localStorage.setItem("pdf_url", res)
         this.$router.push({
           name:"FilePreview",
         })

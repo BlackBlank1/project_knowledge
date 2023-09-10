@@ -100,32 +100,32 @@ export default {
       Search() {
         return Search
       },
-      groupedMessageData() {
-        // 将messageData按照日期进行分组
-        const groupedData = {};
-
-        this.messageData.forEach(item => {
-          const date = item.date;
-          if (!groupedData[date]) {
-            groupedData[date] = [];
-          }
-          groupedData[date].push(item);
-        });
-        // 将分组后的数据按照日期排序
-        const sortedKeys = Object.keys(groupedData).sort().reverse();
-
-        // 构建最终的分组数据
-        const groupedMessageData = [];
-        sortedKeys.forEach(key => {
-          const group = {
-            date: key,
-            items: groupedData[key].reverse()
-          };
-          groupedMessageData.push(group);
-        });
-        console.log(groupedMessageData)
-        return groupedMessageData;
-      }
+      // groupedMessageData() {
+      //   // 将messageData按照日期进行分组
+      //   const groupedData = {};
+      //
+      //   this.messageData.forEach(item => {
+      //     const date = item.date;
+      //     if (!groupedData[date]) {
+      //       groupedData[date] = [];
+      //     }
+      //     groupedData[date].push(item);
+      //   });
+      //   // 将分组后的数据按照日期排序
+      //   const sortedKeys = Object.keys(groupedData).sort().reverse();
+      //
+      //   // 构建最终的分组数据
+      //   const groupedMessageData = [];
+      //   sortedKeys.forEach(key => {
+      //     const group = {
+      //       date: key,
+      //       items: groupedData[key].reverse()
+      //     };
+      //     groupedMessageData.push(group);
+      //   });
+      //   console.log(groupedMessageData)
+      //   return groupedMessageData;
+      // }
     },
     components: {Doc_Header, VideoPause, Delete, ChatLineRound, Search},
     data(){
@@ -158,7 +158,7 @@ export default {
         },],
         inputText: '',
         messages: [],
-        messageData: JSON.parse(localStorage.getItem('messageData')),
+        // messageData: JSON.parse(localStorage.getItem('messageData')),
         isRefresh: false,
         current_date:"",
         selectedItem: null,

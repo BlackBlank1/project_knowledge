@@ -14,9 +14,11 @@ export default defineConfig({
     }
   },
   server:{
+    host: '0.0.0.0',
+    port: 9600,
     proxy:{
       '/api':{
-        target:'http://192.168.20.220:5000',
+        target:'http://192.168.20.220:80',
         changeOrigin:true,
         rewrite:(path) => path.replace(/^\/api/, '')
       }

@@ -55,7 +55,7 @@ const props = defineProps({
 })
 
 const state = reactive({
-  source: props.pdfUrl, //预览pdf文件地址
+  source: 'http://192.168.20.220/' + localStorage.getItem("pdf_url"), //预览pdf文件地址
   pageNum: 1, //当前页面
   scale: '100%', // 缩放比例
   numPages: 0, // 总页数
@@ -117,6 +117,7 @@ onMounted(() => {
   loadingTask.promise.then(async () => {
     const pdf = await loadingTask.promise;
     state.numPages = pdf.numPages;
+    console.log(pdf.numPages)
 
     // const pdfDocument = await pdfjsLib.getDocument(state.source).promise;
     // const outline = await pdfDocument.getOutline();

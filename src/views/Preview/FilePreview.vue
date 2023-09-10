@@ -23,7 +23,7 @@
               </div>
               <div class="message-text">
                 <div class="answer-box">
-                  <vuetyped :strings="[message.answer]" :showCursor="false" :key="message.answer">
+                  <vuetyped :type-speed="2" :strings="[message.answer]" :showCursor="false" :key="message.answer">
                     <div class="typing" />
                   </vuetyped>
                 </div>
@@ -117,12 +117,28 @@ export default defineComponent({
       }
     },
     open_history(text){
-      this.messages.push({
+      const date = Date.now();
+      let data = {
+        "question": text,
+        "pdf_name": this.pdf_title
+      }
+      const message = {
         "date": this.getDate(),
         "text": text,
-        "answer": "aaa",
+        "answer": "正在获取回答...",
+        "id": date,
+      };
+      this.messages.push(message);
+      reqSinglePaper(data).then((res) => {
+        // 获取到回答后，更新 message 对象的回答
+        this.messages.forEach((item) => {
+          if (item.id === date){
+            item.answer = res.answer;
+            console.log(item)
+          }
+        })
+        console.log(res);
       });
-      // this.messages = []
     },
     scrollToBottom() {
       if (this.$refs.centerFrame) {
@@ -131,10 +147,9 @@ export default defineComponent({
     }
   },
   mounted() {
-    console.log(1111)
+    this.scrollToBottom();
     this.pdf_title = localStorage.getItem("title");
     console.log(localStorage.getItem("title"));
-    this.scrollToBottom();
     this.pdf_url = localStorage.getItem("pdf_url")
   },
   watch: {
@@ -278,7 +293,7 @@ export default defineComponent({
   border-radius: 4px;
   padding: 5px;
   background: rgba(29,37,226,0.2);
-  max-width: 60%; /* 设置消息框的最大宽度 */
+  max-width: 50%; /* 设置消息框的最大宽度 */
   word-wrap: break-word; /* 如果字数过长，自动换行 */
   display: inline-block; /* 只显示到字数的长度 */
   margin-right: 20px;

@@ -44,8 +44,8 @@ import VuePdfEmbed from "vue-pdf-embed";
 import { createLoadingTask } from "vue3-pdfjs"; // 获得总页数
 import pdfurl from '../../pdf/FSAC赛车横向控制系统设计与研究_李金畅.pdf';
 import {ArrowLeft, ArrowRight, Minus, Plus} from "@element-plus/icons-vue";
-import * as pdfjsLib from "pdfjs-dist";
-import mitt from "@/utils/mitt";
+// import * as pdfjsLib from "pdfjs-dist";
+import mitt from "../../utils/mitt.js";
 
 const props = defineProps({
   pdfUrl: {
@@ -55,7 +55,9 @@ const props = defineProps({
 })
 
 const state = reactive({
-  source: props.pdfUrl, //预览pdf文件地址
+  //静态资源加载路径
+  // source: 'http://192.168.20.220/' + encodeURIComponent(localStorage.getItem("pdf_url")), //预览pdf文件地址
+  source: 'http://192.168.20.220/' + localStorage.getItem("pdf_url"), //预览pdf文件地址
   pageNum: 1, //当前页面
   scale: '100%', // 缩放比例
   numPages: 0, // 总页数
@@ -113,17 +115,18 @@ function handleInput(){
 }
 
 onMounted(() => {
+  console.log(state.source)
   const loadingTask = createLoadingTask(state.source);
   loadingTask.promise.then(async () => {
     const pdf = await loadingTask.promise;
     state.numPages = pdf.numPages;
-
-    // const pdfDocument = await pdfjsLib.getDocument(state.source).promise;
-    // const outline = await pdfDocument.getOutline();
-    // state.outlineItems = outline || [];
-    // mitt.emit("data", state.outlineItems[0]);
-    // console.log(state.outlineItems[0])
-    // console.log(state.outlineItems[0].items[0].dest[0].num) // 目录的页码
+  //
+  //   // const pdfDocument = await pdfjsLib.getDocument(state.source).promise;
+  //   // const outline = await pdfDocument.getOutline();
+  //   // state.outlineItems = outline || [];
+  //   // mitt.emit("data", state.outlineItems[0]);
+  //   // console.log(state.outlineItems[0])
+  //   // console.log(state.outlineItems[0].items[0].dest[0].num) // 目录的页码
   });
   mitt.on("go_pageNum", (val) => {
     if (typeof val === "number") {
