@@ -1,17 +1,13 @@
 <template>
   <div class="header">
-    <div style="width: 100%; display: flex">
-      <div style="width: 68px;height: 66px;margin-top: -55px;margin-left: -20px">
-        <img src="../../images/logo.png" alt="" style="scale: 0.35;">
-      </div>
-      <div style="margin-left: 60px">
-        <h1>无人系统知识平台</h1>
-      </div>
-      <div style="display: flex;margin-left: 1360px">
-        <div class="img2" @click="goToLogin()">
-          <img src="../../images/user.png" style="scale: 0.3;margin-top: -75px;margin-left: -40px" alt="">
-        </div>
-      </div>
+    <div class="header_div1">
+      <img src="../../images/logo.png" alt="" class="div1_img">
+    </div>
+    <div class="header_div2">
+      <h1>无人系统知识平台</h1>
+    </div>
+    <div class="img2" @click="goToLogin()">
+      <img src="../../images/user.png" alt="" class="div1_img">
     </div>
   </div>
 </template>
@@ -30,27 +26,33 @@ export default {
 
 <style scoped>
 .header{
-  width: 100%;
+  width: 1920px;
   height: 86px;
   background: linear-gradient(225deg, #5A22B5 0%, #B691F3 63%, #3656CA 100%);
   display: flex;
 }
-.header h1{
-  width: 288px;
-  height: 50px;
-  font-size: 36px;
-  font-family: PingFang SC-Heavy, PingFang SC;
-  font-weight: 800;
-  color: #FFFFFF;
-  line-height: 42px;
-  margin-left: 39px;
-  padding-top: 18px;
-}
+
 .img2 {
   margin-top: 20px;
+  width: 50px;
+  height: 49px;
+  margin-left: 1413px
 }
 .img2 :hover{
   cursor: pointer;
 }
 
+.header_div1 {
+  width: 68px;height: 66px;margin-left: 37px;margin-top: 10px
+}
+
+.div1_img{
+  max-width: 100%;height: auto;
+}
+
+.header_div2 {
+  margin-left: 30px;width: 288px;height: 50px;color: #FFFFFF;font-size: 18px;margin-top: 15px
+}
+
 </style>
+

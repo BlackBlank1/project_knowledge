@@ -1,65 +1,56 @@
 <template>
   <div class="Doc_MainPage_Search">
     <div class="main_header">
-      <div style="margin-top: 8px;margin-left: 209px;display: flex;flex-direction: row">
+      <div class="header_frame" style="">
         <div @click="switchToFileSearch()" class="file_search" :class="{ active: selectedContentType === 'doc_search' }">
-          <div style="margin: 6px;font-size: 16px;">
+          <div class="title" style="">
             文献检索
           </div>
         </div>
         <div @click="switchToAIQA()" class="AI_QA" :class="{ active: selectedContentType === 'doc_Q&A' }">
-          <div style="margin: 6px;font-size: 16px;">
+          <div class="title">
             文献AI问答
           </div>
         </div>
       </div>
-      <div style="display: flex;flex-direction: row;width: 1208px;height: 47px;margin-top: 11px">
-        <div style="margin-left: 209px;">
-          <el-input v-model="input" :placeholder="input_text" style="width: 1065px;height: 47px;border-radius: 4px 4px 4px 4px;"></el-input>
+      <div class="center_input" style="">
+        <div class="input_frame" style="">
+          <el-input v-model="input" :placeholder="input_text" class="search_input" style=""></el-input>
         </div>
-        <div style="margin-left: 24px;margin-top: 3px">
-          <el-button type="primary" style="width: 138px;
-            height: 41px;
-            background: #2243BA;
-            border-radius: 4px 4px 4px 4px; margin-left: -20px;
-            " @click="search()">搜索</el-button>
+        <div class="button_frame" style="">
+          <el-button type="primary" class="button_search" style="" @click="search()">搜索</el-button>
         </div>
       </div>
     </div>
     <div class="content">
-      <div style="margin-top: -15px;">
-        <div style="margin-left: 147px" v-for="item in literature_data">
-          <el-divider border-style="double" style="width: 1625px"></el-divider>
-          <div style="height: 190px; width: 1625px;">
+      <div class="content_frame" style="">
+        <div class="content_div" style="" v-for="item in literature_data">
+          <el-divider border-style="double" class="content_hr" style=""></el-divider>
+          <div class="frame" style="">
             <div style="display: flex;flex-direction: row">
               <div>
                 <h3>{{item.title}}</h3>
               </div>
-              <div style="margin-left: 18px;width: 54px;
-                  height: 20px;
-                  background: rgba(34,67,186,0.1);
-                  border-radius: 3px 3px 3px 3px;
-                  border: 1px solid #2243BA;
-                  color: #2243BA;text-align: center;margin-top: 5px">
+              <div class="frame_title" style="">
                 文献
               </div>
             </div>
-            <div style="margin-top: 12px; display: flex; flex-wrap: wrap; margin-left: 10px">
+            <div class="content_author" style="">
               <div>
                 {{item.author}}
               </div>
-              <div style="margin-left: 20px">
+              <div class="content_date" style="">
                 {{item.date}}
               </div>
             </div>
-            <div style="height: 104px; margin-top: 12px; margin-left: 10px">
+            <div class="content_content" style="">
               {{item.content}}
             </div>
-            <div style="float: left;margin-top: -12px">
+            <div class="button_list" style="">
               <el-button type="primary" style="background: #2B56F9;" @click="preview()">预览</el-button>
               <el-button @click="download()">下载</el-button>
             </div>
-            <div style="float: right;margin-top: 12px;color: #2243BA;">
+            <div class="content_cite" style="">
               {{item.cite_count}}
             </div>
           </div>
@@ -130,6 +121,68 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.header_frame{
+  margin-top: 8px;margin-left: 209px;display: flex;flex-direction: row
+}
+.title{
+  margin: 6px;font-size: 16px;
+}
+.center_input{
+  display: flex;flex-direction: row;width: 1208px;height: 47px;margin-top: 11px
+}
+.input_frame{
+  margin-left: 209px;
+}
+.search_input{
+  width: 1065px;height: 47px;border-radius: 4px 4px 4px 4px;
+}
+.button_frame{
+  margin-left: 24px;margin-top: 3px
+}
+.button_search{
+  width: 138px;
+  height: 41px;
+  background: #2243BA;
+  border-radius: 4px 4px 4px 4px; margin-left: -20px;
+}
+.content_frame{
+  margin-top: -15px;
+}
+.content_div{
+  margin-left: 147px
+}
+.content_hr{
+  width: 1625px
+}
+.frame{
+  height: 190px; width: 1625px;
+}
+.frame_title{
+  margin-left: 18px;width: 54px;
+  height: 20px;
+  background: rgba(34,67,186,0.1);
+  border-radius: 3px 3px 3px 3px;
+  border: 1px solid #2243BA;
+  color: #2243BA;text-align: center;
+}
+.content_author{
+  margin-top: 12px; display: flex; flex-wrap: wrap; margin-left: 10px
+}
+.content_date{
+  margin-left: 20px
+}
+.content_content{
+  height: 104px; margin-top: 12px; margin-left: 10px
+}
+.button_list{
+  float: left;margin-top: -12px
+}
+.content_cite{
+  float: right;margin-top: 12px;color: #2243BA;
+}
+</style>
 
 <style scoped>
   .Doc_MainPage_Search{

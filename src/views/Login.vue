@@ -1,11 +1,10 @@
 <template>
     <div class="login_frame">
         <div class="login">
-            <h1 style="font-size: 48px; margin-left: 279px; height: 25px; padding-top: 63px;">登录</h1>
-            <el-input v-model="username" placeholder="请输入用户名" style="width: 512px;margin-left: 76px;margin-top: 110px;"></el-input>
-            <el-input type="password" v-model="password" placeholder="请输入密码" style="width: 512px;margin-left: 76px;margin-top: 20px;"></el-input>
-            <el-button type="primary" @click="Login()" style="width: 339px;height: 34px;background: #2B56F9;
-            border-radius: 4px 4px 4px 4px; border: 1px solid #2B56F9; margin-left: 158px;margin-top: 60px;">登录</el-button>
+            <h1 class="login_h">登录</h1>
+            <el-input class="login_input1" v-model="username" placeholder="请输入用户名"></el-input>
+            <el-input class="login_input2" type="password" v-model="password" placeholder="请输入密码"></el-input>
+            <el-button class="login_button" type="primary" @click="Login()">登录</el-button>
         </div>
     </div>
 </template>
@@ -88,6 +87,19 @@ import { ElMessage } from 'element-plus'
 </script>
 
 <style scoped>
+    .login_button{
+      width: 339px;height: 34px;background: #2B56F9;
+      border-radius: 4px 4px 4px 4px; border: 1px solid #2B56F9; margin-left: 158px;margin-top: 60px;
+    }
+    .login_h{
+      font-size: 48px; margin-left: 279px; height: 25px; padding-top: 63px;
+    }
+    .login_input1{
+      width: 512px;margin-left: 76px;margin-top: 110px;
+    }
+    .login_input2{
+      width: 512px;margin-left: 76px;margin-top: 20px;
+    }
     .login_frame{
         width: 1920px;
         height: 1080px;

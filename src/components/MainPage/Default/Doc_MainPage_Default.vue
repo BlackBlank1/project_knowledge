@@ -1,18 +1,18 @@
 <template>
   <div class="Doc_MainPage_Default">
-    <div style="margin-top: 79px;margin-left: 345px;display: flex;flex-direction: row">
+    <div class="Doc_MainPage_Default_header">
       <div @click="switchToFileSearch()" class="file_search" :class="{ active: selectedContentType === 'doc_search' }">
-        <div style="margin: 6px;font-size: 16px;">
+        <div class="header_div1">
           文献检索
         </div>
       </div>
       <div @click="switchToAIQA()" class="AI_QA" :class="{ active: selectedContentType === 'doc_Q&A' }">
-        <div style="margin: 6px;font-size: 16px">
+        <div class="header_div1">
           文献和AI问答
         </div>
       </div>
     </div>
-    <div style="float: right;margin-top: -90px; margin-right: 50px; width: 112px;height: 32px">
+    <div class="switch_button">
       <el-switch
           v-model="switch_value"
           inline-prompt
@@ -24,60 +24,51 @@
           active-value="1"
           inactive-value="0" @change="switch_model()"/>
     </div>
-    <div style="display: flex;flex-direction: row;width: 1208px;height: 47px;margin-top: 11px">
-      <div style="margin-left: 345px;">
-        <el-input v-model="input" :placeholder="input_text" style="width: 1065px;height: 47px"></el-input>
+    <div class="search_frame" style="">
+      <div class="search_frame_input">
+        <el-input v-model="input" :placeholder="input_text" class="search_input"></el-input>
       </div>
-      <div style="margin-left: 24px;margin-top: 3px">
-        <el-button type="primary" style="width: 138px;
-            height: 41px;
-            background: #2243BA;
-            border-radius: 4px 4px 4px 4px;
-            " @click="search()">搜索</el-button>
+      <div class="search_frame_button">
+        <el-button type="primary" class="search_button" @click="search()">搜索</el-button>
       </div>
     </div>
   </div>
-  <div style="height: 674px;width: 1898px; margin-top: 9px;margin-left: 12px;display: flex;flex-direction: row;background: rgb(241,243,244)">
+  <div class="footer" style="">
     <div class="left">
-      <div style="width: 170px; height: 63px;display: flex;flex-direction: row;border-bottom: 2px solid #2243BA;">
-        <div style="margin-top: 14px;scale: 0.3;margin-left: -20px;width: 80px;margin-top: -20px">
+      <div class="left_frame" style="">
+        <div class="left_img" style="">
           <img src="../../../images/ref_wenxian.png" alt="">
         </div>
         <div class="command_font">
-          <div style="margin-top: 20px">
+          <div class="command_font_title" style="">
             文献推荐
           </div>
         </div>
       </div>
-      <div style="margin-top: -24px;">
-        <div style="margin-left: 11px" v-for="item in literature_data">
+      <div class="left_div2" style="">
+        <div class="left_div2_content" style="" v-for="item in literature_data">
           <el-divider border-style="double" />
-          <div style="height: 200px; width: 1111px;">
+          <div class="content_frame" style="">
             <div style="display: flex;flex-direction: row">
               <div @click="goToSearch()" style="cursor: pointer;">
                 <h3>{{item.title}}</h3>
               </div>
-              <div style="margin-left: 18px;width: 54px;
-                  height: 20px;
-                  background: rgba(34,67,186,0.1);
-                  border-radius: 3px 3px 3px 3px;
-                  border: 1px solid #2243BA;
-                  color: #2243BA;text-align: center;margin-top: 5px">
+              <div class="content_frame_title" style="">
                 文献
               </div>
             </div>
-            <div style="margin-top: 12px; display: flex; flex-wrap: wrap; margin-left: 10px">
+            <div class="content_author" style="">
               <div>
                 {{item.author}}
               </div>
-              <div style="margin-left: 20px">
+              <div class="content_date" style="">
                 {{item.date}}
               </div>
             </div>
-            <div style="height: 104px; margin-top: 12px; margin-left: 10px">
+            <div class="content_content" style="">
               {{item.content}}
             </div>
-            <div style="float: right;margin-top: 12px;color: #2243BA;">
+            <div class="content_cite" style="">
               {{item.cite_count}}
             </div>
           </div>
@@ -85,19 +76,19 @@
       </div>
     </div>
     <div class="right">
-      <div style="width: 190px; height: 63px;display: flex;flex-direction: row;border-bottom: 2px solid #2243BA;">
-        <div style="margin-left: -20px;scale: 0.3;width: 100px;margin-bottom: 30px">
+      <div class="right_frame" style="">
+        <div class="right_frame_div1" style="">
           <img src="../../../images/wenxian_logo.png" alt="">
         </div>
         <div class="command_font">
-          <div style="margin-top: 20px">
+          <div class="command_font_div" style="">
             文献图谱
           </div>
         </div>
       </div>
       <!--  知识图谱   -->
       <div>
-        <div id="main" style="width: 745px;height:610px;"></div>
+        <div id="main" class="knowledge_img" style=""></div>
       </div>
     </div>
   </div>
@@ -247,6 +238,89 @@ export default {
 </style>
 
 <style scoped>
+.Doc_MainPage_Default_header{
+  margin-top: 79px;margin-left: 345px;display: flex;flex-direction: row
+}
+.header_div1{
+  margin: 6px;font-size: 16px;
+}
+.switch_button{
+  float: right;margin-top: -90px; margin-right: 50px; width: 112px;height: 32px
+}
+.search_frame{
+  display: flex;flex-direction: row;width: 1208px;height: 47px;margin-top: 11px
+}
+.search_frame_input{
+  margin-left: 345px;
+}
+.search_input{
+  width: 1065px;height: 47px
+}
+.search_frame_button{
+  margin-left: 24px;margin-top: 3px
+}
+.search_button{
+  width: 138px;
+  height: 41px;
+  background: #2243BA;
+  border-radius: 4px 4px 4px 4px;
+}
+.footer{
+  height: 674px;width: 1898px; margin-top: 9px;margin-left: 12px;display: flex;flex-direction: row;background: rgb(241,243,244)
+}
+.left_frame{
+  width: 170px; height: 63px;display: flex;flex-direction: row;border-bottom: 2px solid #2243BA;
+}
+.left_img{
+  margin-top: 14px;scale: 0.3;margin-left: -20px;width: 80px;margin-top: -20px
+}
+.command_font_title{
+  margin-top: 20px
+}
+.left_div2{
+  margin-top: -24px;
+}
+.left_div2_content{
+  margin-left: 11px
+}
+.content_frame{
+  height: 200px; width: 1111px;
+}
+.content_frame_title{
+  margin-left: 18px;width: 54px;
+  height: 20px;
+  background: rgba(34,67,186,0.1);
+  border-radius: 3px 3px 3px 3px;
+  border: 1px solid #2243BA;
+  color: #2243BA;text-align: center;margin-top: 5px
+}
+.content_author{
+  margin-top: 12px; display: flex; flex-wrap: wrap; margin-left: 10px
+}
+.content_date{
+  margin-left: 20px
+}
+.content_content{
+  height: 104px; margin-top: 12px; margin-left: 10px
+}
+.content_cite{
+  float: right;margin-top: 12px;color: #2243BA;
+}
+.right_frame{
+  width: 190px; height: 63px;display: flex;flex-direction: row;border-bottom: 2px solid #2243BA;
+}
+.right_frame_div1{
+  margin-left: -20px;scale: 0.3;width: 100px;margin-bottom: 30px
+}
+.command_font_div{
+  margin-top: 20px;
+}
+.knowledge_img{
+  width: 745px;height:610px;
+}
+</style>
+
+<style scoped>
 .Doc_MainPage_Default {
   width: 1898px;
   height: 299px;
@@ -303,7 +377,7 @@ export default {
 </style>
 
 <style>
-input.el-input__inner {
+.Doc_MainPage_Default input.el-input__inner {
   width: 1065px;
   height: 47px;
   font-size: 18px;

@@ -1,10 +1,28 @@
 import requests from "@/api/request";
 
-export const reqList = (data) => {
+export const reqSinglePaper = (data) => {
     return requests({
         url:"llm",
         method:"post",
         data:data,
+    })
+}
+
+export const reqAllQA = (data) => {
+    return requests({
+        url:"llm-knowledge-base",
+        method:"post",
+        data:data
+    })
+}
+
+export const reqGetPDF = (pdf_name) => {
+    return requests({
+        url:"get-pdf-file",
+        method:"get",
+        params:{
+            pdf_name:pdf_name
+        }
     })
 }
 

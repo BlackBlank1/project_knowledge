@@ -5,6 +5,7 @@ import 'element-plus/dist/index.css'
 import router from './router'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import vuetyped from 'vue3typed'
+import 'amfe-flexible';
 
 const app = createApp(App)
 app.use(ElementPlus)

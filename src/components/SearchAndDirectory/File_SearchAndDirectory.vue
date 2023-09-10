@@ -1,13 +1,13 @@
 <template>
-  <div class="main" style="display: flex;flex-direction: column; box-shadow: 2px 5px 11px -2px rgba(34,67,186,0.2);border: #F2F3F5 2px solid; margin-left: -8px">
+  <div class="File_SearchAndDirectory" style="">
     <div style="display: flex; flex-direction: row;" v-if="showDirectoryAndSearch">
       <div @click="showFullText" class="text_search" :class="{ active: selectedContentType === 'fullText' }">
-        <div style="margin-top: 6px">
+        <div class="title" style="">
           全文查找
         </div>
       </div>
       <div @click="showDirectory" class="directory" :class="{ active: selectedContentType === 'directory' }">
-        <div style="margin-top: 6px">
+        <div class="title" style="">
           目录
         </div>
       </div>
@@ -15,26 +15,22 @@
         <el-icon @click="close_all()"><Close /></el-icon>
       </div>
     </div>
-    <div style="margin-top: 27px">
+    <div class="main_frame" style="">
       <div v-if="showFullTextContent" style="display: flex; flex-direction: column">
         <div>
-          <el-input v-model="input" style="width: 225px;
-            height: 34px;
-            background: #F2F3F5;
-            border-radius: 4px 4px 4px 4px;
-            opacity: 1;
-            border: 1px solid #DDDFE5;margin-right: 10px; margin-left: 10px"></el-input>
+          <el-input @keyup.enter.native="search" class="main_input" v-model="input" style=""
+                    placeholder="请输入要查找的内容"></el-input>
         </div>
         <div :data="searchData" style="display: flex;flex-direction: column">
-          <div style="margin-left: 17px;margin-top: 20px">
+          <div class="appear_count" style="">
             {{searchData.appear_count}}
           </div>
           <div v-for="i in searchData.data" style="display: flex;flex-direction: column">
-            <div style="margin-top: 20px;margin-left: 18px">
+            <div class="appear_page" style="">
               {{i.appear_page}}
             </div>
-            <div style="margin-right: 6px;margin-left: 6px; margin-top: 10px;border-radius: 4px 4px 4px 4px;background: #CEBDE9;">
-              <div style="padding: 12px">
+            <div class="content_frame" style="">
+              <div class="content_content" style="">
                 {{i.content}}
               </div>
             </div>
@@ -60,6 +56,7 @@
     </div>
   </div>
 </template>
+
 
 <script>
 import {Close, Message, Setting} from "@element-plus/icons-vue";
@@ -116,7 +113,39 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.title{
+  margin-top: 6px
+}
+.main_frame{
+  margin-top: 27px
+}
+.main_input{
+  width: 225px;
+  height: 34px;
+  background: #F2F3F5;
+  border-radius: 4px 4px 4px 4px;
+  opacity: 1;
+  border: 1px solid #DDDFE5;margin-right: 10px; margin-left: 10px
+}
+.appear_count{
+  margin-left: 17px;margin-top: 20px
+}
+.appear_page{
+  margin-top: 20px;margin-left: 18px
+}
+.content_frame{
+  margin-right: 6px;margin-left: 6px; margin-top: 10px;border-radius: 4px 4px 4px 4px;background: #CEBDE9;
+}
+.content_content{
+  padding: 12px
+}
+</style>
+
+<style scoped>
+.File_SearchAndDirectory{
+  display: flex;flex-direction: column; box-shadow: 2px 5px 11px -2px rgba(34,67,186,0.2);border: #F2F3F5 2px solid; margin-left: -8px
+}
 .text_search {
   width: 80px;
   height: 34px;
@@ -146,16 +175,6 @@ export default {
   border-bottom: 2px solid #5A22B5;
 }
 
-.directory_list div.el-sub-menu__title {
-  height: 44px;
-  font-size: 14px;
-  font-weight: 500;
-  color: rgba(0,0,0,0.8);
-  line-height: 22px;
-}
-.directory_list div.el-sub-menu__title i{
-  margin-right: 210px;
-}
 .close_icon {
   margin-right: 11px;
   margin-left: 81px;
@@ -170,5 +189,18 @@ export default {
 }
 .directory_title :active {
   --text-color: #2B56F9;
+}
+</style>
+
+<style>
+.File_SearchAndDirectory .directory_list div.el-sub-menu__title {
+  height: 44px;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(0,0,0,0.8);
+  line-height: 22px;
+}
+.File_SearchAndDirectory .directory_list div.el-sub-menu__title i{
+  margin-right: 210px;
 }
 </style>

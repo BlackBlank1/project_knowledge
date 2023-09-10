@@ -4,7 +4,7 @@
       <div class="minus">
         <el-icon @click="pageZoomIn()"><Minus /></el-icon>
       </div>
-      <div style="width: 100px;margin-left: 16px">
+      <div class="page-tool-div1" style="">
         <el-select v-model="state.scale" class="m-2" placeholder="Select">
           <el-option
               v-for="item in options"
@@ -20,19 +20,19 @@
       <div class="page-tool-item" @click="lastPage"><el-icon><ArrowLeft /></el-icon></div>
       <div style="display: flex; flex-direction: row;">
         <div class="go_page">
-          <el-input v-model.number="state.pageNum" @input="handleInput" style="width: 60px;text-align: center"></el-input>
+          <el-input v-model.number="state.pageNum" @input="handleInput" class="go_page_input" style=""></el-input>
         </div>
-        <div style="margin-left: 10px; margin-top: 5px">
+        <div class="g" style="">
           /
         </div>
-        <div style="margin-left: 10px;margin-top: 5px">
+        <div class="numPage" style="">
           {{state.numPages}}
         </div>
       </div>
       <div class="page-tool-item" @click="nextPage"><el-icon><ArrowRight /></el-icon></div>
     </div>
     <div class="pdf-wrap">
-      <vue-pdf-embed :drag="true" style="box-shadow: 2px 2px 10px 7px rgba(34,67,186,0.2); " :source="state.source" :style="scaleFun" :page="state.pageNum" />
+      <vue-pdf-embed :drag="true" class="pdf_embed" style=" " :source="state.source" :style="scaleFun" :page="state.pageNum" />
     </div>
   </div>
 
@@ -55,7 +55,7 @@ const props = defineProps({
 })
 
 const state = reactive({
-  source: pdfurl, //预览pdf文件地址
+  source: props.pdfUrl, //预览pdf文件地址
   pageNum: 1, //当前页面
   scale: '100%', // 缩放比例
   numPages: 0, // 总页数
@@ -118,11 +118,11 @@ onMounted(() => {
     const pdf = await loadingTask.promise;
     state.numPages = pdf.numPages;
 
-    const pdfDocument = await pdfjsLib.getDocument(state.source).promise;
-    const outline = await pdfDocument.getOutline();
-    state.outlineItems = outline || [];
-    mitt.emit("data", state.outlineItems[0]);
-    console.log(state.outlineItems[0])
+    // const pdfDocument = await pdfjsLib.getDocument(state.source).promise;
+    // const outline = await pdfDocument.getOutline();
+    // state.outlineItems = outline || [];
+    // mitt.emit("data", state.outlineItems[0]);
+    // console.log(state.outlineItems[0])
     // console.log(state.outlineItems[0].items[0].dest[0].num) // 目录的页码
   });
   mitt.on("go_pageNum", (val) => {
@@ -132,6 +132,24 @@ onMounted(() => {
   })
 });
 </script>
+
+<style scoped>
+.page-tool-div1{
+  width: 100px;margin-left: 16px
+}
+.go_page_input{
+  width: 60px;text-align: center
+}
+.g{
+  margin-left: 10px; margin-top: 5px
+}
+.numPage{
+  margin-left: 10px;margin-top: 5px
+}
+.pdf_embed{
+  box-shadow: 2px 2px 10px 7px rgba(34,67,186,0.2);
+}
+</style>
 
 <style>
 .pdf-preview .go_page .el-input__wrapper .el-input__inner {

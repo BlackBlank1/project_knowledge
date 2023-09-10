@@ -1,27 +1,27 @@
 <template>
-  <div style="" class="FileQA">
-    <div style="width: 1920px;height: 86px">
+  <div class="FileQA">
+    <div class="FileQA_header">
       <File_Header></File_Header>
     </div>
     <div style="background: rgb(240,242,245);">
       <div class="main">
         <div class="left_frame">
-          <div style="margin-left: 9px; margin-top: 15px; margin-right: 9px">
+          <div class="left_frame_input">
             <el-input v-model="input" placeholder="请搜索历史问答" :prefix-icon="Search"></el-input>
           </div>
           <div v-for="item in groupedMessageData" class="list">
-            <div style="margin-top: 15px; margin-left: 9px; font-size: 16px;color: rgba(0,0,0,0.45);">
+            <div class="left_frame_date">
               {{ item.date }}
             </div>
             <div class="history">
               <div class="chat_list" :class="{ selected: selectedItem === i }"  v-for="i in item.items">
-                <div style="scale: 0.3;margin-bottom: 30px;padding-top: 3px; margin-top: 4px">
+                <div class="history_img">
                   <img src="../../images/talk.png" alt="">
                 </div>
-                <div style="margin-left: 11px;padding-top: 3px" @click="selectList(i, i.text)">
+                <div class="history_text" @click="selectList(i, i.text)">
                   {{filter_string(i.text)}}
                 </div>
-                <div style="margin-right: 5px;padding-top: 3px;display: flex; justify-content: flex-end;margin-top: 4px">
+                <div class="history_delete">
                   <el-icon @click="remove(i)"><Delete /></el-icon>
                 </div>
               </div>
@@ -31,13 +31,13 @@
         <div class="center_frame" ref="centerFrame">
           <!-- 显示聊天消息的容器 -->
           <div class="message-container">
-            <div v-for="message in messages" :key="message.date" style="margin-top: 20px; display: flex;flex-direction: column">
+            <div v-for="message in messages" :key="message.date" class="message">
               <div class="mine-text">
                 <div class="message-box">{{ message.text }}</div>
               </div>
               <div class="message-text">
                 <div class="answer-box">
-                  <vuetyped :strings="[message.answer]" :showCursor="false">
+                  <vuetyped :type-speed="2" :strings="[message.answer]" :showCursor="false" :key="message.answer">
                     <div class="typing"></div>
                   </vuetyped>
                 </div>
@@ -45,42 +45,37 @@
             </div>
           </div>
           <!-- 输入消息的表单 -->
-          <form @submit.prevent="sendMessage" style="margin-left: 140px; width: 806px; height: 47px;position: fixed;bottom: 0; margin-bottom: 30px">
-            <el-input v-model="inputText" placeholder="输入问题" :suffix-icon="Promotion" style="width: 806px;
-                height: 47px;
-                background: #F2F3F5;
-                box-shadow: 1px 1px 9px 2px rgba(90,34,181,0.2);
-                border-radius: 4px 4px 4px 4px;
-                border: 1px solid rgba(0,0,0,0.05);"></el-input>
+          <form @submit.prevent="sendMessage" class="sendMessage_input">
+            <el-input v-model="inputText" placeholder="输入问题" :suffix-icon="Promotion" class="send_input"></el-input>
           </form>
         </div>
         <div class="right_frame">
-          <div style="margin-left: 11px; height: 62px; display: flex">
-            <div style="scale: 0.3;margin-left: -30px;margin-bottom: 20px">
+          <div class="right_frame_div">
+            <div class="right_frame_img">
               <img src="../../images/file_ref.png" alt="">
             </div>
-            <div style="margin-left: -30px;margin-top: 15px;">
-              <h2>参考文件</h2>
+            <div class="right_frame_h">
+              <h2>参考文献</h2>
             </div>
           </div>
-          <div style="margin-left: 11px" v-for="item in literature_data">
+          <div class="right_frame_div2" v-for="item in literature_data">
             <el-divider border-style="double" />
-            <div style="height: 213px; width: 491px;">
+            <div class="right_frame_content">
               <div style="cursor: pointer" @click="goToSearch()">
-                <h3>{{item.title}}</h3>
+                <h3>{{item.name.join(",")}}</h3>
               </div>
-              <div style="margin-top: 12px; display: flex; flex-wrap: wrap; margin-left: 10px">
+              <div class="content_author">
                 <div>
                   {{item.author}}
                 </div>
-                <div style="margin-left: 20px">
+                <div class="content_date">
                   {{item.date}}
                 </div>
               </div>
-              <div style="height: 104px; margin-top: 12px; margin-left: 10px">
+              <div class="content_content">
                 {{item.content}}
               </div>
-              <div style="float: right;margin-top: 12px;color: #5A23B5">
+              <div class="content_cite_count">
                 {{item.cite_count}}
               </div>
             </div>
@@ -92,9 +87,11 @@
 </template>
 
 
+
 <script>
 import {ChatLineRound, Delete, Promotion, Search, VideoPause} from "@element-plus/icons-vue";
 import File_Header from "@/components/Headers/File_Header.vue";
+import {reqAllQA} from "@/api";
 
 export default {
   computed: {
@@ -136,30 +133,30 @@ export default {
     return {
       input:"",
       literature_data: [{
-        "title": "“蜂甲一体”作战中无人机装备维修保障方案构想",
+        "name": ["“蜂甲一体”作战中无人机装备维修保障方案构想"],
         "author": "陈卫/胡昆鹏",
         "date": "2023.01",
         "content": "针对当前装甲部队装备维修保障方案中对大规模、成体系无人机保障的针对性措施不够明确,不利于地面突击作战中无人机蜂群更好地发挥其作用,进而制约了“ 蜂甲一体” 作战体系释放效能的问题,提出“ 蜂甲一体”作战无人机装备维修保障方案构想,依据无人机系统装备特点......",
         "cite_count": "210被引用"
       }, {
-        "title": "“蜂甲一体”作战中无人机装备维修保障方案构想",
+        "name": ["“蜂甲一体”作战中无人机装备维修保障方案构想"],
         "author": "陈卫/胡昆鹏",
         "date": "2023.01",
         "content": "针对当前装甲部队装备维修保障方案中对大规模、成体系无人机保障的针对性措施不够明确,不利于地面突击作战中无人机蜂群更好地发挥其作用,进而制约了“ 蜂甲一体” 作战体系释放效能的问题,提出“ 蜂甲一体”作战无人机装备维修保障方案构想,依据无人机系统装备特点......",
         "cite_count": "210被引用"
-      }, {
-        "title": "“蜂甲一体”作战中无人机装备维修保障方案构想",
+      },{
+        "name": ["“蜂甲一体”作战中无人机装备维修保障方案构想"],
         "author": "陈卫/胡昆鹏",
         "date": "2023.01",
         "content": "针对当前装甲部队装备维修保障方案中对大规模、成体系无人机保障的针对性措施不够明确,不利于地面突击作战中无人机蜂群更好地发挥其作用,进而制约了“ 蜂甲一体” 作战体系释放效能的问题,提出“ 蜂甲一体”作战无人机装备维修保障方案构想,依据无人机系统装备特点......",
         "cite_count": "210被引用"
-      }, {
-        "title": "“蜂甲一体”作战中无人机装备维修保障方案构想",
+      },{
+        "name": ["“蜂甲一体”作战中无人机装备维修保障方案构想"],
         "author": "陈卫/胡昆鹏",
         "date": "2023.01",
         "content": "针对当前装甲部队装备维修保障方案中对大规模、成体系无人机保障的针对性措施不够明确,不利于地面突击作战中无人机蜂群更好地发挥其作用,进而制约了“ 蜂甲一体” 作战体系释放效能的问题,提出“ 蜂甲一体”作战无人机装备维修保障方案构想,依据无人机系统装备特点......",
         "cite_count": "210被引用"
-      }],
+      },],
       inputText: '',
       messages: [],
       messageData: JSON.parse(localStorage.getItem('messageData')),
@@ -189,29 +186,31 @@ export default {
       return `${year}/${month}/${dates}`;
     },
     sendMessage() {
+      const date = Date.now();
+      let data = {
+        "question": this.inputText,
+      }
       if (this.inputText.trim()) {
-        this.messages.push({
+        const message = {
           "date": this.getDate(),
           "text": this.inputText,
-          "answer": "针对当前装甲部队装备维修保障方案中对大规模、成体系无人机保障的针对性措施不够明确,不利于地面突击作战中无人机蜂群更好地发挥其作用,进而制约了“ 蜂甲一体” 作战体系释放效能的问题,提出“ 蜂甲一体”作战无人机装备维修保障方案构想,依据无人机系统装备特点......",
-        })
-        // 从LocalStorage中获取已有数据
-        let existingData = localStorage.getItem('messageData');
-        let myData = existingData ? JSON.parse(existingData) : []; // 如果存在数据，则解析为数组；否则，初始化为空数组
-        // 追加新的json数据
-        let newData =
-            {
-              "date": this.getDate(),
-              "text": this.inputText,
-              "answer": "aaaa"
-            };
-        myData.push(newData);
-
-        // 将更新后的数据存回LocalStorage
-        localStorage.setItem('messageData', JSON.stringify(myData));
-        this.messageData = JSON.parse(localStorage.getItem('messageData'));
-        // this.messages = []
+          "answer": "正在获取回答...",
+          "id": date,
+        };
+        this.messages.push(message);
         this.inputText = '';
+
+        reqAllQA(data).then((res) => {
+          // 获取到回答后，更新 message 对象的回答
+          this.messages.forEach((item) => {
+            if (item.id === date){
+              item.answer = res.answer;
+              this.literature_data = res.docs;
+              console.log(item)
+            }
+          })
+          console.log(res);
+        });
       }
     },
     filter_string(text){
@@ -271,11 +270,74 @@ export default {
 }
 </script>
 
+<style scoped>
+.left_frame_input{
+  margin-left: 9px; margin-top: 15px; margin-right: 9px
+}
+.left_frame_date{
+  margin-top: 15px; margin-left: 9px; font-size: 16px;color: rgba(0,0,0,0.45);
+}
+.history_img{
+  scale: 0.3;margin-bottom: 30px;padding-top: 3px; margin-top: 4px
+}
+.history_text{
+  margin-left: 11px;padding-top: 3px
+}
+.history_delete{
+  margin-right: 5px;padding-top: 3px;display: flex; justify-content: flex-end;margin-top: 4px
+}
+.message{
+  margin-top: 20px; display: flex;flex-direction: column
+}
+.sendMessage_input{
+  margin-left: 140px; width: 806px; height: 47px;position: fixed;bottom: 0; margin-bottom: 30px
+}
+.send_input{
+  width: 806px;
+  height: 47px;
+  background: #F2F3F5;
+  box-shadow: 1px 1px 9px 2px rgba(34,67,186,0.2);
+  border-radius: 4px 4px 4px 4px;
+  opacity: 1;
+  border: 1px solid rgba(0,0,0,0.05);
+}
+.right_frame_div{
+  margin-left: 11px; height: 62px; display: flex
+}
+.right_frame_img{
+  scale: 0.3;margin-bottom: 20px;margin-left: -30px
+}
+.right_frame_h{
+  margin-left: -30px;margin-top: 15px
+}
+.right_frame_div2{
+  margin-left: 11px;
+}
+.right_frame_content{
+  height: 213px; width: 491px;
+}
+.content_author{
+  margin-top: 12px; display: flex; flex-wrap: wrap; margin-left: 10px
+}
+.content_date{
+  margin-left: 20px
+}
+.content_content{
+  height: 104px; margin-top: 12px; margin-left: 10px
+}
+.content_cite_count{
+  float: right;margin-top: 12px;color: #5A22B5;
+  margin-right: 10px;
+}
+</style>
 
 
 <style scoped>
 .FileQA {
   display: flex; flex-wrap: wrap;height: 1080px
+}
+.FileQA_header{
+  width: 1920px;height: 86px
 }
 
 .center_frame {
@@ -350,7 +412,8 @@ export default {
   height: 976px;
   background: #FFFFFF;
   border-radius: 0 0 0 0;
-  opacity: 1;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 .img1 {

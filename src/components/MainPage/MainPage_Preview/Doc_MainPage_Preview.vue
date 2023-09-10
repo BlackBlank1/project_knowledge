@@ -43,7 +43,7 @@
               </div>
               <div class="button-box">
                 <div style="margin-right: 10px">
-                  <el-button type="primary" color="#2B56F9" @click="goToPreview()">预览</el-button>
+                  <el-button type="primary" color="#2B56F9" @click="goToPreview(paperTitle)">预览</el-button>
                 </div>
                 <div>
                   <el-button>下载</el-button>
@@ -104,12 +104,13 @@
 <script>
 import * as echarts from 'echarts';
 import graph from '../../../views/data.json'
+import {reqGetPDF} from "@/api";
 
 export default {
   data() {
     return {
       items: [1, 2, 3],
-      paperTitle: '“蜂甲一体”作战中无人机装备维修保障方案构想',
+      paperTitle: '“蜂甲一体”作战中无人机装备维修保障方案构想_陈卫.pdf',
       author: '陈卫/胡昆鹏',
       organization: '陆军炮兵防空兵学院',
       address: '安徽 合肥',
@@ -197,9 +198,13 @@ export default {
     myChart.setOption(option);
   },
   methods:{
-    goToPreview(){
-      this.$router.push({
-        name:"DocPreview"
+    goToPreview(pdfTitle){
+      reqGetPDF(pdfTitle).then((res) => {
+        localStorage.setItem("title", pdfTitle)
+        localStorage.setItem("pdf_url", res)
+        this.$router.push({
+          name:"DocPreview",
+        })
       })
     },
     goToSearch(){

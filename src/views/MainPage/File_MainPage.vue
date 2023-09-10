@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 1920px;height: 1080px;display: flex;flex-direction: column">
+  <div class="main">
     <div>
       <File_Header></File_Header>
     </div>
@@ -17,5 +17,7 @@ export default {
 </script>
 
 <style scoped>
-
+.main{
+  width: 1920px;height: 1080px;display: flex;flex-direction: column
+}
 </style>
