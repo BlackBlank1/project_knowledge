@@ -58,7 +58,7 @@
               <h2>参考文献</h2>
             </div>
           </div>
-          <div class="right_frame_div2" v-for="item in literature_data">
+          <div class="right_frame_div2" v-for="item in literature_data" v-if="show">
             <el-divider border-style="double" />
             <div class="right_frame_content">
               <div style="cursor: pointer" @click="goToSearch()">
@@ -130,28 +130,9 @@ export default {
     components: {Doc_Header, VideoPause, Delete, ChatLineRound, Search},
     data(){
       return {
+        show:false,
         input:"",
-        literature_data: [{
-          "name": "“蜂甲一体”作战中无人机装备维修保障方案构想",
-          "author": "陈卫/胡昆鹏",
-          "date": "2023.01",
-          "bstract": "针对当前装甲部队装备维修保障方案中对大规模、成体系无人机保障的针对性措施不够明确,不利于地面突击作战中无人机蜂群更好地发挥其作用,进而制约了“ 蜂甲一体” 作战体系释放效能的问题,提出“ 蜂甲一体”作战无人机装备维修保障方案构想,依据无人机系统装备特点......",
-          "cite_count": "210被引用"
-        }, {
-          "name": "FSAC赛车横向控制系统设计与研究",
-          "single_name":"FSAC赛车横向控制系统设计与研究_李金畅.pdf",
-          "author": "陈卫/胡昆鹏",
-          "date": "2023.01",
-          "content": "针对当前装甲部队装备维修保障方案中对大规模、成体系无人机保障的针对性措施不够明确,不利于地面突击作战中无人机蜂群更好地发挥其作用,进而制约了“ 蜂甲一体” 作战体系释放效能的问题,提出“ 蜂甲一体”作战无人机装备维修保障方案构想,依据无人机系统装备特点......",
-          "cite_count": "210被引用"
-        }, {
-          "name": "“幻影”无人机设计",
-          "single_name":"“幻影”无人机设计_丁家虎.pdf",
-          "author": "丁家虎",
-          "date": "2023.01",
-          "content": "针对当前装甲部队装备维修保障方案中对大规模、成体系无人机保障的针对性措施不够明确,不利于地面突击作战中无人机蜂群更好地发挥其作用,进而制约了“ 蜂甲一体” 作战体系释放效能的问题,提出“ 蜂甲一体”作战无人机装备维修保障方案构想,依据无人机系统装备特点......",
-          "cite_count": "210被引用"
-        }],
+        literature_data: [],
         inputText: '',
         messages: [],
         // messageData: JSON.parse(localStorage.getItem('messageData')),
@@ -171,8 +152,11 @@ export default {
         console.log("首次被加载")
       }
       this.scrollToBottom();
-      this.inputText = this.$route.query.question;
-      this.sendMessage()
+      if (this.inputText !== ""){
+        this.sendMessage(true)
+      }else {
+        this.sendMessage(false)
+      }
     },
 
   methods: {
@@ -184,7 +168,8 @@ export default {
         var dates = date.getDate();
         return `${year}/${month}/${dates}`;
       },
-      sendMessage() {
+      sendMessage(isShow) {
+        this.show = isShow;
         const date = Date.now();
         let data = {
           "question": this.inputText,
@@ -313,8 +298,12 @@ export default {
   height: 213px; width: 491px;
   font-size: 16px;
 }
+.right_frame_content h3{
+  margin-top: -10px;
+}
 .content_author{
-  margin-top: 12px; display: flex; flex-wrap: wrap; margin-left: 10px
+  margin-top: 12px; display: flex; flex-wrap: wrap; margin-left: 10px;
+  font-size: 14px;
 }
 .content_date{
   margin-left: 20px

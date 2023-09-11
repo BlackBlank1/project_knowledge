@@ -112,10 +112,10 @@ export default {
   data() {
     return {
       data:"",
-      showFullTextContent: true,
-      showDirectoryContent: false,
+      showFullTextContent: false,
+      showDirectoryContent: true,
       input:"",
-      selectedContentType: 'fullText',
+      selectedContentType: 'directory',
       searchData:{
         "appear_count":"共出现2处大规模",
         "data":[{

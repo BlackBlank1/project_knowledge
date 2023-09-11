@@ -247,6 +247,7 @@ export default defineComponent({
   display: flex;
   flex-direction: row;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .center_frame {

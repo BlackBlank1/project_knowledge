@@ -54,7 +54,9 @@
                 <h3>{{item.title}}</h3>
               </div>
               <div class="content_frame_title" style="">
-                文献
+                <div class="f1">
+                  文献
+                </div>
               </div>
             </div>
             <div class="content_author" style="">
@@ -115,9 +117,12 @@ export default {
         "single_name":"FSAC赛车横向控制系统设计与研究_李金畅.pdf",
         "author": "陈卫/胡昆鹏",
         "date": "2023.01",
-        "content": "针对当前装甲部队装备维修保障方案中对大规模、成体系无人机保障的针对性措施不够明确,不利于地面突击作战中无人机蜂群更好地发挥其作用,进而制约了“ 蜂甲一体” 作战体系释放效能的问题,提出“ 蜂甲一体”作战无人机装备维修保障方案构想,依据无人机系统装备特点......",
+        "content": "针对 FSAC 大赛特殊的比赛环境及目前赛车路径跟踪误差较大等情况，本文对无\n" +
+            "人车的横向运动控制系统进行研究。在满足安全性及操作稳定性的基础上，进行控制\n" +
+            "策略的研究及横向运动控制器的设计，并以 Simulink 与 Carsim 联合仿真来验证控制器\n" +
+            "的鲁棒性。本文对 FSAC 赛车横向运动控制系统的设计与研究工作",
         "cite_count": "210被引用"
-      },],
+      }],
       selectedContentType: "file_search",
       input_text: "搜索您想查阅的文章", //输入框里面的提示字
       switch_value:"1",
@@ -291,6 +296,9 @@ export default {
 }
 .content_content{
   height: 104px; margin-top: 12px; margin-left: 10px
+}
+.f1{
+  margin-top: -3px;
 }
 .content_cite{
   float: right;margin-top: 12px;color: #5A22B5;
