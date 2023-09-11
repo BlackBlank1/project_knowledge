@@ -38,20 +38,64 @@
         </div>
       </div>
       <div v-if="showDirectoryContent" >
-        <el-aside width="260px">
-          <el-scrollbar>
-            <el-menu v-for="(key, value, index) in data" :key="index">
-              <el-sub-menu :index="index" class="directory_list">
+        <el-row class="tac">
+          <el-col :span="12">
+            <el-menu>
+              <el-menu-item index="1">
                 <template #title>
-                  <div class="directory_title" @click="go_to_page(value.pages)">{{key}}</div>
+                  <span @click="go_to_page(1)">0 摘要</span>
                 </template>
-                <el-menu-item-group v-if="value.length > 1" v-for="(k, v, subIndex) in value.sub">
-                  <el-menu-item :index="subIndex" style="overflow: auto" @click="go_to_page(v.pages)">{{ k }}</el-menu-item>
+              </el-menu-item>
+              <el-sub-menu index="2">
+                <template #title>
+                  <span @click="go_to_page(2)">1 “ 蜂甲一体” 作战中无人机装备维修保障方案制定依据"</span>
+                </template>
+                <el-menu-item-group>
+                  <el-sub-menu index="2-1">
+                    <template #title @click="go_to_page(2)">1. 1 装备特点</template>
+                    <el-menu-item @click="go_to_page(2)" index="2-1-1">1. 1. 1 系统涉及面广,维修需全面综合统筹</el-menu-item>
+                    <el-menu-item @click="go_to_page(2)" index="2-1-2">1. 1. 2 零件替换性强,维修需搜寻恢复并存</el-menu-item>
+                    <el-menu-item @click="go_to_page(2)" index="2-1-3">1. 1. 3 数据复杂度高,维修需软件硬件兼顾</el-menu-item>
+                  </el-sub-menu>
+                  <el-sub-menu index="2-2">
+                    <template #title @click="go_to_page(2)">1. 2 组织特点</template>
+                    <el-menu-item @click="go_to_page(2)" index="2-2-1">1. 2. 1 厘清各力量编组的职能分工</el-menu-item>
+                    <el-menu-item @click="go_to_page(2)" index="2-2-2">1. 2. 2 厘清装备维修保障指挥关系</el-menu-item>
+                    <el-menu-item @click="go_to_page(2)" index="2-2-3">1. 2. 3 厘清各级力量协同配合</el-menu-item>
+                  </el-sub-menu>
+                  <el-sub-menu index="2-3">
+                    <template #title @click="go_to_page(3)">1. 3 作战特点</template>
+                    <el-menu-item @click="go_to_page(3)" index="2-3-1">1. 1. 1 系统涉及面广,维修需全面综合统筹</el-menu-item>
+                    <el-menu-item @click="go_to_page(3)" index="2-3-2">1. 1. 2 零件替换性强,维修需搜寻恢复并存</el-menu-item>
+                    <el-menu-item @click="go_to_page(3)" index="2-3-3">1. 1. 3 数据复杂度高,维修需软件硬件兼顾</el-menu-item>
+                  </el-sub-menu>
                 </el-menu-item-group>
               </el-sub-menu>
+              <el-sub-menu index="3">
+                <template #title>
+                  <span @click="go_to_page(4)">2 “ 蜂甲一体” 作战中无人机装备维修保障方案制定要素"</span>
+                </template>
+                <el-menu-item-group>
+                  <el-menu-item @click="go_to_page(4)" index="3-1-1">2. 1 装备维修保障原则</el-menu-item>
+                  <el-menu-item @click="go_to_page(4)" index="3-1-2">2. 2 装备维修保障力量编组配置与器材供应</el-menu-item>
+                  <el-menu-item @click="go_to_page(4)" index="3-1-3">2. 3 装备抢修措施</el-menu-item>
+                  <el-menu-item @click="go_to_page(4)" index="3-1-4">2. 4 各战斗阶段维修保障重点</el-menu-item>
+                </el-menu-item-group>
+              </el-sub-menu>
+              <el-menu-item index="4">
+                <template #title>
+                  <span @click="go_to_page(4)">3 结束语</span>
+                </template>
+              </el-menu-item>
+              <el-menu-item index="5">
+                <template #title>
+                  <span @click="go_to_page(4)">4 参考文献</span>
+                </template>
+              </el-menu-item>
             </el-menu>
-          </el-scrollbar>
-        </el-aside>
+          </el-col>
+        </el-row>
+
       </div>
     </div>
   </div>
@@ -113,6 +157,7 @@ export default {
   mounted() {
     reqCatalogue(localStorage.getItem("single_name")).then((res) => {
       this.data = res.directory
+      console.log(this.data)
     })
   }
 }

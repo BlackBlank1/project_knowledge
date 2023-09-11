@@ -57,7 +57,8 @@ const props = defineProps({
 const state = reactive({
   //静态资源加载路径
   // source: 'http://192.168.20.220/' + encodeURIComponent(localStorage.getItem("pdf_url")), //预览pdf文件地址
-  source: 'http://192.168.20.220/' + localStorage.getItem("pdf_url"), //预览pdf文件地址
+  // source: 'http://192.168.20.220/' + localStorage.getItem("pdf_url"), //预览pdf文件地址
+  source:'./src/pdf/' + localStorage.getItem("single_name"),
   pageNum: 1, //当前页面
   scale: '100%', // 缩放比例
   numPages: 0, // 总页数
