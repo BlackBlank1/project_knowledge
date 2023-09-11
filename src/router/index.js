@@ -14,7 +14,7 @@ const router = createRouter({
       component: () => import('../views/BackStage.vue')
     },
     {
-      path: '/',
+      path: '/Manager',
       name: 'Manager',
       component: () => import('../views/Manager.vue'),
       redirect:"/UserManager",
@@ -67,7 +67,7 @@ const router = createRouter({
       component: () => import('../components/MainPage/MainPage_Preview/Doc_MainPage_Preview.vue')
     },
     {
-      path: '/Doc_MainPage',
+      path: '/',
       name: 'Doc_MainPage',
       component: () => import('../views/MainPage/Doc_MainPage.vue'),
       redirect:'/MainPage_Default',

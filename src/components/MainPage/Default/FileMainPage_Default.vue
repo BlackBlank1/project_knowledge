@@ -110,12 +110,14 @@ export default {
         "content": "针对当前装甲部队装备维修保障方案中对大规模、成体系无人机保障的针对性措施不够明确,不利于地面突击作战中无人机蜂群更好地发挥其作用,进而制约了“ 蜂甲一体” 作战体系释放效能的问题,提出“ 蜂甲一体”作战无人机装备维修保障方案构想,依据无人机系统装备特点......",
         "cite_count": "210被引用"
       }, {
-        "title": "“蜂甲一体”作战中无人机装备维修保障方案构想",
+        "title": "FSAC赛车横向控制系统设计与研究",
+        "name":"b.pdf",
+        "single_name":"FSAC赛车横向控制系统设计与研究_李金畅.pdf",
         "author": "陈卫/胡昆鹏",
         "date": "2023.01",
         "content": "针对当前装甲部队装备维修保障方案中对大规模、成体系无人机保障的针对性措施不够明确,不利于地面突击作战中无人机蜂群更好地发挥其作用,进而制约了“ 蜂甲一体” 作战体系释放效能的问题,提出“ 蜂甲一体”作战无人机装备维修保障方案构想,依据无人机系统装备特点......",
-        "cite_count": "210被引用",
-      }],
+        "cite_count": "210被引用"
+      },],
       selectedContentType: "file_search",
       input_text: "搜索您想查阅的文章", //输入框里面的提示字
       switch_value:"1",
@@ -201,7 +203,10 @@ export default {
         })
       } else if (this.selectedContentType === "file_Q&A"){
         this.$router.push({
-          name:"FileQ&A"
+          name:"FileQ&A",
+          query:{
+            question:this.input
+          }
         })
       }
     },
@@ -267,6 +272,8 @@ export default {
 }
 .content_frame{
   height: 200px; width: 1111px;
+  font-size: 18px;
+
 }
 .content_frame_title{
   margin-left: 18px;width: 54px;

@@ -144,7 +144,8 @@ export default {
 
 <style scoped>
 .File_SearchAndDirectory{
-  display: flex;flex-direction: column; box-shadow: 2px 5px 11px -2px rgba(34,67,186,0.2);border: #F2F3F5 2px solid; margin-left: -8px
+  display: flex;flex-direction: column; box-shadow: 2px 5px 11px -2px rgba(34,67,186,0.2);border: #F2F3F5 2px solid; margin-left: -8px;
+  font-size: 16px;
 }
 .text_search {
   width: 80px;

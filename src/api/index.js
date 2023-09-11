@@ -36,3 +36,13 @@ export const reqPage = (pdf_name, search_str) => {
         }
     })
 }
+
+export const reqCatalogue = (pdf_name) => {
+    return requests({
+        url:"get-pdf-directory",
+        method:"get",
+        params:{
+            pdf_name:pdf_name,
+        }
+    })
+}

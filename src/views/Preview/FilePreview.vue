@@ -71,9 +71,9 @@ export default defineComponent({
     return {
       inputText:"",
       messages: [],
-      text: ['提出的方案旨在如何提高“蜂甲一体”作战系统的释放效率？',
-        '在制定拟议方案时，无人机系统设备、组织和操作的特点是什么？',
-        '“蜂甲一体”作战无人机装备维修保障方案提出的概念是什么？'],
+      text: ['该篇文章的有什么创新点？',
+        '请概括该篇文章的应用领域。',
+        '请概括该篇文章的使用技术。'],
       messageData: JSON.parse(localStorage.getItem('messageData')),
       pdf_url:"",
       pdf_title:""
@@ -148,7 +148,7 @@ export default defineComponent({
   },
   mounted() {
     this.scrollToBottom();
-    this.pdf_title = localStorage.getItem("title");
+    this.pdf_title = localStorage.getItem("single_name");
     console.log(localStorage.getItem("title"));
     this.pdf_url = localStorage.getItem("pdf_url")
   },
@@ -262,6 +262,7 @@ export default defineComponent({
   opacity: 1;
   display: flex;
   flex-direction: column;
+  font-size: 16px;
 }
 
 .chat_frame {

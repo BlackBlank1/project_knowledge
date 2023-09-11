@@ -40,13 +40,13 @@
       <div v-if="showDirectoryContent" >
         <el-aside width="260px">
           <el-scrollbar>
-            <el-menu v-for="(item, index) in data.items" :key="index">
+            <el-menu v-for="(key, value, index) in data" :key="index">
               <el-sub-menu :index="index" class="directory_list">
                 <template #title>
-                  <div class="directory_title" @click="go_to_page(item.dest[0].num)">{{item.title}}</div>
+                  <div class="directory_title" @click="go_to_page(value.pages)">{{key}}</div>
                 </template>
-                <el-menu-item-group v-if="item.items.length > 0" v-for="(i, subIndex) in item.items">
-                  <el-menu-item :index="subIndex" style="overflow: auto" @click="go_to_page(item.dest[0].num)">{{ i.title }}</el-menu-item>
+                <el-menu-item-group v-if="value.length > 1" v-for="(k, v, subIndex) in value.sub">
+                  <el-menu-item :index="subIndex" style="overflow: auto" @click="go_to_page(v.pages)">{{ k }}</el-menu-item>
                 </el-menu-item-group>
               </el-sub-menu>
             </el-menu>
@@ -61,7 +61,7 @@
 import {Close, Message, Setting} from "@element-plus/icons-vue";
 import {inject} from "vue";
 import mitt from "@/utils/mitt.js"
-import {reqPage} from "@/api";
+import {reqCatalogue, reqPage} from "@/api";
 
 export default {
   components: {Close, Setting, Message},
@@ -111,8 +111,8 @@ export default {
     }
   },
   mounted() {
-    mitt.on("data", (val) => {
-      this.data = val;
+    reqCatalogue(localStorage.getItem("single_name")).then((res) => {
+      this.data = res.directory
     })
   }
 }
@@ -149,7 +149,8 @@ export default {
 
 <style scoped>
 .Doc_SearchAndDirectory{
-  display: flex;flex-direction: column; box-shadow: 2px 5px 11px -2px rgba(34,67,186,0.2);border: #F2F3F5 2px solid; margin-left: -8px
+  display: flex;flex-direction: column; box-shadow: 2px 5px 11px -2px rgba(34,67,186,0.2);border: #F2F3F5 2px solid; margin-left: -8px;
+  font-size: 16px;
 }
 .text_search {
   width: 80px;

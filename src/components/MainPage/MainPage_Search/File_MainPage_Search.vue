@@ -47,7 +47,7 @@
               {{item.content}}
             </div>
             <div class="button_list" style="">
-              <el-button type="primary" style="background: #5A22B5;" @click="preview(item.title, item.name)">预览</el-button>
+              <el-button type="primary" style="background: #5A22B5;" @click="preview(item.title, item.name, item.single_name)">预览</el-button>
               <el-button @click="download()">下载</el-button>
             </div>
             <div class="content_cite" style="">
@@ -69,6 +69,7 @@ export default {
       literature_data: [{
         "title": "“蜂甲一体”作战中无人机装备维修保障方案构想",
         "name":"a.pdf",
+        "single_name":"“蜂甲一体”作战中无人机装备维修保障方案构想_陈卫.pdf",
         "author": "陈卫/胡昆鹏",
         "date": "2023.01",
         "content": "针对当前装甲部队装备维修保障方案中对大规模、成体系无人机保障的针对性措施不够明确,不利于地面突击作战中无人机蜂群更好地发挥其作用,进而制约了“ 蜂甲一体” 作战体系释放效能的问题,提出“ 蜂甲一体”作战无人机装备维修保障方案构想,依据无人机系统装备特点......",
@@ -76,6 +77,7 @@ export default {
       }, {
         "title": "FSAC赛车横向控制系统设计与研究",
         "name":"b.pdf",
+        "single_name":"FSAC赛车横向控制系统设计与研究_李金畅.pdf",
         "author": "陈卫/胡昆鹏",
         "date": "2023.01",
         "content": "针对当前装甲部队装备维修保障方案中对大规模、成体系无人机保障的针对性措施不够明确,不利于地面突击作战中无人机蜂群更好地发挥其作用,进而制约了“ 蜂甲一体” 作战体系释放效能的问题,提出“ 蜂甲一体”作战无人机装备维修保障方案构想,依据无人机系统装备特点......",
@@ -83,6 +85,7 @@ export default {
       }, {
         "title": "“幻影”无人机设计",
         "name":"c.pdf",
+        "single_name":"“幻影”无人机设计_丁家虎.pdf",
         "author": "丁家虎",
         "date": "2023.01",
         "content": "针对当前装甲部队装备维修保障方案中对大规模、成体系无人机保障的针对性措施不够明确,不利于地面突击作战中无人机蜂群更好地发挥其作用,进而制约了“ 蜂甲一体” 作战体系释放效能的问题,提出“ 蜂甲一体”作战无人机装备维修保障方案构想,依据无人机系统装备特点......",
@@ -116,9 +119,10 @@ export default {
     download(){
 
     },
-    preview(title, name){
+    preview(title, name, single_name){
       localStorage.setItem("title", title)
       localStorage.setItem("pdf_url", name)
+      localStorage.setItem("single_name", single_name)
       this.$router.push({
         name:"File_MainPage_Preview",
       })
@@ -154,6 +158,7 @@ export default {
 }
 .content_frame{
   margin-top: -15px;
+  font-size: 16px;
 }
 .content_div{
   margin-left: 147px
